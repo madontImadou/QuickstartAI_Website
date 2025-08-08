@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { X, Send, CheckCircle } from 'lucide-react';
-import { sendDemoRequest } from '../services/emailService';
+import { saveDemoRequest } from '../services/databaseService';
 
 interface DemoModalProps {
   websiteUrl: string;
@@ -17,23 +17,45 @@ const DemoModal: React.FC<DemoModalProps> = ({ websiteUrl, onClose }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Input validation
+    if (!formData.name.trim() || !formData.email.trim() || !websiteUrl.trim()) {
+      alert('Bitte füllen Sie alle Pflichtfelder aus.');
+      return;
+    }
+    
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      alert('Bitte geben Sie eine gültige E-Mail-Adresse ein.');
+      return;
+    }
+    
+    // URL validation
+    try {
+      new URL(websiteUrl);
+    } catch {
+      alert('Bitte geben Sie eine gültige Website-URL ein.');
+      return;
+    }
+    
     setIsSubmitting(true);
 
     try {
-      const success = await sendDemoRequest({
+      const success = await saveDemoRequest({
         name: formData.name,
         email: formData.email,
-        websiteUrl
+        websiteUrl: websiteUrl
       });
 
       if (success) {
         setIsSubmitted(true);
       } else {
-        alert('Fehler beim Senden der Anfrage. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt.');
+        alert('Fehler beim Speichern der Anfrage. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt.');
       }
     } catch (error) {
-      console.error('Fehler beim Senden der Demo-Anfrage:', error);
-      alert('Fehler beim Senden der Anfrage. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt.');
+      console.error('Fehler beim Speichern der Demo-Anfrage:', error);
+      alert('Fehler beim Speichern der Anfrage. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt.');
     } finally {
       setIsSubmitting(false);
     }
@@ -60,7 +82,7 @@ const DemoModal: React.FC<DemoModalProps> = ({ websiteUrl, onClose }) => {
           </div>
           <h3 className="text-2xl font-bold text-gray-900 mb-4">Demo angefordert!</h3>
           <p className="text-gray-600 mb-6">
-            Vielen Dank! Wir haben Ihre Demo-Anfrage erhalten und melden uns innerhalb von 24 Stunden bei Ihnen.
+            Vielen Dank! Ihre Demo-Anfrage wurde erfolgreich gespeichert. Wir melden uns innerhalb von 24 Stunden bei Ihnen.
           </p>
           <p className="text-sm text-gray-500">
             Dieses Fenster schließt sich automatisch...
@@ -130,14 +152,14 @@ const DemoModal: React.FC<DemoModalProps> = ({ websiteUrl, onClose }) => {
               <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
             ) : (
               <>
-                <span>Demo anfordern</span>
+                <span>Anfrage speichern</span>
                 <Send className="w-4 h-4" />
               </>
             )}
           </button>
         </form>
         <p className="text-xs text-gray-400 mt-4 text-center">
-          Ihre Daten werden vertraulich behandelt und nicht an Dritte weitergegeben.
+          Ihre Anfrage wird sicher in unserer Datenbank gespeichert und vertraulich behandelt.
         </p>
       </div>
     </div>

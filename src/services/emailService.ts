@@ -20,110 +20,48 @@ interface SalesRequest {
   message: string;
 }
 
-// EmailJS Konfiguration
-const EMAILJS_SERVICE_ID = 'service_quickstartai';
-const EMAILJS_TEMPLATE_DEMO = 'template_demo_request';
-const EMAILJS_TEMPLATE_CONTACT = 'template_contact_form';
-const EMAILJS_TEMPLATE_SALES = 'template_sales_inquiry';
-const EMAILJS_PUBLIC_KEY = 'KXCxtVUDSVmV3Iw8m'; // Muss durch echten Key ersetzt werden
+// Supabase Edge Function URL
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || 'https://your-project.supabase.co';
+const EMAIL_FUNCTION_URL = `${SUPABASE_URL}/functions/v1/send-email`;
 
-// EmailJS dynamisch laden
-const loadEmailJS = async () => {
-  if (typeof window !== 'undefined' && !(window as any).emailjs) {
-    const emailjs = await import('@emailjs/browser');
-    (window as any).emailjs = emailjs;
-    return emailjs;
+const sendEmailRequest = async (type: 'demo' | 'contact' | 'sales', data: any): Promise<boolean> => {
+  try {
+    const response = await fetch(EMAIL_FUNCTION_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+      },
+      body: JSON.stringify({
+        type,
+        data
+      }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('E-Mail-Versand Fehler:', errorData);
+      return false;
+    }
+
+    const result = await response.json();
+    console.log('E-Mail erfolgreich gesendet:', result);
+    return result.success;
+
+  } catch (error) {
+    console.error('Fehler beim E-Mail-Versand:', error);
+    return false;
   }
-  return (window as any).emailjs;
 };
 
 export const sendDemoRequest = async (data: DemoRequest): Promise<boolean> => {
-  try {
-    const emailjs = await loadEmailJS();
-    
-    const templateParams = {
-      to_email: 'maximilian@quickstartai.de',
-      from_name: data.name,
-      from_email: data.email,
-      website_url: data.websiteUrl,
-      request_type: 'Demo-Anfrage',
-      timestamp: new Date().toLocaleString('de-DE'),
-      subject: `Neue Demo-Anfrage von ${data.name}`
-    };
-
-    const response = await emailjs.send(
-      EMAILJS_SERVICE_ID,
-      EMAILJS_TEMPLATE_DEMO,
-      templateParams,
-      EMAILJS_PUBLIC_KEY
-    );
-
-    console.log('Demo-Anfrage erfolgreich gesendet:', response);
-    return response.status === 200;
-  } catch (error) {
-    console.error('Fehler beim Senden der Demo-Anfrage:', error);
-    return false;
-  }
+  return sendEmailRequest('demo', data);
 };
 
 export const sendContactRequest = async (data: ContactRequest): Promise<boolean> => {
-  try {
-    const emailjs = await loadEmailJS();
-    
-    const templateParams = {
-      to_email: 'maximilian@quickstartai.de',
-      from_name: data.name,
-      from_email: data.email,
-      message: data.message,
-      request_type: 'Kontakt-Anfrage',
-      timestamp: new Date().toLocaleString('de-DE'),
-      subject: `Neue Kontakt-Anfrage von ${data.name}`
-    };
-
-    const response = await emailjs.send(
-      EMAILJS_SERVICE_ID,
-      EMAILJS_TEMPLATE_CONTACT,
-      templateParams,
-      EMAILJS_PUBLIC_KEY
-    );
-
-    console.log('Kontakt-Anfrage erfolgreich gesendet:', response);
-    return response.status === 200;
-  } catch (error) {
-    console.error('Fehler beim Senden der Kontakt-Anfrage:', error);
-    return false;
-  }
+  return sendEmailRequest('contact', data);
 };
 
 export const sendSalesInquiry = async (data: SalesRequest): Promise<boolean> => {
-  try {
-    const emailjs = await loadEmailJS();
-    
-    const templateParams = {
-      to_email: 'info@quickstartai.de',
-      from_name: data.name,
-      from_email: data.email,
-      company: data.company,
-      phone: data.phone || 'Nicht angegeben',
-      employees: data.employees || 'Nicht angegeben',
-      budget: data.budget || 'Nicht angegeben',
-      message: data.message,
-      request_type: 'Sales-Anfrage',
-      timestamp: new Date().toLocaleString('de-DE'),
-      subject: `Neue Sales-Anfrage von ${data.company} (${data.name})`
-    };
-
-    const response = await emailjs.send(
-      EMAILJS_SERVICE_ID,
-      EMAILJS_TEMPLATE_SALES,
-      templateParams,
-      EMAILJS_PUBLIC_KEY
-    );
-
-    console.log('Sales-Anfrage erfolgreich gesendet:', response);
-    return response.status === 200;
-  } catch (error) {
-    console.error('Fehler beim Senden der Sales-Anfrage:', error);
-    return false;
-  }
+  return sendEmailRequest('sales', data);
 };

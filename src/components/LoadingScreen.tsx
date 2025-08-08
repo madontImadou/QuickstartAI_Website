@@ -1,5 +1,4 @@
 import React from 'react';
-import Logo from '../assets/FirmenlogoLoading-removebg-preview.png';
 
 const LoadingScreen: React.FC = () => {
   return (
@@ -12,7 +11,7 @@ const LoadingScreen: React.FC = () => {
         {/* Hauptlogo */}
         <div className="mb-6">
           <img
-            src={Logo}
+            src="/FirmenlogoLoading-removebg-preview.png"
             alt="QuickStart AI Logo"
             className="w-16 h-16 mx-auto object-contain"
           />
@@ -35,7 +34,7 @@ const LoadingScreen: React.FC = () => {
         {/* Kleines Logo unten */}
         <div className="flex items-center justify-center gap-2 opacity-70">
           <img 
-            src={Logo} 
+            src="/FirmenlogoLoading-removebg-preview.png" 
             alt="Mini Logo" 
             className="w-5 h-5 object-contain" 
           />

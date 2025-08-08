@@ -16,7 +16,7 @@ import {
   Briefcase,
   Globe
 } from 'lucide-react';
-import { sendSalesInquiry } from '../services/emailService';
+import { saveSalesInquiry } from '../services/databaseService';
 
 const SalesPage: React.FC = () => {
   // Scroll to top when component mounts
@@ -40,10 +40,30 @@ const SalesPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Input validation
+    if (!formData.company.trim() || !formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
+      alert('Bitte füllen Sie alle Pflichtfelder aus.');
+      return;
+    }
+    
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      alert('Bitte geben Sie eine gültige E-Mail-Adresse ein.');
+      return;
+    }
+    
+    // Phone validation (if provided)
+    if (formData.phone && !/^[\d\s\+\-\(\)]+$/.test(formData.phone)) {
+      alert('Bitte geben Sie eine gültige Telefonnummer ein.');
+      return;
+    }
+    
     setIsSubmitting(true);
 
     try {
-      const success = await sendSalesInquiry({
+      const success = await saveSalesInquiry({
         company: formData.company,
         name: formData.name,
         email: formData.email,
@@ -56,11 +76,11 @@ const SalesPage: React.FC = () => {
       if (success) {
         setIsSubmitted(true);
       } else {
-        alert('Fehler beim Senden der Anfrage. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt.');
+        alert('Fehler beim Speichern der Anfrage. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt.');
       }
     } catch (error) {
-      console.error('Fehler beim Senden der Sales-Anfrage:', error);
-      alert('Fehler beim Senden der Anfrage. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt.');
+      console.error('Fehler beim Speichern der Sales-Anfrage:', error);
+      alert('Fehler beim Speichern der Anfrage. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt.');
     } finally {
       setIsSubmitting(false);
     }
@@ -209,7 +229,7 @@ const SalesPage: React.FC = () => {
           </div>
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Anfrage gesendet!</h2>
           <p className="text-gray-600 mb-6">
-            Vielen Dank für Ihr Interesse! Unser Sales-Team meldet sich innerhalb von 24 Stunden bei Ihnen.
+            Vielen Dank für Ihr Interesse! Ihre Anfrage wurde erfolgreich gespeichert. Unser Sales-Team meldet sich innerhalb von 24 Stunden bei Ihnen.
           </p>
           <Link
             to="/"
@@ -235,7 +255,7 @@ const SalesPage: React.FC = () => {
             </Link>
             <div className="flex items-center">
               <img 
-                src="/src/assets/Firmenlogo-removebg-preview.png" 
+                src="/Firmenlogo-removebg-preview.png" 
                 alt="QuickStartAI Logo" 
                 className="h-16 w-auto mr-2"
               />
@@ -537,7 +557,7 @@ const SalesPage: React.FC = () => {
                   <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
                 ) : (
                   <>
-                    <span>Anfrage senden</span>
+                    <span>Anfrage speichern</span>
                     <Mail className="w-5 h-5" />
                   </>
                 )}
@@ -555,6 +575,9 @@ const SalesPage: React.FC = () => {
                   <span>info@quickstartai.de</span>
                 </a>
               </div>
+              <p className="text-xs text-white/60 mt-4">
+                Ihre Anfrage wird sicher in unserer Datenbank gespeichert und vertraulich behandelt.
+              </p>
             </div>
           </div>
         </div>
@@ -565,7 +588,7 @@ const SalesPage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="flex items-center justify-center mb-4">
             <img 
-              src="/src/assets/Firmenlogo-removebg-preview.png" 
+              src="/Firmenlogo-removebg-preview.png" 
               alt="QuickStartAI Logo" 
               className="h-16 w-auto mr-2"
             />

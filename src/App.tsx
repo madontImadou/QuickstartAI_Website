@@ -33,6 +33,9 @@ import DemoModal from './components/DemoModal';
 import ContactForm from './components/ContactForm';
 import AnimatedCard from './components/AnimatedCard';
 import SalesPage from './pages/SalesPage';
+import PrivacyPage from './pages/PrivacyPage';
+import ImpressumPage from './pages/ImpressumPage';
+import AGBPage from './pages/AGBPage';
 
 function HomePage() {
   const [websiteUrl, setWebsiteUrl] = useState('');
@@ -58,8 +61,18 @@ function HomePage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (websiteUrl.trim()) {
+    
+    // URL validation
+    if (!websiteUrl.trim()) {
+      alert('Bitte geben Sie eine Website-URL ein.');
+      return;
+    }
+    
+    try {
+      new URL(websiteUrl);
       setShowDemoModal(true);
+    } catch {
+      alert('Bitte geben Sie eine gültige Website-URL ein (z.B. https://ihre-website.de).');
     }
   };
 
@@ -141,7 +154,7 @@ function HomePage() {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
               <img 
-                src="/src/assets/Firmenlogo-removebg-preview.png" 
+                src="/Firmenlogo-removebg-preview.png" 
                 alt="QuickStartAI Logo" 
                 className="h-20 w-auto mr-3"
               />
@@ -523,7 +536,7 @@ Wenn Sie möchten, zeige ich Ihnen ein paar typische Anwendungsbeispiele oder se
             <div>
               <div className="flex items-center mb-4">
                 <img 
-                  src="/src/assets/Firmenlogo-removebg-preview.png" 
+                  src="/Firmenlogo-removebg-preview.png" 
                   alt="QuickStartAI Logo" 
                   className="h-8 w-auto mr-2"
                 />
@@ -540,7 +553,6 @@ Wenn Sie möchten, zeige ich Ihnen ein paar typische Anwendungsbeispiele oder se
                 <li><a href="#features" className="hover:text-white transition-colors">Features</a></li>
                 <li><a href="#benefits" className="hover:text-white transition-colors">Vorteile</a></li>
                 <li><Link to="/sales#pricing" className="hover:text-white transition-colors">Preise</Link></li>
-                <li><a href="#" className="hover:text-white transition-colors">Integration</a></li>
               </ul>
             </div>
             
@@ -550,7 +562,6 @@ Wenn Sie möchten, zeige ich Ihnen ein paar typische Anwendungsbeispiele oder se
                 <li><a href="#faq" className="hover:text-white transition-colors">FAQ</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Dokumentation</a></li>
                 <li><button onClick={() => setShowContactForm(true)} className="hover:text-white transition-colors">Kontakt</button></li>
-                <li><a href="#" className="hover:text-white transition-colors">Status</a></li>
               </ul>
             </div>
             
@@ -558,9 +569,10 @@ Wenn Sie möchten, zeige ich Ihnen ein paar typische Anwendungsbeispiele oder se
               <h4 className="font-semibold mb-4">Unternehmen</h4>
               <ul className="space-y-2 text-gray-300">
                 <li><a href="#" className="hover:text-white transition-colors">Über uns</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Blog</a></li>
                 <li><Link to="/sales" className="hover:text-white transition-colors">Sales</Link></li>
-                <li><a href="#" className="hover:text-white transition-colors">Partner</a></li>
+                <li><Link to="/agb" className="hover:text-white transition-colors">AGB</Link></li>
+                <li><Link to="/impressum" className="hover:text-white transition-colors">Impressum</Link></li>
+                <li><Link to="/datenschutz" className="hover:text-white transition-colors">Datenschutz</Link></li>
               </ul>
             </div>
           </div>
@@ -611,6 +623,9 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/sales" element={<SalesPage />} />
+        <Route path="/agb" element={<AGBPage />} />
+        <Route path="/impressum" element={<ImpressumPage />} />
+        <Route path="/datenschutz" element={<PrivacyPage />} />
       </Routes>
     </Router>
   );

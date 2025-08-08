@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { X, Send, CheckCircle, Mail, User, MessageCircle } from 'lucide-react';
-import { sendContactRequest } from '../services/emailService';
+import { saveContactRequest } from '../services/databaseService';
 
 interface ContactFormProps {
   onClose: () => void;
@@ -17,10 +17,30 @@ const ContactForm: React.FC<ContactFormProps> = ({ onClose }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Input validation
+    if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
+      alert('Bitte füllen Sie alle Pflichtfelder aus.');
+      return;
+    }
+    
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      alert('Bitte geben Sie eine gültige E-Mail-Adresse ein.');
+      return;
+    }
+    
+    // Message length validation
+    if (formData.message.length > 2000) {
+      alert('Die Nachricht darf maximal 2000 Zeichen lang sein.');
+      return;
+    }
+    
     setIsSubmitting(true);
 
     try {
-      const success = await sendContactRequest({
+      const success = await saveContactRequest({
         name: formData.name,
         email: formData.email,
         message: formData.message
@@ -29,11 +49,11 @@ const ContactForm: React.FC<ContactFormProps> = ({ onClose }) => {
       if (success) {
         setIsSubmitted(true);
       } else {
-        alert('Fehler beim Senden der Nachricht. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt.');
+        alert('Fehler beim Speichern der Nachricht. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt.');
       }
     } catch (error) {
-      console.error('Fehler beim Senden der Kontakt-Anfrage:', error);
-      alert('Fehler beim Senden der Nachricht. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt.');
+      console.error('Fehler beim Speichern der Kontakt-Anfrage:', error);
+      alert('Fehler beim Speichern der Nachricht. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt.');
     } finally {
       setIsSubmitting(false);
     }
@@ -60,7 +80,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ onClose }) => {
           </div>
           <h3 className="text-2xl font-bold text-white mb-4">Nachricht gesendet!</h3>
           <p className="text-gray-300 mb-6">
-            Vielen Dank für Ihre Nachricht! Wir melden uns schnellstmöglich bei Ihnen zurück.
+            Vielen Dank für Ihre Nachricht! Sie wurde erfolgreich gespeichert. Wir melden uns schnellstmöglich bei Ihnen zurück.
           </p>
           <p className="text-sm text-gray-400">
             Dieses Fenster schließt sich automatisch...
@@ -148,7 +168,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ onClose }) => {
               <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
             ) : (
               <>
-                <span>Nachricht senden</span>
+                <span>Nachricht speichern</span>
                 <Send className="w-4 h-4" />
               </>
             )}
@@ -164,13 +184,13 @@ const ContactForm: React.FC<ContactFormProps> = ({ onClose }) => {
               href="mailto:maximilian@quickstartai.de" 
               className="text-[#e2642a] hover:text-orange-400 font-medium"
             >
-              maximilian@quickstartai.de
+              info@quickstartai.de
             </a>
           </div>
         </div>
 
         <p className="text-xs text-gray-400 mt-4 text-center">
-          Ihre Daten werden vertraulich behandelt und nicht an Dritte weitergegeben.
+          Ihre Nachricht wird sicher in unserer Datenbank gespeichert und vertraulich behandelt.
         </p>
       </div>
     </div>
