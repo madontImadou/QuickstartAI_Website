@@ -425,10 +425,10 @@ function HomePage() {
                 <div className="space-y-6">
                   <div className="bg-white bg-opacity-20 backdrop-blur-sm rounded-lg p-4">
                     <div className="flex items-center space-x-3 mb-3">
-                       <img
+                      <img
                         src="/kundeLogoWebsite.jpg"
-                        alt="QuickStartAI ChatBot"
-  className="w-8 h-8 rounded-full object-cover"
+                        alt="Kunde"
+                        className="w-8 h-8 rounded-full object-cover"
                       />
                       <div className="text-sm">Kunde fragt...</div>
                     </div>
@@ -438,9 +438,9 @@ function HomePage() {
                   <div className="bg-white bg-opacity-20 rounded-lg p-4">
                     <div className="flex items-center space-x-3 mb-3">
                       <img
-                        src="public/ihrLogoHier.png"
-                        alt="QuickStartAI ChatBot"
-  className="w-8 h-8 rounded-full object-cover"
+                        src="/ihrLogoHier.png"
+                        alt="Ihr Chatbot"
+                        className="w-8 h-8 rounded-full object-cover"
                       />
                       <div className="text-sm">Ihr Chatbot antwortet...</div>
                     </div>
@@ -582,12 +582,11 @@ Wenn Sie möchten, zeige ich Ihnen ein paar typische Anwendungsbeispiele oder se
             <div className="flex flex-col md:flex-row items-center justify-between">
               <div className="flex items-center space-x-4 mb-4 md:mb-0">
                 <div className="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center">
-  <img
-  src="/ProfilBild.jpg"
-  alt="Profilbild Maximilian Theele"
-  className="w-16 h-16 rounded-full object-cover"
-/>
-
+                  <img
+                    src="/ProfilBild.jpg"
+                    alt="Profilbild Maximilian Theele"
+                    className="w-16 h-16 rounded-full object-cover"
+                  />
                 </div>
                 <div>
                   <div className="font-semibold text-white">Maximilian Theele</div>
