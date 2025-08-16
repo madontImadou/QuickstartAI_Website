@@ -594,7 +594,7 @@ Wenn Sie möchten, zeige ich Ihnen ein paar typische Anwendungsbeispiele oder se
                 </div>
               </div>
               <div className="text-center text-gray-300">
-                <p>&copy; 2024 QuickStartAI. Alle Rechte vorbehalten.</p>
+                <p>&copy; 2025 QuickStartAI. Alle Rechte vorbehalten.</p>
               </div>
             </div>
           </div>

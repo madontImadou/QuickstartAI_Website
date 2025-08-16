@@ -598,7 +598,7 @@ const SalesPage: React.FC = () => {
             Enterprise KI-Lösungen für moderne Unternehmen
           </p>
           <p className="text-white/60">
-            &copy; 2024 QuickStartAI. Alle Rechte vorbehalten.
+            &copy; 2025 QuickStartAI. Alle Rechte vorbehalten.
           </p>
         </div>
       </footer>
