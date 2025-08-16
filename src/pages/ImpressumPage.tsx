@@ -51,6 +51,20 @@ const ImpressumPage: React.FC = () => {
               <strong>Telefon:</strong> <a href="tel:017642078992" className="text-[#e2642a] hover:text-[#d55a26] underline">017642078992</a>
             </p>
 
+            <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">Online-Streitbeilegung</h2>
+            <p className="mb-4">
+              Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit:<br />
+              <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener noreferrer" className="text-[#e2642a] hover:text-[#d55a26] underline">
+                https://ec.europa.eu/consumers/odr
+              </a>
+            </p>
+            <p className="mb-4">
+              Unsere E-Mail-Adresse lautet: <a href="mailto:info@quickstartai.de" className="text-[#e2642a] hover:text-[#d55a26] underline">info@quickstartai.de</a>
+            </p>
+            <p className="mb-6">
+              Wir sind nicht verpflichtet und nicht bereit, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.
+            </p>
+
             <div className="mt-12 pt-8 border-t border-gray-200">
               <p className="text-sm text-gray-600">
                 <a href="https://datenschutz-generator.de/" title="Rechtstext von Dr. Schwenke - für weitere Informationen bitte anklicken." target="_blank" rel="noopener noreferrer nofollow" className="text-[#e2642a] hover:text-[#d55a26] underline">
