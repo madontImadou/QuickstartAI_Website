@@ -38,7 +38,8 @@ const ImpressumPage: React.FC = () => {
           <div className="prose prose-lg max-w-none">
             <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">Diensteanbieter</h2>
             <p className="mb-6">
-              QuickstartAI<br />
+              Maximilian Theele<br />
+              Maximilian Theele QuickstartAI<br />
               Zeppelinstr.73<br />
               81669 München<br />
               Deutschland
