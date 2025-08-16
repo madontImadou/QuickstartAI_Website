@@ -70,7 +70,8 @@ const ImpressumPage: React.FC = () => {
               alt="QuickStartAI Logo" 
               className="h-8 w-auto mr-2"
             />
-            <span className="text-lg font-bold">QuickStartAI</span>
+            <span className="text-lg font-bold">Maximilian Theele</span>
+            <span className="text-lg font-bold">Maximilian Theele QuickStartAI</span>
           </div>
           <p className="text-gray-400">
             &copy; 2025 QuickStartAI. Alle Rechte vorbehalten.
