@@ -73,7 +73,7 @@ const ImpressumPage: React.FC = () => {
             <span className="text-lg font-bold">QuickStartAI</span>
           </div>
           <p className="text-gray-400">
-            &copy; 2024 QuickStartAI. Alle Rechte vorbehalten.
+            &copy; 2025 QuickStartAI. Alle Rechte vorbehalten.
           </p>
         </div>
       </footer>
