@@ -21,5 +21,15 @@
         data-pid="1nFGhYIPvoG849fW8"
         data-version="062024">
 </script>
+<script>
+  window.addEventListener('load', () => {
+    console.log('vtag?', typeof window.vtag, window.vtag);
+    if (window.vtag && typeof window.vtag.init === 'function') {
+      window.vtag.init();
+      console.log('vtag.init() called');
+    }
+  });
+</script>
+
 </body>
 </html>
