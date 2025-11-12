@@ -36,6 +36,7 @@ import SalesPage from './pages/SalesPage';
 import PrivacyPage from './pages/PrivacyPage';
 import ImpressumPage from './pages/ImpressumPage';
 import AGBPage from './pages/AGBPage';
+import ChatbotPrivacyPage from './pages/ChatbotPrivacyPage';
 
 function HomePage() {
   const [websiteUrl, setWebsiteUrl] = useState('');
@@ -573,6 +574,7 @@ Wenn Sie möchten, zeige ich Ihnen ein paar typische Anwendungsbeispiele oder se
                 <li><Link to="/agb" className="hover:text-white transition-colors">AGB</Link></li>
                 <li><Link to="/impressum" className="hover:text-white transition-colors">Impressum</Link></li>
                 <li><Link to="/datenschutz" className="hover:text-white transition-colors">Datenschutz</Link></li>
+                <li><Link to="/chatbot-datenschutz" className="hover:text-white transition-colors">Chatbot-Datenschutz</Link></li>
               </ul>
             </div>
           </div>
@@ -625,6 +627,7 @@ function App() {
         <Route path="/agb" element={<AGBPage />} />
         <Route path="/impressum" element={<ImpressumPage />} />
         <Route path="/datenschutz" element={<PrivacyPage />} />
+        <Route path="/chatbot-datenschutz" element={<ChatbotPrivacyPage />} />
       </Routes>
     </Router>
   );
