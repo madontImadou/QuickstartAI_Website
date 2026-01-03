@@ -1,2 +1,2 @@
 /*
-  Content-Security-Policy: default-src 'self'; script-src 'self' https://cdn.voiceflow.com https://r2.leadsy.ai 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://cdn.voiceflow.com; font-src 'self' https://cdn.voiceflow.com data:; connect-src 'self' https://general-runtime.voiceflow.com https://cdn.voiceflow.com; img-src 'self' data: https:;
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://r2.leadsy.ai 'unsafe-inline' 'unsafe-eval'; connect-src 'self' https://r2.leadsy.ai; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'
