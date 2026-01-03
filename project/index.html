@@ -12,22 +12,24 @@
 <div id="root"></div>
 <script type="module" src="/src/main.tsx"></script>
 
-<!-- DIESEN BLOCK neu hinzufügen (am Ende des Body) -->
-<script
-        id="vtag-ai-js"
-        data-cfasync="false"
-        defer
-        src="https://r2.leadsy.ai/tag.js"
-        data-pid="1nFGhYIPvoG849fW8"
-        data-version="062024">
-</script>
-<script>
-  window.addEventListener('load', () => {
-    console.log('vtag?', typeof window.vtag, window.vtag);
-    if (window.vtag && typeof window.vtag.init === 'function') {
-      window.vtag.init();
-      console.log('vtag.init() called');
-    }
+<script type="text/javascript">
+  window.addEventListener("load", function () {
+    var v = document.createElement("script");
+
+    v.onload = function () {
+      window.voiceflow.chat.load({
+        verify: { projectID: "695838c56f20de2ac221e691" },
+        url: "https://general-runtime.voiceflow.com",
+        versionID: "production",
+        voice: {
+          url: "https://runtime-api.voiceflow.com"
+        }
+      });
+    };
+
+    v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs";
+    v.type = "text/javascript";
+    document.body.appendChild(v);
   });
 </script>
 
