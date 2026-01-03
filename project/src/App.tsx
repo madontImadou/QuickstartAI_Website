@@ -147,26 +147,45 @@ function HomePage() {
 
   return (
     <div className="min-h-screen bg-gray-900">
-      
       {/* Navigation */}
       <nav className="bg-gray-900/80 backdrop-blur-md border-b border-gray-700/50 sticky top-0 z-50 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-              <img 
-                src="/Firmenlogo-removebg-preview.png" 
-                alt="QuickStartAI Logo" 
+              <img
+                src="/Firmenlogo-removebg-preview.png"
+                alt="QuickStartAI Logo"
                 className="h-20 w-auto mr-3"
               />
               <span className="text-xl font-bold text-white">QuickStartAI</span>
             </div>
-            
+
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
-              <a href="#features" className="text-gray-300 hover:text-white transition-colors">Features</a>
-              <a href="#benefits" className="text-gray-300 hover:text-white transition-colors">Vorteile</a>
-              <a href="#faq" className="text-gray-300 hover:text-white transition-colors">FAQ</a>
-              <Link to="/sales" className="text-gray-300 hover:text-white transition-colors">Sales</Link>
+              <a
+                href="#features"
+                className="text-gray-300 hover:text-white transition-colors"
+              >
+                Features
+              </a>
+              <a
+                href="#benefits"
+                className="text-gray-300 hover:text-white transition-colors"
+              >
+                Vorteile
+              </a>
+              <a
+                href="#faq"
+                className="text-gray-300 hover:text-white transition-colors"
+              >
+                FAQ
+              </a>
+              <Link
+                to="/sales"
+                className="text-gray-300 hover:text-white transition-colors"
+              >
+                Sales
+              </Link>
               <button
                 onClick={() => setShowContactForm(true)}
                 className="bg-[#e2642a] text-white px-6 py-2 rounded-lg hover:bg-orange-600 transition-all duration-200 font-medium"
@@ -181,19 +200,43 @@ function HomePage() {
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 className="text-gray-300 hover:text-white"
               >
-                {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                {isMenuOpen ? (
+                  <X className="w-6 h-6" />
+                ) : (
+                  <Menu className="w-6 h-6" />
+                )}
               </button>
             </div>
           </div>
-          
+
           {/* Mobile Navigation */}
           {isMenuOpen && (
             <div className="md:hidden pb-4">
               <div className="flex flex-col space-y-4">
-                <a href="#features" className="text-gray-300 hover:text-white transition-colors">Features</a>
-                <a href="#benefits" className="text-gray-300 hover:text-white transition-colors">Vorteile</a>
-                <a href="#faq" className="text-gray-300 hover:text-white transition-colors">FAQ</a>
-                <Link to="/sales" className="text-gray-300 hover:text-white transition-colors">Sales</Link>
+                <a
+                  href="#features"
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  Features
+                </a>
+                <a
+                  href="#benefits"
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  Vorteile
+                </a>
+                <a
+                  href="#faq"
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  FAQ
+                </a>
+                <Link
+                  to="/sales"
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  Sales
+                </Link>
                 <button
                   onClick={() => setShowContactForm(true)}
                   className="bg-[#e2642a] text-white px-6 py-2 rounded-lg hover:bg-orange-600 transition-colors w-fit"
@@ -223,51 +266,63 @@ function HomePage() {
           <div className="glow-orb glow-orb-3"></div>
         </div>
         <div className="absolute inset-0 wave-overlay"></div>
-        
-        <div ref={heroRef} className="relative z-20 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+
+        <div
+          ref={heroRef}
+          className="relative z-20 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
+        >
           {/* Trust Badge */}
           <div className="inline-flex items-center space-x-2 bg-gray-800/60 backdrop-blur-md border border-gray-600/50 rounded-full px-4 py-2 mb-8 animate-fade-in-down">
             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
             <span className="text-sm text-gray-300">100% DSGVO-konform</span>
           </div>
-          
+
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-8 leading-tight">
-            Ihre Kunden haben Fragen.{' '}
+            Ihre Kunden haben Fragen.{" "}
             <span className="bg-gradient-to-r from-[#e2642a] via-orange-400 to-[#e2642a] bg-clip-text text-transparent">
               Unser Chatbot liefert Antworten.
             </span>
           </h1>
-          
+
           {/* Key Benefits with Icons */}
           <div className="space-y-4 mb-12 max-w-3xl mx-auto">
             <div className="flex items-center justify-center space-x-3 text-gray-300 transform hover:scale-105 transition-transform duration-200">
               <ArrowRight className="w-5 h-5 text-[#e2642a]" />
-              <span className="text-lg">Sinkende Kosten durch Einsparung von Mitarbeitern</span>
+              <span className="text-lg">
+                Sinkende Kosten durch Einsparung von Mitarbeitern
+              </span>
             </div>
             <div className="flex items-center justify-center space-x-3 text-gray-300 transform hover:scale-105 transition-transform duration-200">
               <ArrowRight className="w-5 h-5 text-[#e2642a]" />
-              <span className="text-lg">Unabhängigkeit von der Leistung einzelner Mitarbeiter</span>
+              <span className="text-lg">
+                Unabhängigkeit von der Leistung einzelner Mitarbeiter
+              </span>
             </div>
             <div className="flex items-center justify-center space-x-3 text-gray-300 transform hover:scale-105 transition-transform duration-200">
               <ArrowRight className="w-5 h-5 text-[#e2642a]" />
-              <span className="text-lg">Verlässliche Qualität – unabhängig von der Tagesform</span>
+              <span className="text-lg">
+                Verlässliche Qualität – unabhängig von der Tagesform
+              </span>
             </div>
           </div>
 
           {/* Main CTA */}
           <div className="bg-gray-800/60 backdrop-blur-md border border-gray-600/50 rounded-2xl p-8 mb-12 max-w-2xl mx-auto transform hover:scale-105 transition-all duration-300 shadow-2xl">
             <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <input
-                  type="url"
-                  value={websiteUrl}
-                  onChange={(e) => setWebsiteUrl(e.target.value)}
-                  placeholder="https://ihre-website.de"
-                  className="w-full px-6 py-4 text-lg bg-gray-700/50 border border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-white placeholder-gray-400"
-                  required
-                />
-              </div>
-              
+              <input
+                type="text"
+                value={websiteUrl}
+                onChange={(e) => setWebsiteUrl(e.target.value)}
+                onBlur={() => {
+                  if (websiteUrl && !/^https?:\/\//i.test(websiteUrl)) {
+                    setWebsiteUrl(`https://${websiteUrl}`);
+                  }
+                }}
+                placeholder="ihre-website.de"
+                className="w-full px-6 py-4 text-lg bg-gray-700/50 border border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-white placeholder-gray-400"
+                required
+              />
+
               <button
                 type="submit"
                 className="w-full bg-gradient-to-r from-[#e2642a] to-orange-600 text-white font-semibold py-4 px-8 rounded-xl text-lg hover:from-orange-600 hover:to-[#e2642a] transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2"
@@ -276,7 +331,7 @@ function HomePage() {
                 <ArrowRight className="w-5 h-5" />
               </button>
             </form>
-            
+
             <p className="text-sm text-gray-400 mt-4 flex items-center justify-center space-x-2">
               <Shield className="w-4 h-4" />
               <span>Unverbindlich. Keine Kreditkarte nötig.</span>
@@ -292,19 +347,29 @@ function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div>
-              <div className="text-3xl md:text-4xl font-bold text-white mb-2">1 Ziel</div>
-              <div className="text-gray-300">Günstiger Support rund um die Uhr</div>
+              <div className="text-3xl md:text-4xl font-bold text-white mb-2">
+                1 Ziel
+              </div>
+              <div className="text-gray-300">
+                Günstiger Support rund um die Uhr
+              </div>
             </div>
             <div>
-              <div className="text-3xl md:text-4xl font-bold text-white mb-2">24/7</div>
+              <div className="text-3xl md:text-4xl font-bold text-white mb-2">
+                24/7
+              </div>
               <div className="text-gray-300">Verfügbarkeit</div>
             </div>
             <div>
-              <div className="text-3xl md:text-4xl font-bold text-white mb-2">98%</div>
+              <div className="text-3xl md:text-4xl font-bold text-white mb-2">
+                98%
+              </div>
               <div className="text-gray-300">Kundenzufriedenheit</div>
             </div>
             <div>
-              <div className="text-3xl md:text-4xl font-bold text-white mb-2">&lt;24h</div>
+              <div className="text-3xl md:text-4xl font-bold text-white mb-2">
+                &lt;24h
+              </div>
               <div className="text-gray-300">Setup-Zeit</div>
             </div>
           </div>
@@ -319,20 +384,25 @@ function HomePage() {
               Vertrauen & Wirkung
             </h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Automatisieren Sie Ihren Kundenservice und generieren Sie qualifizierte Leads – rund um die Uhr.
+              Automatisieren Sie Ihren Kundenservice und generieren Sie
+              qualifizierte Leads – rund um die Uhr.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {benefits.map((benefit, index) => (
-              <AnimatedCard 
+              <AnimatedCard
                 key={index}
                 delay={index * 0.1}
                 className="bg-gray-800/40 backdrop-blur-md border border-gray-600/50 p-8 rounded-2xl hover:bg-gray-800/60 hover:scale-105 hover:border-[#e2642a]/50 transition-all duration-300 group shadow-xl"
               >
                 <div className="mb-6">{benefit.icon}</div>
-                <h3 className="text-xl font-semibold text-white mb-4 group-hover:text-[#e2642a] transition-colors">{benefit.title}</h3>
-                <p className="text-gray-300 leading-relaxed">{benefit.description}</p>
+                <h3 className="text-xl font-semibold text-white mb-4 group-hover:text-[#e2642a] transition-colors">
+                  {benefit.title}
+                </h3>
+                <p className="text-gray-300 leading-relaxed">
+                  {benefit.description}
+                </p>
               </AnimatedCard>
             ))}
           </div>
@@ -353,21 +423,41 @@ function HomePage() {
 
           <div className="grid md:grid-cols-3 gap-12">
             <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-[#e2642a] to-orange-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6">1</div>
-              <h3 className="text-xl font-semibold text-white mb-4">Website analysieren</h3>
-              <p className="text-gray-300">Geben Sie Ihre Website-URL ein. Wir analysieren Ihre Inhalte.</p>
+              <div className="w-16 h-16 bg-gradient-to-r from-[#e2642a] to-orange-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6">
+                1
+              </div>
+              <h3 className="text-xl font-semibold text-white mb-4">
+                Website analysieren
+              </h3>
+              <p className="text-gray-300">
+                Geben Sie Ihre Website-URL ein. Wir analysieren Ihre Inhalte.
+              </p>
             </div>
-            
+
             <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-[#e2642a] to-orange-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6">2</div>
-              <h3 className="text-xl font-semibold text-white mb-4">Chatbot trainieren</h3>
-              <p className="text-gray-300">Unser KI-System erstellt einen individuellen Chatbot basierend auf Ihren Daten und Produkten.</p>
+              <div className="w-16 h-16 bg-gradient-to-r from-[#e2642a] to-orange-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6">
+                2
+              </div>
+              <h3 className="text-xl font-semibold text-white mb-4">
+                Chatbot trainieren
+              </h3>
+              <p className="text-gray-300">
+                Unser KI-System erstellt einen individuellen Chatbot basierend
+                auf Ihren Daten und Produkten.
+              </p>
             </div>
-            
+
             <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-[#e2642a] to-orange-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6">3</div>
-              <h3 className="text-xl font-semibold text-white mb-4">Demo erhalten</h3>
-              <p className="text-gray-300">Binnen 24 Stunden erhalten Sie Ihre personalisierte Demo zum kostenlosen Testen.</p>
+              <div className="w-16 h-16 bg-gradient-to-r from-[#e2642a] to-orange-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6">
+                3
+              </div>
+              <h3 className="text-xl font-semibold text-white mb-4">
+                Demo erhalten
+              </h3>
+              <p className="text-gray-300">
+                Binnen 24 Stunden erhalten Sie Ihre personalisierte Demo zum
+                kostenlosen Testen.
+              </p>
             </div>
           </div>
         </div>
@@ -393,33 +483,48 @@ function HomePage() {
                     <Globe className="w-6 h-6 text-[#e2642a]" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-semibold text-white mb-2">Website-Integration</h3>
-                    <p className="text-gray-300">Nahtlose Einbindung in Ihre bestehende Website mit nur einem Code-Snippet.</p>
+                    <h3 className="text-xl font-semibold text-white mb-2">
+                      Website-Integration
+                    </h3>
+                    <p className="text-gray-300">
+                      Nahtlose Einbindung in Ihre bestehende Website mit nur
+                      einem Code-Snippet.
+                    </p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-start space-x-4">
                   <div className="flex-shrink-0 w-12 h-12 bg-orange-900/40 backdrop-blur-sm rounded-lg flex items-center justify-center group-hover:bg-[#e2642a]/30 transition-colors">
                     <Phone className="w-6 h-6 text-[#e2642a]" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-semibold text-white mb-2">Telefonassistent</h3>
-                    <p className="text-gray-300">Automatische Anrufbearbeitung mit natürlicher Spracherkennung und intelligenten Antworten.</p>
+                    <h3 className="text-xl font-semibold text-white mb-2">
+                      Telefonassistent
+                    </h3>
+                    <p className="text-gray-300">
+                      Automatische Anrufbearbeitung mit natürlicher
+                      Spracherkennung und intelligenten Antworten.
+                    </p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-start space-x-4">
                   <div className="flex-shrink-0 w-12 h-12 bg-orange-900/40 backdrop-blur-sm rounded-lg flex items-center justify-center group-hover:bg-[#e2642a]/30 transition-colors">
                     <Shield className="w-6 h-6 text-[#e2642a]" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-semibold text-white mb-2">Barrierefreiheit</h3>
-                    <p className="text-gray-300">WCAG-konforme Bedienung für alle Nutzer mit Screenreader-Unterstützung und Tastaturnavigation.</p>
+                    <h3 className="text-xl font-semibold text-white mb-2">
+                      Barrierefreiheit
+                    </h3>
+                    <p className="text-gray-300">
+                      WCAG-konforme Bedienung für alle Nutzer mit
+                      Screenreader-Unterstützung und Tastaturnavigation.
+                    </p>
                   </div>
                 </div>
               </div>
             </div>
-            
+
             <div className="relative animate-slide-in-right">
               <div className="bg-gradient-to-br from-[#e2642a] to-orange-600 rounded-2xl p-8 text-white transform hover:scale-105 transition-transform duration-300 shadow-2xl backdrop-blur-sm">
                 <div className="space-y-6">
@@ -432,9 +537,12 @@ function HomePage() {
                       />
                       <div className="text-sm">Kunde fragt...</div>
                     </div>
-                    <div className="text-sm opacity-90">"Ich bin mir noch nicht sicher, ob das überhaupt zu mir passt…"</div>
+                    <div className="text-sm opacity-90">
+                      "Ich bin mir noch nicht sicher, ob das überhaupt zu mir
+                      passt…"
+                    </div>
                   </div>
-                  
+
                   <div className="bg-white bg-opacity-20 rounded-lg p-4">
                     <div className="flex items-center space-x-3 mb-3">
                       <img
@@ -444,8 +552,12 @@ function HomePage() {
                       />
                       <div className="text-sm">Ihr Chatbot antwortet...</div>
                     </div>
-                    <div className="text-sm opacity-90">"Kein Problem – viele Kunden starten genau mit dieser Frage.
-Wenn Sie möchten, zeige ich Ihnen ein paar typische Anwendungsbeispiele oder sende Ihnen ein unverbindliches Angebot, damit Sie in Ruhe entscheiden können."</div>
+                    <div className="text-sm opacity-90">
+                      "Kein Problem – viele Kunden starten genau mit dieser
+                      Frage. Wenn Sie möchten, zeige ich Ihnen ein paar typische
+                      Anwendungsbeispiele oder sende Ihnen ein unverbindliches
+                      Angebot, damit Sie in Ruhe entscheiden können."
+                    </div>
                   </div>
                 </div>
               </div>
@@ -453,7 +565,6 @@ Wenn Sie möchten, zeige ich Ihnen ein paar typische Anwendungsbeispiele oder se
           </div>
         </div>
       </section>
-
 
       {/* FAQ Section */}
       <section id="faq" className="relative py-24 bg-gray-900">
@@ -469,17 +580,28 @@ Wenn Sie möchten, zeige ich Ihnen ein paar typische Anwendungsbeispiele oder se
 
           <div className="space-y-6">
             {faqs.map((faq, index) => (
-              <div key={index} className="bg-gray-800/40 backdrop-blur-md border border-gray-600/50 rounded-xl shadow-lg">
+              <div
+                key={index}
+                className="bg-gray-800/40 backdrop-blur-md border border-gray-600/50 rounded-xl shadow-lg"
+              >
                 <button
                   onClick={() => toggleFaq(index)}
                   className="w-full px-8 py-6 text-left flex justify-between items-center hover:bg-gray-800/60 transition-colors rounded-xl"
                 >
-                  <span className="font-semibold text-white">{faq.question}</span>
-                  <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform ${openFaq === index ? 'rotate-180' : ''}`} />
+                  <span className="font-semibold text-white">
+                    {faq.question}
+                  </span>
+                  <ChevronDown
+                    className={`w-5 h-5 text-gray-400 transition-transform ${
+                      openFaq === index ? "rotate-180" : ""
+                    }`}
+                  />
                 </button>
                 {openFaq === index && (
                   <div className="px-8 pb-6">
-                    <p className="text-gray-300 leading-relaxed">{faq.answer}</p>
+                    <p className="text-gray-300 leading-relaxed">
+                      {faq.answer}
+                    </p>
                   </div>
                 )}
               </div>
@@ -493,38 +615,39 @@ Wenn Sie möchten, zeige ich Ihnen ein paar typische Anwendungsbeispiele oder se
         <div className="absolute inset-0 bg-gradient-to-r from-[#e2642a] to-orange-600"></div>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="relative z-10">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-            Bereit für Ihren KI-Chatbot?
-          </h2>
-          <p className="text-xl text-white/90 mb-12">
-            Starten Sie jetzt kostenlos und unverbindlich. Ihre Demo ist in 24 Stunden bereit.
-          </p>
-
-          <div className="bg-gray-900/80 backdrop-blur-md border border-gray-600/50 rounded-2xl p-8 max-w-2xl mx-auto shadow-2xl">
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <input
-                type="url"
-                value={websiteUrl}
-                onChange={(e) => setWebsiteUrl(e.target.value)}
-                placeholder="https://ihre-website.de"
-                className="w-full px-6 py-4 text-lg bg-white/10 border border-white/20 rounded-xl focus:ring-2 focus:ring-white focus:border-transparent outline-none text-white placeholder-white/60"
-                required
-              />
-              
-              <button
-                type="submit"
-                className="w-full bg-white text-[#e2642a] font-semibold py-4 px-8 rounded-xl text-lg hover:bg-gray-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 flex items-center justify-center space-x-2"
-              >
-                <span>Jetzt Demo anfordern</span>
-                <ArrowRight className="w-5 h-5" />
-              </button>
-            </form>
-            
-            <p className="text-sm text-white/80 mt-4 flex items-center justify-center space-x-2">
-              <CheckCircle className="w-4 h-4" />
-              <span>Kostenlos • Unverbindlich • Keine Kreditkarte</span>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+              Bereit für Ihren KI-Chatbot?
+            </h2>
+            <p className="text-xl text-white/90 mb-12">
+              Starten Sie jetzt kostenlos und unverbindlich. Ihre Demo ist in 24
+              Stunden bereit.
             </p>
-          </div>
+
+            <div className="bg-gray-900/80 backdrop-blur-md border border-gray-600/50 rounded-2xl p-8 max-w-2xl mx-auto shadow-2xl">
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <input
+                  type="url"
+                  value={websiteUrl}
+                  onChange={(e) => setWebsiteUrl(e.target.value)}
+                  placeholder="https://ihre-website.de"
+                  className="w-full px-6 py-4 text-lg bg-white/10 border border-white/20 rounded-xl focus:ring-2 focus:ring-white focus:border-transparent outline-none text-white placeholder-white/60"
+                  required
+                />
+
+                <button
+                  type="submit"
+                  className="w-full bg-white text-[#e2642a] font-semibold py-4 px-8 rounded-xl text-lg hover:bg-gray-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 flex items-center justify-center space-x-2"
+                >
+                  <span>Jetzt Demo anfordern</span>
+                  <ArrowRight className="w-5 h-5" />
+                </button>
+              </form>
+
+              <p className="text-sm text-white/80 mt-4 flex items-center justify-center space-x-2">
+                <CheckCircle className="w-4 h-4" />
+                <span>Kostenlos • Unverbindlich • Keine Kreditkarte</span>
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -535,48 +658,117 @@ Wenn Sie möchten, zeige ich Ihnen ein paar typische Anwendungsbeispiele oder se
           <div className="grid md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center mb-4">
-                <img 
-                  src="/Firmenlogo-removebg-preview.png" 
-                  alt="QuickStartAI Logo" 
+                <img
+                  src="/Firmenlogo-removebg-preview.png"
+                  alt="QuickStartAI Logo"
                   className="h-8 w-auto mr-2"
                 />
                 <span className="text-xl font-bold">QuickStartAI</span>
               </div>
               <p className="text-gray-300">
-                Ihre Experten für KI-Chatbots und automatisierte Kundenkommunikation.
+                Ihre Experten für KI-Chatbots und automatisierte
+                Kundenkommunikation.
               </p>
             </div>
-            
+
             <div>
               <h4 className="font-semibold mb-4">Produkt</h4>
               <ul className="space-y-2 text-gray-300">
-                <li><a href="#features" className="hover:text-white transition-colors">Features</a></li>
-                <li><a href="#benefits" className="hover:text-white transition-colors">Vorteile</a></li>
-                <li><Link to="/sales#pricing" className="hover:text-white transition-colors">Preise</Link></li>
+                <li>
+                  <a
+                    href="#features"
+                    className="hover:text-white transition-colors"
+                  >
+                    Features
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#benefits"
+                    className="hover:text-white transition-colors"
+                  >
+                    Vorteile
+                  </a>
+                </li>
+                <li>
+                  <Link
+                    to="/sales#pricing"
+                    className="hover:text-white transition-colors"
+                  >
+                    Preise
+                  </Link>
+                </li>
               </ul>
             </div>
-            
+
             <div>
               <h4 className="font-semibold mb-4">Support</h4>
               <ul className="space-y-2 text-gray-300">
-                <li><a href="#faq" className="hover:text-white transition-colors">FAQ</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Dokumentation</a></li>
-                <li><button onClick={() => setShowContactForm(true)} className="hover:text-white transition-colors">Kontakt</button></li>
+                <li>
+                  <a href="#faq" className="hover:text-white transition-colors">
+                    FAQ
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-white transition-colors">
+                    Dokumentation
+                  </a>
+                </li>
+                <li>
+                  <button
+                    onClick={() => setShowContactForm(true)}
+                    className="hover:text-white transition-colors"
+                  >
+                    Kontakt
+                  </button>
+                </li>
               </ul>
             </div>
-            
+
             <div>
               <h4 className="font-semibold mb-4">Unternehmen</h4>
               <ul className="space-y-2 text-gray-300">
-                <li><a href="#" className="hover:text-white transition-colors">Über uns</a></li>
-                <li><Link to="/sales" className="hover:text-white transition-colors">Sales</Link></li>
-                <li><Link to="/agb" className="hover:text-white transition-colors">AGB</Link></li>
-                <li><Link to="/impressum" className="hover:text-white transition-colors">Impressum</Link></li>
-                <li><Link to="/datenschutz" className="hover:text-white transition-colors">Datenschutz</Link></li>
+                <li>
+                  <a href="#" className="hover:text-white transition-colors">
+                    Über uns
+                  </a>
+                </li>
+                <li>
+                  <Link
+                    to="/sales"
+                    className="hover:text-white transition-colors"
+                  >
+                    Sales
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/agb"
+                    className="hover:text-white transition-colors"
+                  >
+                    AGB
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/impressum"
+                    className="hover:text-white transition-colors"
+                  >
+                    Impressum
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/datenschutz"
+                    className="hover:text-white transition-colors"
+                  >
+                    Datenschutz
+                  </Link>
+                </li>
               </ul>
             </div>
           </div>
-          
+
           {/* Geschäftsführer Section */}
           <div className="border-t border-gray-700 mt-12 pt-8">
             <div className="flex flex-col md:flex-row items-center justify-between">
@@ -589,7 +781,9 @@ Wenn Sie möchten, zeige ich Ihnen ein paar typische Anwendungsbeispiele oder se
                   />
                 </div>
                 <div>
-                  <div className="font-semibold text-white">Maximilian Theele</div>
+                  <div className="font-semibold text-white">
+                    Maximilian Theele
+                  </div>
                   <div className="text-gray-300">Geschäftsführer</div>
                 </div>
               </div>
@@ -603,7 +797,7 @@ Wenn Sie möchten, zeige ich Ihnen ein paar typische Anwendungsbeispiele oder se
 
       {/* Modals */}
       {showDemoModal && (
-        <DemoModal 
+        <DemoModal
           websiteUrl={websiteUrl}
           onClose={() => setShowDemoModal(false)}
         />
