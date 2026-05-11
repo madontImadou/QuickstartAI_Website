@@ -135,8 +135,7 @@ const SalesPage: React.FC = () => {
         "Custom AI Training",
         "Multi-Language Support",
         "Dedicated Account Manager",
-        "24/7 Phone Support",
-        "White-Label Option"
+        "24/7 Phone Support"
       ],
       color: "from-purple-600 to-purple-700"
     }
@@ -188,8 +187,7 @@ const SalesPage: React.FC = () => {
         "Mehrsprachige Assistenten",
         "Advanced Call Routing",
         "Dedicated Account Manager",
-        "24/7 Phone Support",
-        "White-Label Option"
+        "24/7 Phone Support"
       ],
       color: "from-purple-600 to-purple-700"
     }
