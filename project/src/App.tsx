@@ -38,6 +38,8 @@ import SalesPage from './pages/SalesPage';
 import PrivacyPage from './pages/PrivacyPage';
 import ImpressumPage from './pages/ImpressumPage';
 import AGBPage from './pages/AGBPage';
+import BlogIndex from './pages/BlogIndex';
+import BlogKIAgentenErstellen from './pages/BlogKIAgentenErstellen';
 
 const featuresDropdownItems = [
   {
@@ -119,7 +121,7 @@ function HomePage() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 2500);
+    }, 800);
     return () => clearTimeout(timer);
   }, []);
 
@@ -762,6 +764,7 @@ function HomePage() {
                 <li><a href="#features" className="hover:text-white transition-colors">Features</a></li>
                 <li><a href="#usecases" className="hover:text-white transition-colors">Anwendungsfälle</a></li>
                 <li><Link to="/sales#pricing" className="hover:text-white transition-colors">Preise</Link></li>
+                <li><Link to="/blog" className="hover:text-white transition-colors">Blog</Link></li>
               </ul>
             </div>
 
@@ -826,6 +829,8 @@ function App() {
         <Route path="/agb" element={<AGBPage />} />
         <Route path="/impressum" element={<ImpressumPage />} />
         <Route path="/datenschutz" element={<PrivacyPage />} />
+        <Route path="/blog" element={<BlogIndex />} />
+        <Route path="/blog/ki-agenten-erstellen" element={<BlogKIAgentenErstellen />} />
       </Routes>
     </Router>
   );
