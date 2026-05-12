@@ -1,152 +1,225 @@
-# Keyword-Cluster: „KI Agenten erstellen"
-
-**Ziel-URL:** `/blog/ki-agenten-erstellen`
-**Primäres Keyword:** ki agenten erstellen (1.000 Vol. / KD 30 / CPC 3,06 $)
-**Erstellt:** Mai 2025
+# Keyword-Cluster: "ki agenten erstellen"
+Generiert: 2026-05-12
 
 ---
 
-## Cluster-Übersicht
+## Übersicht
 
-| Cluster | Fokus | Summe Vol. (ca.) |
-|---|---|---|
-| 1. Kern-Varianten | Exact & Phrase Match | ~2.190 |
-| 2. Informational – Definition | Was ist ein KI-Agent? | ~1.500 |
-| 3. How-To – Erstellung | Wie & Tools | ~2.800 |
-| 4. Plattformen & Tools | Spezifische Software | ~3.200 |
-| 5. Anwendungsfälle | Branchen & Use Cases | ~2.000 |
-| 6. Kommerzielle Intents | Kaufabsicht / Preise | ~900 |
+| Metrik | Wert |
+|---|---|
+| Keywords im Cluster | 4 |
+| Gesamt-Suchvolumen | 2.190 / Monat |
+| Durchschnittl. KD | 28 / 100 |
+| Durchschnittl. CPC | 3.06 € |
+| Search Intent | Informational, Informational, Commercial |
 
 ---
 
-## Cluster 1 – Kern-Varianten (aus CSV)
-
-Diese Keywords teilen denselben SERP und können auf einer Seite abgedeckt werden.
+## Keywords
 
 | Keyword | Volumen | KD | CPC | Intent |
 |---|---|---|---|---|
-| **ki agenten erstellen** ⭐ | 1.000 | 30 | 3,06 $ | Informational |
-| ki agent erstellen | 880 | 31 | 3,06 $ | Informational |
-| ki-agenten erstellen | 170 | 29 | 3,06 $ | Info / Commercial |
-| ki-agent erstellen | 140 | 23 | 3,06 $ | Informational |
-
-**Empfehlung:** Alle vier Varianten in einem Artikel abdecken. H1 nutzt das Primär-Keyword, die weiteren Varianten kommen in Subheadings, Intro und Alt-Text vor.
+| ki agenten erstellen | 1000 | 30 | 3.06 € | Informational |
+| ki agent erstellen | 880 | 31 | 3.06 € | Informational |
+| ki-agenten erstellen | 170 | 29 | 3.06 € | Informational, Commercial |
+| ki-agent erstellen | 140 | 23 | 3.06 € | Informational |
 
 ---
 
-## Cluster 2 – Informational: Was ist ein KI-Agent?
+## SERP Features (zu gewinnen)
 
-Geeignet als Einstieg / Definitions-Abschnitt im Blogartikel oder als eigene Pillar-Seite.
+- Adwords Bottom
+- Video Carousel
+- Related Searches
+- AI Overview
+- Video
+- Image Pack
+- People Also Ask
+- Adwords Middle
 
-| Keyword | Est. Volumen | Intent |
-|---|---|---|
-| was ist ein ki agent | ~800 | Informational |
-| ki agent definition | ~400 | Informational |
-| ai agent erklärt | ~300 | Informational |
-| ki agent vs chatbot | ~250 | Informational |
-| ki agent funktionsweise | ~200 | Informational |
-| was kann ein ki agent | ~150 | Informational |
-| ki agent beispiele | ~200 | Informational |
-
-**Content-Empfehlung:** Eigene Seite `/blog/was-ist-ein-ki-agent` mit interner Verlinkung zum Hauptartikel.
-
----
-
-## Cluster 3 – How-To: KI Agent selbst bauen / ohne Code
-
-Starker Informational- & Commercial-Bereich, hohe organische Klickrate zu erwarten.
-
-| Keyword | Est. Volumen | Intent |
-|---|---|---|
-| ki agent selbst erstellen | ~600 | Informational |
-| ki agent ohne programmierung erstellen | ~400 | Informational |
-| ki agent no-code | ~300 | Informational |
-| ki agent workflow erstellen | ~250 | Info / Commercial |
-| ki automatisierung erstellen | ~350 | Info / Commercial |
-| eigenen ki agenten bauen | ~200 | Informational |
-| ki agent tutorial deutsch | ~300 | Informational |
-| ki agent schritt für schritt | ~150 | Informational |
-
-**Content-Empfehlung:** Abschnitt „Schritt-für-Schritt" im Hauptartikel abdecken. Separate Video-Content-Idee: YouTube-Tutorial „KI Agent erstellen ohne Code".
+**Empfehlungen:**
+- **AI Overview**: Klare Kurzantwort in den ersten 150 Wörtern (Featured-Snippet-Format)
+- **People Also Ask**: FAQ-Sektion mit 5–7 Fragen aus Google PAA
+- **Video**: Hero-Video oder eingebettetes YouTube-Video einplanen
+- **Image Pack**: Mindestens 3 hochwertige Alt-Text-optimierte Bilder
 
 ---
 
-## Cluster 4 – Plattformen & Tools
+## Empfohlene Struktur für den Artikel
 
-Gezielt kommerzielle Keywords für Product-Landing-Pages oder Vergleichsartikel.
+### Ziel-URL
+`/blog/ki-agenten-erstellen`
 
-| Keyword | Est. Volumen | Intent |
-|---|---|---|
-| ki agent plattform | ~500 | Commercial |
-| ki agent software | ~400 | Commercial |
-| beste ki agent plattform | ~300 | Commercial |
-| n8n ai agent erstellen | ~250 | Informational |
-| make.com ki agent | ~200 | Informational |
-| voiceflow ki agent | ~150 | Informational |
-| langchain deutsch | ~200 | Informational |
-| ki agent framework | ~300 | Informational |
-| whatsapp ki agent erstellen | ~350 | Info / Commercial |
-| chatbot plattform vergleich | ~400 | Commercial |
+### Titel-Vorschlag (50–60 Zeichen)
+`Ki agenten erstellen: Schritt-für-Schritt-Anleitung 2026`
 
-**Content-Empfehlung:** Vergleichsartikel „Die 5 besten Plattformen, um KI Agenten zu erstellen (2025)" als eigene Seite.
+### Meta Description (150–160 Zeichen)
+`Ki agenten erstellen – was wirklich funktioniert, welche Methoden es gibt und was die meisten falsch machen. Ein ehrlicher Guide aus der Praxis.`
+
+### Pexels-Suchbegriff (für Bilder)
+`artificial intelligence robot technology`
+
+### Dateiname (neues TSX)
+`src/pages/BlogPost_KiAgentenErstellen.tsx`
 
 ---
 
-## Cluster 5 – Anwendungsfälle & Branchen
+## Inhaltsstruktur (empfohlen)
 
-Stark für Bottom-of-Funnel-Inhalte und Landingpages.
+Orientiere dich am bestehenden Artikel `/blog/ki-agenten-erstellen` als Template-Beispiel.
 
-| Keyword | Est. Volumen | Intent |
-|---|---|---|
-| ki agent kundenservice | ~600 | Commercial |
-| ki agent für unternehmen | ~400 | Commercial |
-| ki agent automatisierung | ~500 | Commercial |
-| ki agent whatsapp | ~450 | Commercial |
-| ki agent lead generierung | ~250 | Commercial |
-| ki agent terminbuchung | ~200 | Commercial |
-| ki agent e-commerce | ~200 | Commercial |
-| ki agent immobilien | ~150 | Commercial |
-| ki agent für kleine unternehmen | ~200 | Commercial |
-
-**Content-Empfehlung:** Je eine Use-Case-Landingpage pro Branche (WhatsApp Agent, E-Commerce Agent etc.) – bereits in der Nav als Dropdown angelegt.
-
----
-
-## Cluster 6 – Kommerzielle Keywords: Kosten & Anbieter
-
-Hohe Kaufabsicht – ideal für Preisseite und Sales-Funnel.
-
-| Keyword | Est. Volumen | Intent |
-|---|---|---|
-| ki agent erstellen lassen | ~300 | Transactional |
-| ki agent kosten | ~250 | Commercial |
-| ki agent preis | ~200 | Commercial |
-| ki agent agentur | ~300 | Transactional |
-| ki automatisierung kosten | ~200 | Commercial |
-| ki agent anbieter vergleich | ~150 | Commercial |
-
-**Content-Empfehlung:** Diese Keywords auf der `/sales`-Seite und der Preisseite einbauen. FAQ-Frage „Was kostet ein KI-Agent?" prominent platzieren.
+```
+H1: [Haupt-Keyword + Nutzversprechen]
+├── Featured Snippet / Kurzantwort (Box)
+├── Inhaltsverzeichnis
+│
+├── H2: Was ist [Thema] wirklich (Definition)
+├── H2: Wie [Thema] funktioniert (Mechanik)
+├── H2: [Typen / Varianten] im Vergleich
+├── H2: [Methoden / Wege] im Vergleich
+├── H2: Schritt-für-Schritt Anleitung
+├── H2: Anwendungsbeispiele nach Branche
+├── H2: Warum die meisten [Thema]-Projekte scheitern
+│
+├── Mid-Article CTA (BlogTemplate liefert das automatisch)
+│
+├── H2: FAQ (7 PAA-Fragen aus Google – Pflicht!)
+├── H2: Fazit
+│
+└── Autor-Bio + Trust Signals (BlogTemplate liefert das automatisch)
+```
 
 ---
 
-## Content-Roadmap Empfehlung
+## Bilder (Pexels)
 
-| Priorität | URL-Slug | Primäres Keyword | Cluster |
-|---|---|---|---|
-| ✅ Live | `/blog/ki-agenten-erstellen` | ki agenten erstellen | 1, 2, 3 |
-| 🔜 Nächste | `/blog/was-ist-ein-ki-agent` | was ist ein ki agent | 2 |
-| 🔜 Nächste | `/blog/ki-agent-plattform-vergleich` | beste ki agent plattform | 4 |
-| 📅 Später | `/blog/ki-agent-whatsapp-erstellen` | whatsapp ki agent erstellen | 4, 5 |
-| 📅 Später | `/blog/ki-agent-kundenservice` | ki agent kundenservice | 5 |
-| 📅 Später | `/blog/ki-agent-kosten` | ki agent kosten | 6 |
+Hole Bilder via curl (WebFetch unterstützt keine Auth-Header):
+
+```bash
+curl -H "Authorization: $PEXEL_API" \
+  "https://api.pexels.com/v1/search?query=artificial%20intelligence%20robot%20technology&per_page=10&orientation=landscape"
+```
+
+Zieldimensionen:
+- **Hero**: 940×650 px (fetch_priority="high", loading="eager")
+- **In-Article**: 940×650 px (loading="lazy")
 
 ---
 
-## SERP-Features zu beachten
+## TSX Starter
 
-Basierend auf den CSV-Daten sind folgende SERP-Features aktiv:
-- **AI Overview** (alle 4 Kern-Keywords) → Strukturierte, präzise Antworten im Artikel wichtig
-- **Video Carousel** → YouTube-Content zu „KI Agent erstellen Tutorial" empfohlen
-- **People Also Ask** → FAQ-Sektion im Artikel direkt adressiert (6 Fragen)
-- **Image Pack** → Infografiken / Diagramme (Vergleichstabelle KI-Agent vs. Chatbot) einbauen
-- **Related Searches** → LSI-Keywords in Fließtext verwenden
+Füge diese Datei als `src/pages/BlogPost_KiAgentenErstellen.tsx` ein und ersetze die Platzhalter:
+
+```tsx
+import BlogTemplate from '../components/BlogTemplate';
+
+const faqs = [
+  { q: 'Frage 1?', a: 'Antwort 1.' },
+  // Weitere PAA-Fragen aus Google ergänzen
+];
+
+const toc = [
+  'Was ist [Thema] wirklich',
+  'Wie es technisch funktioniert',
+  'Typen im Vergleich',
+  'Methoden im Vergleich',
+  'Schritt-für-Schritt-Anleitung',
+  'Anwendungsbeispiele',
+  'Warum die meisten scheitern',
+];
+
+export default function BlogKiAgentenErstellen() {
+  return (
+    <BlogTemplate
+      slug="ki-agenten-erstellen"
+      pageTitle="Ki agenten erstellen: Schritt-für-Schritt-Anleitung 2026 | QuickStartAI"
+      metaDesc="Ki agenten erstellen – was wirklich funktioniert, welche Methoden es gibt und was die meisten falsch machen. Ein ehrlicher Guide aus der Praxis."
+      ogDesc="[OG-Beschreibung, leicht variiert]"
+      ogImage="[PEXELS_HERO_URL]"
+      publishDate="2026-05-12"
+      modifiedDate="2026-05-12"
+      publishDateFormatted="[z.B. 15. Mai 2026]"
+      keywords="ki agenten erstellen, ki agent erstellen, ki-agenten erstellen, ki-agent erstellen"
+      category="KI-Automatisierung"
+      readingTime="~10 Min."
+      articleTitle={<><strong>[Haupt-Keyword]</strong>: [Untertitel]</>}
+      intro={<>[2–3 Sätze. Direkt, kein Hype. Stimme: web-dev-turned-KI-Nerd.]</>}
+      heroImage={{
+        src: '[PEXELS_480W_URL]',
+        srcSet: '[PEXELS_480W_URL] 480w, [PEXELS_940W_URL] 940w',
+        sizes: '(max-width: 768px) 100vw, 940px',
+        alt: '[Beschreibender Alt-Text mit Keyword]',
+        width: 940,
+        height: 650,
+        credit: '[Pexels-Fotograf]',
+      }}
+      featuredSnippet={{
+        primary: '[Eine-Satz-Antwort auf die Hauptfrage]',
+        secondary: '[2–3 Sätze Ergänzung]',
+      }}
+      toc={toc}
+      faqs={faqs}
+      conclusion={<>[Fazit-Text. Letzter Satz: lächeln lassen.]</>}
+    >
+      {(_openContact) => (
+        <>
+          {/* Section 1 */}
+          <section id="section-1" className="mb-16 scroll-mt-24" aria-labelledby="heading-1">
+            <h2 id="heading-1" className="text-3xl font-bold text-white mb-6">
+              1. Was ist [Thema] wirklich
+            </h2>
+            {/* ... Inhalt ... */}
+          </section>
+          {/* Weitere Sections ... */}
+        </>
+      )}
+    </BlogTemplate>
+  );
+}
+```
+
+---
+
+## Checkliste vor Veröffentlichung
+
+### Inhalt
+- [ ] Stimme: web-dev-turned-KI-Nerd (Humor, keine Buzzwords, direkt)
+- [ ] Mindestens 3 Developer-Insider oder selbstironische Einschübe
+- [ ] Parenthetische Einschübe (mindestens 2)
+- [ ] Abschluss, der lächeln lässt
+- [ ] Verbotene Wörter: Synergie, cutting-edge, revolutionär, disruption, gamechanger
+
+### SEO Onpage
+- [ ] H1 enthält Haupt-Keyword
+- [ ] Meta Title 50–60 Zeichen
+- [ ] Meta Description 150–160 Zeichen
+- [ ] Featured-Snippet-Box (Kurzantwort) direkt nach H1
+- [ ] FAQ-Sektion mit 5–7 Fragen (Person Also Ask)
+- [ ] Interne Links zu /#features, /sales, /#usecases
+- [ ] Externe Links mit rel="noopener noreferrer"
+
+### Technisches SEO (via BlogTemplate — automatisch)
+- [ ] BlogTemplate verwendet (alle JSON-LD Schemas inklusive)
+- [ ] Article Schema mit datePublished + dateModified
+- [ ] FAQPage Schema (aus faqs-Array)
+- [ ] BreadcrumbList Schema
+- [ ] Person/Author Schema
+- [ ] OG-Tags + Twitter Card
+- [ ] Canonical-URL
+- [ ] Breadcrumbs (sichtbar + itemScope)
+- [ ] Skip-to-content Link
+- [ ] Sticky CTA + Back-to-top
+- [ ] Author Bio + Trust Signals
+
+### Bilder
+- [ ] Hero: fetchPriority="high", loading="eager", width/height gesetzt
+- [ ] In-Article: loading="lazy", width/height gesetzt
+- [ ] Alt-Texte beschreibend + Keyword enthalten
+- [ ] Pexels-Credit angegeben
+
+### App.tsx
+- [ ] Import hinzugefügt: `import Blog... from './pages/Blog...';`
+- [ ] Route hinzugefügt: `<Route path="/blog/ki-agenten-erstellen" element={<Blog... />} />`
+
+### blogRegistry.ts
+- [ ] Neuen Eintrag in `src/data/blogRegistry.ts` hinzugefügt
