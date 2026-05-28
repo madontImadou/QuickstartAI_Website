@@ -40,6 +40,7 @@ import ImpressumPage from './pages/ImpressumPage';
 import AGBPage from './pages/AGBPage';
 import BlogIndex from './pages/BlogIndex';
 import BlogKIAgentenErstellen from './pages/BlogKIAgentenErstellen';
+import KiDemoPage from './pages/KiDemoPage';
 
 const featuresDropdownItems = [
   {
@@ -831,6 +832,7 @@ function App() {
         <Route path="/datenschutz" element={<PrivacyPage />} />
         <Route path="/blog" element={<BlogIndex />} />
         <Route path="/blog/ki-agenten-erstellen" element={<BlogKIAgentenErstellen />} />
+        <Route path="/ki-demo" element={<KiDemoPage />} />
       </Routes>
     </Router>
   );

@@ -24,6 +24,14 @@ export interface SalesRequest {
   message: string
 }
 
+export interface KiDemoRequest {
+  firstName: string
+  lastName: string
+  phone: string
+  email: string
+  website?: string
+}
+
 // =====================
 // Webhook Config
 // =====================
@@ -39,8 +47,8 @@ if (!WEBHOOK_URL) {
 // =====================
 
 const sendInquiry = async (
-  type: 'demo' | 'contact' | 'sales',
-  data: DemoRequest | ContactRequest | SalesRequest
+  type: 'demo' | 'contact' | 'sales' | 'ki-demo',
+  data: DemoRequest | ContactRequest | SalesRequest | KiDemoRequest
 ): Promise<boolean> => {
   try {
     const response = await fetch(WEBHOOK_URL, {
@@ -80,3 +88,6 @@ export const saveContactRequest = (data: ContactRequest) =>
 
 export const saveSalesInquiry = (data: SalesRequest) =>
   sendInquiry('sales', data)
+
+export const saveKiDemoRequest = (data: KiDemoRequest) =>
+  sendInquiry('ki-demo', data)
