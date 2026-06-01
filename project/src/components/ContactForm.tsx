@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { X, Send, CheckCircle, Mail, User, MessageCircle } from 'lucide-react';
 import { saveContactRequest } from '../services/databaseService';
 
+declare global { interface Window { fbq?: (...args: unknown[]) => void } }
+const fbq = (...args: unknown[]) => { if (typeof window !== 'undefined' && window.fbq) window.fbq(...args); };
+
 interface ContactFormProps {
   onClose: () => void;
 }
@@ -47,6 +50,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ onClose }) => {
       });
 
       if (success) {
+        fbq('track', 'Lead', { content_name: 'Kontaktformular', content_category: 'Contact' });
         setIsSubmitted(true);
       } else {
         alert('Fehler beim Speichern der Nachricht. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt.');

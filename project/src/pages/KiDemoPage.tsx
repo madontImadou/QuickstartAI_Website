@@ -91,9 +91,17 @@ const demoSteps = [
   { icon: Clock, label: 'Dauer: ca. 30 Minuten' },
 ];
 
+// ─── fbq helper (typed) ───────────────────────────────────────────────────────
+declare global { interface Window { fbq?: (...args: unknown[]) => void } }
+const fbq = (...args: unknown[]) => { if (typeof window !== 'undefined' && window.fbq) window.fbq(...args); };
+
 // ─── Main page ────────────────────────────────────────────────────────────────
 const KiDemoPage: React.FC = () => {
-  useEffect(() => { window.scrollTo(0, 0); }, []);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    // Explicit ViewContent for this landing page (useful when tracking via ads)
+    fbq('track', 'ViewContent', { content_name: 'KI-Demo Landing Page', content_category: 'Demo' });
+  }, []);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -104,6 +112,32 @@ const KiDemoPage: React.FC = () => {
   const [errors, setErrors] = useState<Partial<typeof formData>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  // Track which fields have been touched (for abandon tracking)
+  const touchedFields = useRef<Set<string>>(new Set());
+  const nameTracked = useRef(false);
+  const phoneTracked = useRef(false);
+
+  // Abandon tracking: fire event if user leaves after touching fields but not submitting
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      if (isSubmitted) return;
+      const touched = touchedFields.current;
+      if (touched.size === 0) return;
+
+      const filledFields = Array.from(touched);
+      fbq('trackCustom', 'FormAbandoned', {
+        page: 'ki-demo',
+        filled_fields: filledFields,
+        filled_count: filledFields.length,
+        had_name: touched.has('name'),
+        had_phone: touched.has('phone'),
+        had_email: touched.has('email'),
+      });
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [isSubmitted]);
 
   const validate = () => {
     const next: Partial<typeof formData> = {};
@@ -127,7 +161,13 @@ const KiDemoPage: React.FC = () => {
       website: formData.website.trim() || undefined,
     });
     setIsSubmitting(false);
-    if (success) setIsSubmitted(true);
+    if (success) {
+      fbq('track', 'Lead', {
+        content_name: 'KI-Demo Anfrage',
+        content_category: 'Demo',
+      });
+      setIsSubmitted(true);
+    }
   };
 
   const field = (
@@ -154,6 +194,26 @@ const KiDemoPage: React.FC = () => {
           onChange={e => {
             setFormData(p => ({ ...p, [key]: e.target.value }));
             if (errors[key]) setErrors(p => ({ ...p, [key]: undefined }));
+          }}
+          onBlur={e => {
+            const value = e.target.value.trim();
+            if (!value) return;
+            touchedFields.current.add(key);
+
+            // Fire granular pixel events on first blur per field
+            if (key === 'name' && !nameTracked.current) {
+              nameTracked.current = true;
+              fbq('trackCustom', 'FormFieldFilled', { page: 'ki-demo', field: 'name' });
+            }
+            if (key === 'phone' && !phoneTracked.current) {
+              phoneTracked.current = true;
+              fbq('trackCustom', 'FormFieldFilled', { page: 'ki-demo', field: 'phone' });
+              // Phone filled = high intent signal
+              fbq('track', 'AddPaymentInfo');
+            }
+            if (key === 'email') {
+              fbq('trackCustom', 'FormFieldFilled', { page: 'ki-demo', field: 'email' });
+            }
           }}
           placeholder={placeholder}
           className={`w-full ${Icon ? 'pl-11' : 'pl-4'} pr-4 py-3.5 rounded-xl bg-white/5 border text-white placeholder-gray-600 text-sm outline-none transition-all duration-200
