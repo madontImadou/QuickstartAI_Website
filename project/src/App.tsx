@@ -18,11 +18,13 @@ import {
   TrendingDown,
 } from "lucide-react";
 
-import { useFadeInUp } from "./hooks/useScrollAnimation";
+import { useFadeInUp, useSlideReveal } from "./hooks/useScrollAnimation";
 import { saveContactRequest } from "./services/databaseService";
 import LoadingScreen from "./components/LoadingScreen";
+import SmoothScroll from "./components/SmoothScroll";
 import ContactForm from "./components/ContactForm";
 import AnimatedCard from "./components/AnimatedCard";
+import SlideRevealCard from "./components/SlideRevealCard";
 import SalesPage from "./pages/SalesPage";
 import PrivacyPage from "./pages/PrivacyPage";
 import ImpressumPage from "./pages/ImpressumPage";
@@ -73,8 +75,35 @@ function HomePage() {
   }, [isLoading]);
 
   const heroRef = useFadeInUp();
-  const featuresRef = useFadeInUp();
-  const resultsHeadingRef = useFadeInUp();
+
+  const problemEyebrowRef = useSlideReveal(0);
+  const problemTitleRef = useSlideReveal(2);
+
+  const featuresEyebrowRef = useSlideReveal(0);
+  const featuresTitleRef = useSlideReveal(2);
+  const featuresTextRef = useSlideReveal(4);
+
+  const arbeitsweiseEyebrowRef = useSlideReveal(0);
+  const arbeitsweiseTitleRef = useSlideReveal(2);
+
+  const ueberUnsEyebrowRef = useSlideReveal(0);
+  const ueberUnsTitleRef = useSlideReveal(2);
+
+  const prozessEyebrowRef = useSlideReveal(0);
+  const prozessTitleRef = useSlideReveal(2);
+
+  const resultsEyebrowRef = useSlideReveal(0);
+  const resultsTitleRef = useSlideReveal(2);
+
+  const faqEyebrowRef = useSlideReveal(0);
+  const faqTitleRef = useSlideReveal(2);
+  const faqTextRef = useSlideReveal(4);
+
+  const zusammenarbeitEyebrowRef = useSlideReveal(0);
+  const zusammenarbeitTitleRef = useSlideReveal(2);
+
+  const ctaTitleRef = useSlideReveal(0);
+  const ctaTextRef = useSlideReveal(2);
 
   const toggleFaq = (index: number) => {
     setOpenFaq(openFaq === index ? null : index);
@@ -137,13 +166,12 @@ function HomePage() {
       icon: <Clock className="w-7 h-7 text-[#e2642a]" />,
       title: "Anfragen verschwinden...",
       description:
-        "weil Interessenten nicht mehr erreichbar sind, wenn Ihr Team später zurückruft.",
+        "weil Interessenten bei Rückrufen nicht mehr erreichbar sind.",
     },
     {
       icon: <RefreshCw className="w-7 h-7 text-[#e2642a]" />,
       title: "Tägliche neue Rückruflisten",
-      description:
-        "kosten Ihr Team wertvolle Zeit, die für Patienten und Kunden fehlt.",
+      description: "kosten wertvolle Zeit, die für Patienten und Kunden fehlt.",
     },
     {
       icon: <Filter className="w-7 h-7 text-[#e2642a]" />,
@@ -153,9 +181,9 @@ function HomePage() {
     },
     {
       icon: <TrendingDown className="w-7 h-7 text-[#e2642a]" />,
-      title: "Niemand weiß...",
+      title: "Anfragen bleiben ungenutzt......",
       description:
-        "wie viele Anfragen – und wie viel Umsatz – wirklich verloren gehen.",
+        "weil langsame Antworten die Wahrscheinlichkeit für einen echten Termin oder Kauf drastisch senken.",
     },
   ];
 
@@ -402,26 +430,38 @@ function HomePage() {
           ref={heroRef}
           className="relative z-20 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
         >
-          <div className="inline-flex items-center space-x-2 bg-white border border-gray-200 rounded-full px-4 py-2 mb-8 animate-fade-in-down">
+          <div
+            className="inline-flex items-center space-x-2 bg-white border border-gray-200 rounded-full px-4 py-2 mb-8 opacity-0 animate-fade-in-up"
+            style={{ animationDelay: "0ms" }}
+          >
             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
             <span className="text-sm text-gray-600">
-              Für Praxen, Kliniken & Beauty-Business · 100% DSGVO-konform
+              Für Aesthetik Praxen und Kliniken
             </span>
           </div>
 
-          <h1 className="font-serif italic text-4xl md:text-6xl text-gray-900 mb-6 leading-tight">
-            Der neue Standard -{" "}
+          <h1
+            className="font-serif italic text-4xl md:text-6xl text-gray-900 mb-6 leading-tight opacity-0 animate-fade-in-up"
+            style={{ animationDelay: "400ms" }}
+          >
+            Ihre Anfragen verdienen{" "}
             <span className="bg-gradient-to-r from-[#e2642a] via-orange-400 to-[#e2642a] bg-clip-text text-transparent">
-              für Kundenkommunikation.
+              sofortige Antworten.
             </span>
           </h1>
 
-          <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed">
-            Während Ihr Team arbeitet, pausiert oder Feierabend hat, wird jede
-            eingehende Anfrage innerhalb von 5 Sekunden bearbeitet.
+          <p
+            className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed opacity-0 animate-fade-in-up"
+            style={{ animationDelay: "800ms" }}
+          >
+            Während der Pause oder nach Feierabend, wird jede
+            neue Anfrage durch unser Fangnetz innerhalb von 5 Sekunden bearbeitet.
           </p>
 
-          <div className="flex flex-col items-center gap-4">
+          <div
+            className="flex flex-col sm:flex-row items-center justify-center gap-4 opacity-0 animate-fade-in-up"
+            style={{ animationDelay: "1200ms" }}
+          >
             <button
               onClick={() => setShowContactForm(true)}
               className="bg-[#e2642a] text-white font-semibold py-4 px-10 rounded-xl text-lg hover:bg-orange-600 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2"
@@ -429,6 +469,12 @@ function HomePage() {
               <span>Quiz starten</span>
               <ArrowRight className="w-5 h-5" />
             </button>
+            <a
+              href="#ergebnisse"
+              className="bg-white text-gray-900 font-semibold py-4 px-10 rounded-xl text-lg border border-gray-200 hover:border-gray-300 hover:bg-gray-50 transform hover:scale-105 transition-all duration-200 shadow-sm hover:shadow-md flex items-center justify-center space-x-2"
+            >
+              <span>Kundenergebnisse</span>
+            </a>
           </div>
         </div>
       </section>
@@ -442,14 +488,20 @@ function HomePage() {
                 <div className="scroll-mouse-line"></div>
               </div>
             </div>
-            <div className="flex items-center justify-center gap-3 mb-6">
+            <div
+              ref={problemEyebrowRef}
+              className="flex items-center justify-center gap-3 mb-6"
+            >
               <span className="h-px w-8 bg-[#e2642a]/50"></span>
               <span className="text-xs font-semibold tracking-widest text-[#e2642a] uppercase">
                 Das eigentliche Problem
               </span>
               <span className="h-px w-8 bg-[#e2642a]/50"></span>
             </div>
-            <h2 className="font-serif italic text-3xl md:text-4xl text-gray-900">
+            <h2
+              ref={problemTitleRef}
+              className="font-serif italic text-3xl md:text-4xl text-gray-900"
+            >
               Kennen Sie das?
             </h2>
           </div>
@@ -479,8 +531,9 @@ function HomePage() {
 
             <div className="relative grid md:grid-cols-2 gap-4 md:gap-6 p-4 md:p-8">
               {problems.map((problem, index) => (
-                <div
+                <AnimatedCard
                   key={index}
+                  delay={index}
                   className="p-8 md:p-10 rounded-xl bg-white/[0.03] border border-white/5 hover:bg-white/[0.06] hover:border-white/10 transition-all duration-300"
                 >
                   <div className="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center mb-6">
@@ -492,7 +545,7 @@ function HomePage() {
                   <p className="text-gray-400 leading-relaxed">
                     {problem.description}
                   </p>
-                </div>
+                </AnimatedCard>
               ))}
             </div>
           </div>
@@ -511,19 +564,28 @@ function HomePage() {
       {/* System Section */}
       <section id="system" className="relative py-24 bg-gray-900">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div ref={featuresRef} className="text-center mb-16">
-            <div className="flex items-center justify-center gap-3 mb-6">
+          <div className="text-center mb-16">
+            <div
+              ref={featuresEyebrowRef}
+              className="flex items-center justify-center gap-3 mb-6"
+            >
               <span className="h-px w-8 bg-[#e2642a]/50"></span>
               <span className="text-xs font-semibold tracking-widest text-[#e2642a] uppercase">
                 Das System
               </span>
               <span className="h-px w-8 bg-[#e2642a]/50"></span>
             </div>
-            <h2 className="font-serif italic text-3xl md:text-4xl text-white mb-6 max-w-3xl mx-auto leading-tight">
+            <h2
+              ref={featuresTitleRef}
+              className="font-serif italic text-3xl md:text-4xl text-white mb-6 max-w-3xl mx-auto leading-tight"
+            >
               Ihr Team hat <span className="text-[#e2642a]">Feierabend.</span>{" "}
               Ihr System nicht.
             </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto">
+            <p
+              ref={featuresTextRef}
+              className="text-gray-400 max-w-2xl mx-auto"
+            >
               Ich helfe Unternehmen und Praxen dabei keine Anfragen mehr
               unbemerkt zu verpassen.
             </p>
@@ -531,9 +593,9 @@ function HomePage() {
 
           <div className="grid md:grid-cols-3 gap-4">
             {systemPillars.map((pillar, index) => (
-              <AnimatedCard
+              <SlideRevealCard
                 key={index}
-                delay={index * 0.1}
+                delay={index}
                 className={`relative overflow-hidden bg-gray-800/50 border border-gray-700 rounded-2xl p-8 ${index === 0 ? "md:col-span-2 md:flex md:items-center md:gap-8" : index === 3 ? "md:col-span-2 md:flex md:items-center md:gap-8" : ""}`}
               >
                 <div className={index === 0 || index === 3 ? "flex-1" : ""}>
@@ -568,7 +630,7 @@ function HomePage() {
                     />
                   </div>
                 )}
-              </AnimatedCard>
+              </SlideRevealCard>
             ))}
           </div>
 
@@ -587,14 +649,20 @@ function HomePage() {
       <section id="arbeitsweise" className="relative py-24 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <div className="flex items-center justify-center gap-3 mb-6">
+            <div
+              ref={arbeitsweiseEyebrowRef}
+              className="flex items-center justify-center gap-3 mb-6"
+            >
               <span className="h-px w-8 bg-[#e2642a]/50"></span>
               <span className="text-xs font-semibold tracking-widest text-[#e2642a] uppercase">
                 So arbeiten wir
               </span>
               <span className="h-px w-8 bg-[#e2642a]/50"></span>
             </div>
-            <h2 className="font-serif italic text-3xl md:text-4xl text-gray-900">
+            <h2
+              ref={arbeitsweiseTitleRef}
+              className="font-serif italic text-3xl md:text-4xl text-gray-900"
+            >
               Sie fragen sich, wie das Ganze abläuft?
             </h2>
           </div>
@@ -939,15 +1007,21 @@ function HomePage() {
       {/* Ergebnisse / Testimonials Section */}
       <section id="ergebnisse" className="relative py-24 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div ref={resultsHeadingRef} className="text-center mb-16">
-            <div className="flex items-center justify-center gap-3 mb-6">
+          <div className="text-center mb-16">
+            <div
+              ref={resultsEyebrowRef}
+              className="flex items-center justify-center gap-3 mb-6"
+            >
               <span className="h-px w-8 bg-[#e2642a]/50"></span>
               <span className="text-xs font-semibold tracking-widest text-[#e2642a] uppercase">
                 Resultate
               </span>
               <span className="h-px w-8 bg-[#e2642a]/50"></span>
             </div>
-            <h2 className="font-serif italic text-4xl md:text-5xl text-gray-900 mb-6">
+            <h2
+              ref={resultsTitleRef}
+              className="font-serif italic text-4xl md:text-5xl text-gray-900 mb-6"
+            >
               Das sagen unsere Kunden.
             </h2>
           </div>
@@ -1006,14 +1080,20 @@ function HomePage() {
             <div className="absolute inset-0 bg-gradient-to-l from-gray-900/90 via-gray-900/50 to-transparent" />
 
             <div className="relative p-8 md:p-14 max-w-lg ml-auto">
-              <div className="flex items-center gap-3 mb-6">
+              <div
+                ref={ueberUnsEyebrowRef}
+                className="flex items-center gap-3 mb-6"
+              >
                 <span className="h-px w-8 bg-[#e2642a]/50"></span>
                 <span className="text-xs font-semibold tracking-widest text-[#e2642a] uppercase">
                   Über Maximilian
                 </span>
                 <span className="h-px w-8 bg-[#e2642a]/50"></span>
               </div>
-              <h2 className="font-serif italic text-3xl md:text-4xl text-white mb-6 leading-tight">
+              <h2
+                ref={ueberUnsTitleRef}
+                className="font-serif italic text-3xl md:text-4xl text-white mb-6 leading-tight"
+              >
                 Ich helfe Unternehmen, jede Anfrage sofort zu beantworten und
                 vorzuqualifizieren.
               </h2>
@@ -1039,14 +1119,20 @@ function HomePage() {
       <section id="prozess" className="relative py-24 bg-gray-900">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20">
-            <div className="flex items-center justify-center gap-3 mb-6">
+            <div
+              ref={prozessEyebrowRef}
+              className="flex items-center justify-center gap-3 mb-6"
+            >
               <span className="h-px w-8 bg-[#e2642a]/50"></span>
               <span className="text-xs font-semibold tracking-widest text-[#e2642a] uppercase">
                 Der Prozess
               </span>
               <span className="h-px w-8 bg-[#e2642a]/50"></span>
             </div>
-            <h2 className="font-serif italic text-3xl md:text-4xl text-white mb-4">
+            <h2
+              ref={prozessTitleRef}
+              className="font-serif italic text-3xl md:text-4xl text-white mb-4"
+            >
               So einfach geht&apos;s!
             </h2>
             <p className="text-xl text-gray-400 max-w-3xl mx-auto"></p>
@@ -1164,11 +1250,24 @@ function HomePage() {
       <section id="faq" className="relative py-24 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="font-serif italic text-3xl md:text-4xl text-gray-900 mb-4">
+            <div
+              ref={faqEyebrowRef}
+              className="flex items-center justify-center gap-3 mb-6"
+            >
+              <span className="h-px w-8 bg-[#e2642a]/50"></span>
+              <span className="text-xs font-semibold tracking-widest text-[#e2642a] uppercase">
+                FAQ
+              </span>
+              <span className="h-px w-8 bg-[#e2642a]/50"></span>
+            </div>
+            <h2
+              ref={faqTitleRef}
+              className="font-serif italic text-3xl md:text-4xl text-gray-900 mb-4"
+            >
               Häufig gestellte Fragen
             </h2>
-            <p className="text-xl text-gray-600">
-              Alles, was Sie über unseren KI-Assistenten wissen müssen
+            <p ref={faqTextRef} className="text-xl text-gray-600">
+              
             </p>
           </div>
 
@@ -1234,14 +1333,20 @@ function HomePage() {
             />
 
             <div className="relative p-8 md:p-14 flex flex-col justify-center">
-              <div className="flex items-center gap-3 mb-6">
+              <div
+                ref={zusammenarbeitEyebrowRef}
+                className="flex items-center gap-3 mb-6"
+              >
                 <span className="h-px w-8 bg-[#e2642a]/50"></span>
                 <span className="text-xs font-semibold tracking-widest text-[#e2642a] uppercase">
                   Zusammenarbeit
                 </span>
                 <span className="h-px w-8 bg-[#e2642a]/50"></span>
               </div>
-              <h2 className="font-serif italic text-3xl md:text-4xl text-white mb-6 leading-tight">
+              <h2
+                ref={zusammenarbeitTitleRef}
+                className="font-serif italic text-3xl md:text-4xl text-white mb-6 leading-tight"
+              >
                 Finden wir gemeinsam heraus, ob es sich für Sie lohnt.
               </h2>
               <p className="text-gray-400 leading-relaxed mb-4">
@@ -1388,10 +1493,13 @@ function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-r from-[#e2642a] to-orange-600"></div>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="relative z-10">
-            <h2 className="font-serif italic text-3xl md:text-4xl text-gray-900 mb-6">
-              Bereit, keine Anfrage mehr zu verlieren?
+            <h2
+              ref={ctaTitleRef}
+              className="font-serif italic text-3xl md:text-4xl text-gray-900 mb-6"
+            >
+              Bereit, keine Anfrage mehr unbearbeitet zu lassen?
             </h2>
-            <p className="text-xl text-white/90 mb-10">
+            <p ref={ctaTextRef} className="text-xl text-white/90 mb-10">
               Unverbindlich. Antwort innerhalb von 24 Stunden.
             </p>
 
@@ -1477,6 +1585,7 @@ function HomePage() {
 function App() {
   return (
     <Router>
+      <SmoothScroll />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/sales" element={<SalesPage />} />

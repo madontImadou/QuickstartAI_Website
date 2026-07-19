@@ -19,7 +19,7 @@ const LoadingScreen: React.FC = () => {
 
         {/* Spruch */}
         <p className="text-lg text-gray-600 mb-8">
-          Effizienz beginnt mit der richtigen Conversation
+          Kleine Veränderung. Große Wirkung
         </p>
 
         {/* Lade-Animation */}

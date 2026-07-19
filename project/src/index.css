@@ -344,10 +344,7 @@ body {
 .animate-slide-in-right {
   animation: slideInRight 0.8s ease-out forwards;
 }
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
-}
+/* Smooth scrolling is handled by Lenis (see SmoothScroll.tsx) */
 
 /* Loading animations */
 @keyframes loading-progress {
