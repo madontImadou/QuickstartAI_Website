@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  font-family: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+}
+
 /* Dynamic Background Animations */
 @keyframes gradient-shift {
   0% {
@@ -74,17 +78,17 @@
 
 /* Dynamic Background Classes */
 .dynamic-bg {
-  background: linear-gradient(-45deg, #0f172a, #1e293b, #374151, #1f2937);
+  background: linear-gradient(-45deg, #ffffff, #fff7f2, #ffeddf, #fff7f2);
   background-size: 400% 400%;
   animation: gradient-shift 15s ease infinite;
 }
 
 .elegant-mesh {
-  background: 
-    radial-gradient(circle at 20% 80%, rgba(226, 100, 42, 0.15) 0%, transparent 50%),
+  background:
+    radial-gradient(circle at 20% 80%, rgba(226, 100, 42, 0.12) 0%, transparent 50%),
     radial-gradient(circle at 80% 20%, rgba(251, 146, 60, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 40% 40%, rgba(226, 100, 42, 0.08) 0%, transparent 50%),
-    linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #374151 50%, #1f2937 75%, #0f172a 100%);
+    radial-gradient(circle at 40% 40%, rgba(226, 100, 42, 0.06) 0%, transparent 50%),
+    linear-gradient(135deg, #ffffff 0%, #fff7f2 25%, #ffedde 50%, #fff7f2 75%, #ffffff 100%);
   background-size: 800% 800%, 600% 600%, 400% 400%, 200% 200%;
   animation: mesh-gradient 20s ease infinite;
 }
@@ -244,6 +248,36 @@
   50% {
     transform: translateY(-10px);
   }
+}
+
+@keyframes scroll-wheel {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  70% {
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(14px);
+    opacity: 0;
+  }
+}
+
+.scroll-mouse {
+  width: 22px;
+  height: 36px;
+  border: 2px solid #111827;
+  border-radius: 9999px;
+}
+
+.scroll-mouse-line {
+  width: 2px;
+  height: 8px;
+  margin: 6px auto 0;
+  background: #111827;
+  border-radius: 9999px;
+  animation: scroll-wheel 1.6s ease-in-out infinite;
 }
 
 @keyframes slideInUp {

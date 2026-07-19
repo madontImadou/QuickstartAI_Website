@@ -1,123 +1,51 @@
-import React, { useState, useRef, useEffect as useEffectRef } from 'react';
-import { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { useState, useEffect, useRef, ChangeEvent, FormEvent } from "react";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import {
-  Bot,
-  Phone,
   Zap,
   CheckCircle,
   ArrowRight,
-  MessageSquare,
   Clock,
-  Shield,
-  Users,
-  TrendingUp,
   ChevronDown,
   Menu,
   X,
-  Globe,
   Calendar,
   BarChart2,
-  Mic,
   BookOpen,
   UserCheck,
-  Home,
-  Send,
-  Smartphone,
-  Settings,
   Headphones,
-  Search
-} from 'lucide-react';
+  RefreshCw,
+  Filter,
+  TrendingDown,
+} from "lucide-react";
 
-import { useFadeInUp, useStaggerAnimation } from './hooks/useScrollAnimation';
-import LoadingScreen from './components/LoadingScreen';
-import DemoModal from './components/DemoModal';
-import ContactForm from './components/ContactForm';
-import AnimatedCard from './components/AnimatedCard';
-import SalesPage from './pages/SalesPage';
-import PrivacyPage from './pages/PrivacyPage';
-import ImpressumPage from './pages/ImpressumPage';
-import AGBPage from './pages/AGBPage';
-import BlogIndex from './pages/BlogIndex';
-import BlogKIAgentenErstellen from './pages/BlogKIAgentenErstellen';
-import KiDemoPage from './pages/KiDemoPage';
-
-const featuresDropdownItems = [
-  {
-    icon: <div className="w-9 h-9 overflow-hidden rounded-lg"><img src="/whatsappBild.jpg" alt="WhatsApp" className="w-full h-full object-cover scale-[1.3]" /></div>,
-    title: "WhatsApp Agent",
-    description: "KI-Agent direkt auf WhatsApp Business",
-    href: "#features"
-  },
-  {
-    icon: <div className="w-9 h-9 overflow-hidden rounded-lg"><img src="/InstaPic.jpg" alt="Instagram" className="w-full h-full object-cover scale-[1.15]" /></div>,
-    title: "Instagram Agent",
-    description: "Automatisierte DMs & Kommentare",
-    href: "#features"
-  },
-  {
-    icon: <div className="w-9 h-9 overflow-hidden rounded-lg"><img src="/facebookMessanger.jpg" alt="Facebook Messenger" className="w-full h-full object-cover" /></div>,
-    title: "Messenger Agent",
-    description: "Facebook Messenger automatisieren",
-    href: "#features"
-  },
-  {
-    icon: <Phone className="w-5 h-5 text-[#e2642a]" />,
-    title: "Telefonagent",
-    description: "KI-gestützte Anrufbearbeitung 24/7",
-    href: "#features"
-  },
-  {
-    icon: <Bot className="w-5 h-5 text-[#e2642a]" />,
-    title: "Website-Chatbot",
-    description: "Intelligenter Chat für Ihre Website",
-    href: "#features"
-  },
-  {
-    icon: <div className="w-9 h-9 overflow-hidden rounded-lg"><img src="/googleCalanderpic.png" alt="Google Calendar" className="w-full h-full object-cover" /></div>,
-    title: "Google Calendar",
-    description: "Automatische Terminbuchung",
-    href: "#features"
-  },
-  {
-    icon: <div className="w-9 h-9 overflow-hidden rounded-lg"><img src="/calendlyPic.png" alt="Calendly" className="w-full h-full object-cover" /></div>,
-    title: "Calendly Integration",
-    description: "Buchungen direkt im Chat",
-    href: "#features"
-  },
-  {
-    icon: <div className="w-9 h-9 overflow-hidden rounded-lg"><img src="/shopifyLogo.png" alt="Shopify" className="w-full h-full object-cover" /></div>,
-    title: "Shopify Integration",
-    description: "E-Commerce Support automatisiert",
-    href: "#features"
-  },
-  {
-    icon: <Search className="w-5 h-5 text-[#e2642a]" />,
-    title: "Web Scraper & Crawler",
-    description: "Wissensbasis aus Webinhalten aufbauen",
-    href: "#features"
-  }
-];
+import { useFadeInUp } from "./hooks/useScrollAnimation";
+import { saveContactRequest } from "./services/databaseService";
+import LoadingScreen from "./components/LoadingScreen";
+import ContactForm from "./components/ContactForm";
+import AnimatedCard from "./components/AnimatedCard";
+import SalesPage from "./pages/SalesPage";
+import PrivacyPage from "./pages/PrivacyPage";
+import ImpressumPage from "./pages/ImpressumPage";
+import AGBPage from "./pages/AGBPage";
+import BlogIndex from "./pages/BlogIndex";
+import BlogKIAgentenErstellen from "./pages/BlogKIAgentenErstellen";
+import KiDemoPage from "./pages/KiDemoPage";
 
 function HomePage() {
-  const [websiteUrl, setWebsiteUrl] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
-  const [showDemoModal, setShowDemoModal] = useState(false);
   const [showContactForm, setShowContactForm] = useState(false);
-  const [featuresOpen, setFeaturesOpen] = useState(false);
-  const featuresRef2 = useRef<HTMLDivElement>(null);
-
-  useEffectRef(() => {
-    function handleClickOutside(e: MouseEvent) {
-      if (featuresRef2.current && !featuresRef2.current.contains(e.target as Node)) {
-        setFeaturesOpen(false);
-      }
-    }
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  const [activeMethod, setActiveMethod] = useState(0);
+  const [scheduleData, setScheduleData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    reachability: "",
+  });
+  const [isScheduleSubmitting, setIsScheduleSubmitting] = useState(false);
+  const [isScheduleSubmitted, setIsScheduleSubmitted] = useState(false);
+  const methodRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -126,142 +54,231 @@ function HomePage() {
     return () => clearTimeout(timer);
   }, []);
 
-  const heroRef = useFadeInUp();
-  const benefitsRef = useFadeInUp();
-  const featuresRef = useFadeInUp();
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const index = methodRefs.current.findIndex(
+              (el) => el === entry.target,
+            );
+            if (index !== -1) setActiveMethod(index);
+          }
+        });
+      },
+      { rootMargin: "-45% 0px -45% 0px", threshold: 0 },
+    );
+    methodRefs.current.forEach((el) => el && observer.observe(el));
+    return () => observer.disconnect();
+  }, [isLoading]);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!websiteUrl.trim()) {
-      alert('Bitte geben Sie eine Website-URL ein.');
-      return;
-    }
-    try {
-      new URL(websiteUrl);
-      setShowDemoModal(true);
-    } catch {
-      alert('Bitte geben Sie eine gültige Website-URL ein (z.B. https://ihre-website.de).');
-    }
-  };
+  const heroRef = useFadeInUp();
+  const featuresRef = useFadeInUp();
+  const resultsHeadingRef = useFadeInUp();
 
   const toggleFaq = (index: number) => {
     setOpenFaq(openFaq === index ? null : index);
   };
 
-  const stats = [
-    { value: "2B+", label: "WhatsApp Nutzer weltweit" },
-    { value: "98%", label: "Öffnungsrate bei WhatsApp" },
-    { value: "24/7", label: "Verfügbarkeit" },
-    { value: "<24h", label: "Setup-Zeit" },
-  ];
+  const handleScheduleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
+    setScheduleData({ ...scheduleData, [e.target.name]: e.target.value });
+  };
 
-  const coreFeatures = [
+  const handleScheduleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+
+    if (
+      !scheduleData.name.trim() ||
+      !scheduleData.email.trim() ||
+      !scheduleData.phone.trim()
+    ) {
+      alert("Bitte füllen Sie alle Pflichtfelder aus.");
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(scheduleData.email)) {
+      alert("Bitte geben Sie eine gültige E-Mail-Adresse ein.");
+      return;
+    }
+
+    setIsScheduleSubmitting(true);
+
+    try {
+      const success = await saveContactRequest({
+        name: scheduleData.name,
+        email: scheduleData.email,
+        phone: scheduleData.phone,
+        reachability: scheduleData.reachability,
+        message: `Terminanfrage – erreichbar: ${scheduleData.reachability || "keine Angabe"}`,
+      });
+
+      if (success) {
+        setIsScheduleSubmitted(true);
+      } else {
+        alert(
+          "Fehler beim Senden. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt.",
+        );
+      }
+    } catch (error) {
+      console.error("Fehler beim Senden der Terminanfrage:", error);
+      alert(
+        "Fehler beim Senden. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt.",
+      );
+    } finally {
+      setIsScheduleSubmitting(false);
+    }
+  };
+
+  const problems = [
     {
-      icon: <Zap className="w-7 h-7 text-[#e2642a]" />,
-      title: "Sofortantworten",
-      description: "KI-Agents antworten Ihren Kunden sofort – 24/7. FAQs, Produktanfragen und Support-Tickets werden automatisch bearbeitet, ohne menschliches Eingreifen."
+      icon: <Clock className="w-7 h-7 text-[#e2642a]" />,
+      title: "Anfragen verschwinden...",
+      description:
+        "weil Interessenten nicht mehr erreichbar sind, wenn Ihr Team später zurückruft.",
     },
     {
-      icon: <UserCheck className="w-7 h-7 text-[#e2642a]" />,
-      title: "Live-Übergabe",
-      description: "Nahtlose Übergabe an menschliche Mitarbeiter, wenn nötig. Benachrichtigungen in Echtzeit, Chat übernehmen und bei Bedarf zurück an den KI-Agent übergeben."
+      icon: <RefreshCw className="w-7 h-7 text-[#e2642a]" />,
+      title: "Tägliche neue Rückruflisten",
+      description:
+        "kosten Ihr Team wertvolle Zeit, die für Patienten und Kunden fehlt.",
+    },
+    {
+      icon: <Filter className="w-7 h-7 text-[#e2642a]" />,
+      title: "Hoher Personalaufwand...",
+      description:
+        "weil jede Anfrage manuell beantwortet, nachverfolgt und dokumentiert werden muss.",
+    },
+    {
+      icon: <TrendingDown className="w-7 h-7 text-[#e2642a]" />,
+      title: "Niemand weiß...",
+      description:
+        "wie viele Anfragen – und wie viel Umsatz – wirklich verloren gehen.",
+    },
+  ];
+
+  const systemPillars = [
+    {
+      icon: <Zap className="w-7 h-7 text-[#e2642a]" />,
+      title: "Sofortantworten...",
+      description:
+        "jede Anfrage innerhalb von 5 Sekunden – auf Telefon, Instagram, WhatsApp und Website.",
     },
     {
       icon: <BookOpen className="w-7 h-7 text-[#e2642a]" />,
-      title: "Wissensbasis",
-      description: "Trainieren Sie Ihren Agent mit Dokumenten, URLs, FAQs und eigenen Inhalten. Die KI lernt Ihr Business kennen und gibt präzise, markenkonforme Antworten."
+      title: "Versteht Ihr Fachgebiet -",
+      description:
+        "und beantwortet Fragen zu Leistungen, Preisen und Abläufen präzise wie ein erfahrener Mitarbeiter.",
     },
     {
       icon: <Calendar className="w-7 h-7 text-[#e2642a]" />,
-      title: "Terminbuchung",
-      description: "Direkte Integration mit Google Calendar und Calendly. Kunden prüfen Verfügbarkeiten und buchen Termine direkt im Chat – vollautomatisch."
+      title: "Übernimmt die Erstqualifizierung..",
+      description:
+        "begrüßt Interessenten, stellt Rückfragen und bereitet jede Anfrage optimal vor.",
     },
     {
       icon: <BarChart2 className="w-7 h-7 text-[#e2642a]" />,
-      title: "Analytics-Dashboard",
-      description: "Verfolgen Sie Konversationen, Antwortzeiten, Nutzerbindung und Engagement-Metriken. Exportieren Sie Daten und optimieren Sie Ihren Agent kontinuierlich."
+      title: "Live-Übergabe & Analytics",
+      description: "Übergabe an Ihr Team bei Bedarf, plus laufende Auswertung.",
     },
-    {
-      icon: <Mic className="w-7 h-7 text-[#e2642a]" />,
-      title: "Sprachtranskription",
-      description: "Sprachnachrichten werden automatisch in Text umgewandelt. Ihr KI-Agent versteht Audionachrichten und antwortet intelligent – auch auf WhatsApp."
-    }
   ];
 
-  const useCases = [
+  const workingMethods = [
     {
-      icon: <div className="w-10 h-10 overflow-hidden rounded-lg"><img src="/shopifyLogo.png" alt="Shopify" className="w-full h-full object-cover" /></div>,
-      title: "E-Commerce & Onlineshops",
-      stat: "70% weniger Support-Tickets",
-      description: "Bestellstatus, Rücksendungen und Produktfragen automatisch beantworten – rund um die Uhr."
+      tag: "Austausch",
+      title: "Live-Demo Ihres Systems",
+      icon: <UserCheck className="w-7 h-7 text-[#e2642a]" />,
+      description:
+        "Wir bereiten Ihr System mit Ihren Website-Daten vor – Sie testen es anschließend live.",
+      points: ["Kennenlerngespräch", "Experteneinschätzung", "10 min"],
+      highlight: false,
     },
     {
-      icon: <TrendingUp className="w-8 h-8 text-[#e2642a]" />,
-      title: "Lead-Qualifizierung",
-      stat: "3x mehr qualifizierte Leads",
-      description: "Interessenten automatisch qualifizieren, Infos sammeln und direkt Verkaufsgespräche buchen."
+      tag: "Done-for-You",
+      title: "Einführung & Abnahme",
+      icon: <Headphones className="w-7 h-7 text-[#e2642a]" />,
+      description:
+        "Wir richten Ihre System gemeinsam ein, verbinden alle Kanäle und sorgen dafür, dass Sie und Ihr Team sofort produktiv starten können.",
+      points: ["Setup durch Experten", "20 min"],
+      highlight: true,
     },
     {
-      icon: <Calendar className="w-8 h-8 text-[#e2642a]" />,
-      title: "Terminbuchung",
-      stat: "100% automatisiert",
-      description: "Ideal für Kliniken, Salons, Berater und Coaches – direkte Buchung ohne Telefonanruf."
+      tag: "Support",
+      title: "Laufende Betreuung",
+      icon: <UserCheck className="w-7 h-7 text-[#e2642a]" />,
+      description: "Wir begleiten Sie auch nach dem Go-Live.",
+      points: ["Monatliches Review", "∞"],
+      highlight: false,
     },
-    {
-      icon: <Home className="w-8 h-8 text-[#e2642a]" />,
-      title: "Immobilien",
-      stat: "Schnellere Abschlüsse",
-      description: "Objekte teilen, Besichtigungen buchen und Kaufinteressenten automatisch qualifizieren."
-    }
   ];
 
-  const benefits = [
+  const testimonials = [
     {
-      icon: <MessageSquare className="w-8 h-8 text-[#e2642a]" />,
-      title: "WhatsApp, Website & Telefon",
-      description: "Eine Plattform für alle Kanäle. Ihre KI-Agents sind dort, wo Ihre Kunden sind."
+      name: "Christina",
+      role: "Heilpraktikerin",
+      image: "/Reviews/Kunde1_Picture_Aesthetik.jpg",
+      stat: "64 Beratungstermine in einer Woche",
+      quote:
+        "Wir haben in den letzten Woche 64 Beratungstermine generiert. Ich freue mich wirklich sehr darüber. Unser Team kann sich endlich auf die Termine konzentrieren 🔥",
     },
     {
-      icon: <Settings className="w-8 h-8 text-[#e2642a]" />,
-      title: "Selbst erstellen oder von uns einrichten",
-      description: "Nutzen Sie unsere Plattform eigenständig oder lassen Sie unsere Experten alles für Sie konfigurieren."
+      name: "Julia",
+      role: "Ästhetik-Praxis",
+      image: "/Reviews/Kunde2_Picture.jpg",
+      stat: "100% Antwortquote",
+      quote:
+        "Vorher sind uns immer wieder Anfragen durchgerutscht. Durch euch wird jetzt jeder Interessent sofort kontaktiert wir verlieren keine Anfragen mehr. Danke",
     },
     {
-      icon: <Globe className="w-8 h-8 text-[#e2642a]" />,
-      title: "40+ Integrationen",
-      description: "CRMs, Kalender, Automatisierungstools und mehr. Ihr Agent fügt sich nahtlos in bestehende Workflows ein."
+      name: "Martin",
+      role: "Schönheitschirurgie",
+      image: "/Reviews/Kunde3_Picture_Aesthetik.jpg",
+      stat: "17 → 29 Termine pro Woche",
+      quote:
+        "Wir haben auf jeden Fall einen Anstieg bei den Terminen festgestellt 👍 Letzte Woche waren es 17 und diese Woche 29.",
+    },
+  ];
+
+  const processSteps = [
+    {
+      title: "Quiz ausfüllen",
+      description:
+        " um zu prüfen, ob ein Termin für beideseiten Sinn ergibt.",
     },
     {
-      icon: <Clock className="w-8 h-8 text-[#e2642a]" />,
-      title: "Live in unter 24 Stunden",
-      description: "Kein langer Onboarding-Prozess. Ihr KI-Agent ist binnen eines Tages einsatzbereit."
-    }
+      title: "Kurzgespräch",
+      description:
+        "Wir zeigen Ihnen, wie unser System Ihre Erreichbarkeit neu definiert.",
+    },
+    {
+      title: "Setup & Testphase",
+      description:
+        "Wir richten Ihr System ein und starten gemeinsam Ihre kostenlose 2-wöchige Testphase.",
+    },
   ];
 
   const faqs = [
     {
-      question: "Was ist der Unterschied zwischen Self-Service und Done-for-You?",
-      answer: "Beim Self-Service nutzen Sie unsere Plattform eigenständig: Sie erstellen, trainieren und verwalten Ihre KI-Agents selbst. Beim Done-for-You übernehmen wir alles – von der Einrichtung über das Training bis zur laufenden Optimierung. Beide Optionen sind möglich."
+      question: "Funktioniert das bei uns überhaupt?",
+      answer:
+        "Das System eignet sich für Unternehmen/Praxen, die regelmäßig Anfragen erhalten die sie nicht direkt bearbeiten können.",
     },
     {
-      question: "Auf welchen Kanälen können die KI-Agents eingesetzt werden?",
-      answer: "Unsere Agents unterstützen WhatsApp Business, Website-Chat, Telefon und weitere Kanäle. Dank unserer All-in-One-Plattform verwalten Sie alle Kanäle zentral."
+      question: "Wie aufwändig ist die Einrichtung des Systems?",
+      answer:
+        "Nach der Einrichtung ist Ihr System in der Regel innerhalb von 24 Stunden startklar. Das Setup übernehmen wir gemeinsam mit Ihnen.",
     },
     {
-      question: "Wie wird der Agent auf mein Business trainiert?",
-      answer: "Sie laden Dokumente, URLs, FAQs und eigene Inhalte in die Wissensbasis hoch. Der Agent lernt automatisch daraus und gibt präzise, auf Ihr Unternehmen abgestimmte Antworten."
+      question: "Ersetzt das System mein Team?",
+      answer:
+        "Nein. QuickStartAI unterstützt Ihr Team, beantwortet wiederkehrende Anfragen, qualifiziert Interessenten und ist erreichbar, wenn niemand verfügbar ist."
     },
     {
-      question: "Kann der Agent Termine buchen und Leads qualifizieren?",
-      answer: "Ja. Der Agent kann sich mit Google Calendar und Calendly verbinden, Verfügbarkeiten prüfen und Termine direkt im Chat buchen. Gleichzeitig qualifiziert er Interessenten automatisch und leitet qualifizierte Leads an Ihr CRM weiter."
-    },
-    {
-      question: "Wie schnell ist der erste Agent einsatzbereit?",
-      answer: "Innerhalb von 24 Stunden liefern wir Ihnen eine individuelle Demo. Nach Ihrer Freigabe ist der Agent sofort live – auf Wunsch übernehmen wir den kompletten Setup."
-    },
-    {
-      question: "Ist die Plattform DSGVO-konform?",
-      answer: "Ja. Alle Daten werden DSGVO-konform verarbeitet. Wir legen höchsten Wert auf Datenschutz und Sicherheit – kein Kompromiss."
+      question: "Kann ich das System erst testen?",
+      answer:
+        "Ja, wir bieten eine kostenlose 2-wöchige Testphase an, in der Sie unsere Lösung kostenlos ausprobieren können.",
     }
   ];
 
@@ -270,9 +287,9 @@ function HomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen bg-white">
       {/* Navigation */}
-      <nav className="bg-gray-900/80 backdrop-blur-md border-b border-gray-700/50 sticky top-0 z-50 relative">
+      <nav className="bg-white/80 backdrop-blur-md border-b border-gray-200 sticky top-0 z-50 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
@@ -281,69 +298,46 @@ function HomePage() {
                 alt="QuickStartAI Logo"
                 className="h-20 w-auto mr-3"
               />
-              <span className="text-xl font-bold text-white">QuickStartAI</span>
             </div>
 
             <div className="hidden md:flex items-center space-x-8">
-              {/* Features Dropdown */}
-              <div ref={featuresRef2} className="relative">
-                <button
-                  onClick={() => setFeaturesOpen(!featuresOpen)}
-                  className="flex items-center space-x-1 text-gray-300 hover:text-white transition-colors"
-                >
-                  <span>Features</span>
-                  <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${featuresOpen ? 'rotate-180' : ''}`} />
-                </button>
-
-                {featuresOpen && (
-                  <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-[560px] bg-gray-900/95 backdrop-blur-md border border-gray-700/60 rounded-2xl shadow-2xl p-4 z-50">
-                    <div className="grid grid-cols-2 gap-1">
-                      {featuresDropdownItems.map((item, index) => (
-                        <a
-                          key={index}
-                          href={item.href}
-                          onClick={() => setFeaturesOpen(false)}
-                          className="flex items-start space-x-3 px-4 py-3 rounded-xl hover:bg-gray-800/70 transition-colors group"
-                        >
-                          <div className="flex-shrink-0 w-9 h-9 bg-orange-900/30 rounded-lg overflow-hidden flex items-center justify-center group-hover:bg-[#e2642a]/20 transition-colors mt-0.5">
-                            {item.icon}
-                          </div>
-                          <div>
-                            <div className="text-sm font-semibold text-white group-hover:text-[#e2642a] transition-colors">{item.title}</div>
-                            <div className="text-xs text-gray-400 mt-0.5">{item.description}</div>
-                          </div>
-                        </a>
-                      ))}
-                    </div>
-                    <div className="mt-3 pt-3 border-t border-gray-700/50">
-                      <a
-                        href="#features"
-                        onClick={() => setFeaturesOpen(false)}
-                        className="flex items-center justify-center space-x-2 text-sm text-[#e2642a] hover:text-orange-400 font-medium transition-colors"
-                      >
-                        <span>Alle Features ansehen</span>
-                        <ArrowRight className="w-4 h-4" />
-                      </a>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              <a href="#usecases" className="text-gray-300 hover:text-white transition-colors">Anwendungsfälle</a>
-              <a href="#how-it-works" className="text-gray-300 hover:text-white transition-colors">So funktionierts</a>
-              <a href="#faq" className="text-gray-300 hover:text-white transition-colors">FAQ</a>
-              <Link to="/sales" className="text-gray-300 hover:text-white transition-colors">Preise</Link>
-              <button
-                onClick={() => setShowContactForm(true)}
-                className="bg-[#e2642a] text-white px-6 py-2 rounded-lg hover:bg-orange-600 transition-all duration-200 font-medium"
+              <a
+                href="#system"
+                className="text-gray-600 hover:text-gray-900 transition-colors"
               >
-                Erstgespräch →
-              </button>
+                Unser System
+              </a>
+              <a
+                href="#ergebnisse"
+                className="text-gray-600 hover:text-gray-900 transition-colors"
+              >
+                Ergebnisse
+              </a>
+              <a
+                href="#faq"
+                className="text-gray-600 hover:text-gray-900 transition-colors"
+              >
+                FAQ
+              </a>
             </div>
 
+            <button
+              onClick={() => setShowContactForm(true)}
+              className="hidden md:inline-flex bg-[#e2642a] text-white px-6 py-2.5 rounded-full hover:bg-orange-600 transition-all duration-200 font-medium"
+            >
+              Zusammenarbeit anfragen
+            </button>
+
             <div className="md:hidden">
-              <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-gray-300 hover:text-white">
-                {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="text-gray-600 hover:text-gray-900"
+              >
+                {isMenuOpen ? (
+                  <X className="w-6 h-6" />
+                ) : (
+                  <Menu className="w-6 h-6" />
+                )}
               </button>
             </div>
           </div>
@@ -351,38 +345,35 @@ function HomePage() {
           {isMenuOpen && (
             <div className="md:hidden pb-4">
               <div className="flex flex-col space-y-2">
-                {/* Mobile Features Accordion */}
-                <button
-                  onClick={() => setFeaturesOpen(!featuresOpen)}
-                  className="flex items-center justify-between text-gray-300 hover:text-white transition-colors py-2"
+                <a
+                  href="#system"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="text-gray-600 hover:text-gray-900 transition-colors py-2"
                 >
-                  <span>Features</span>
-                  <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${featuresOpen ? 'rotate-180' : ''}`} />
-                </button>
-                {featuresOpen && (
-                  <div className="pl-4 flex flex-col space-y-3 pb-2">
-                    {featuresDropdownItems.map((item, index) => (
-                      <a
-                        key={index}
-                        href={item.href}
-                        onClick={() => { setFeaturesOpen(false); setIsMenuOpen(false); }}
-                        className="flex items-center space-x-3 text-gray-400 hover:text-white transition-colors"
-                      >
-                        {item.icon}
-                        <span className="text-sm">{item.title}</span>
-                      </a>
-                    ))}
-                  </div>
-                )}
-                <a href="#usecases" onClick={() => setIsMenuOpen(false)} className="text-gray-300 hover:text-white transition-colors py-2">Anwendungsfälle</a>
-                <a href="#how-it-works" onClick={() => setIsMenuOpen(false)} className="text-gray-300 hover:text-white transition-colors py-2">So funktionierts</a>
-                <a href="#faq" onClick={() => setIsMenuOpen(false)} className="text-gray-300 hover:text-white transition-colors py-2">FAQ</a>
-                <Link to="/sales" onClick={() => setIsMenuOpen(false)} className="text-gray-300 hover:text-white transition-colors py-2">Preise</Link>
-                <button
-                  onClick={() => { setShowContactForm(true); setIsMenuOpen(false); }}
-                  className="bg-[#e2642a] text-white px-6 py-2 rounded-lg hover:bg-orange-600 transition-colors w-fit mt-2"
+                  Unser System
+                </a>
+                <a
+                  href="#ergebnisse"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="text-gray-600 hover:text-gray-900 transition-colors py-2"
                 >
-                  Erstgespräch →
+                  Ergebnisse
+                </a>
+                <a
+                  href="#faq"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="text-gray-600 hover:text-gray-900 transition-colors py-2"
+                >
+                  FAQ
+                </a>
+                <button
+                  onClick={() => {
+                    setShowContactForm(true);
+                    setIsMenuOpen(false);
+                  }}
+                  className="bg-[#e2642a] text-white px-6 py-2.5 rounded-full hover:bg-orange-600 transition-colors w-fit mt-2"
+                >
+                  Zusammenarbeit anfragen
                 </button>
               </div>
             </div>
@@ -407,276 +398,777 @@ function HomePage() {
         </div>
         <div className="absolute inset-0 wave-overlay"></div>
 
-        <div ref={heroRef} className="relative z-20 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center space-x-2 bg-gray-800/60 backdrop-blur-md border border-gray-600/50 rounded-full px-4 py-2 mb-8 animate-fade-in-down">
+        <div
+          ref={heroRef}
+          className="relative z-20 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
+        >
+          <div className="inline-flex items-center space-x-2 bg-white border border-gray-200 rounded-full px-4 py-2 mb-8 animate-fade-in-down">
             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-            <span className="text-sm text-gray-300">100% DSGVO-konform · Powered by WhatsApp Business API</span>
+            <span className="text-sm text-gray-600">
+              Für Praxen, Kliniken & Beauty-Business · 100% DSGVO-konform
+            </span>
           </div>
 
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
-            KI-Agents für Ihr Business –{" "}
+          <h1 className="font-serif italic text-4xl md:text-6xl text-gray-900 mb-6 leading-tight">
+            Der neue Standard -{" "}
             <span className="bg-gradient-to-r from-[#e2642a] via-orange-400 to-[#e2642a] bg-clip-text text-transparent">
-              auf WhatsApp, Website & Telefon.
+              für Kundenkommunikation.
             </span>
           </h1>
 
-          <p className="text-xl text-gray-300 mb-10 max-w-3xl mx-auto leading-relaxed">
-            Erstellen Sie eigene KI-Agents über unsere All-in-One-Plattform – oder lassen Sie unsere Experten alles für Sie einrichten.
-            Automatisieren Sie Support, Lead-Qualifizierung und Terminbuchung rund um die Uhr.
+          <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed">
+            Während Ihr Team arbeitet, pausiert oder Feierabend hat, wird jede
+            eingehende Anfrage innerhalb von 5 Sekunden bearbeitet.
           </p>
 
-          <div className="space-y-4 mb-12 max-w-3xl mx-auto">
-            <div className="flex items-center justify-center space-x-3 text-gray-300 transform hover:scale-105 transition-transform duration-200">
-              <ArrowRight className="w-5 h-5 text-[#e2642a]" />
-              <span className="text-lg">Selbst erstellen <span className="text-[#e2642a] font-medium">oder</span> von uns vollständig eingerichtet bekommen</span>
-            </div>
-            <div className="flex items-center justify-center space-x-3 text-gray-300 transform hover:scale-105 transition-transform duration-200">
-              <ArrowRight className="w-5 h-5 text-[#e2642a]" />
-              <span className="text-lg">WhatsApp, Website-Chat und Telefon aus einer Plattform</span>
-            </div>
-            <div className="flex items-center justify-center space-x-3 text-gray-300 transform hover:scale-105 transition-transform duration-200">
-              <ArrowRight className="w-5 h-5 text-[#e2642a]" />
-              <span className="text-lg">Live in unter 24 Stunden – kostenlos & unverbindlich testen</span>
-            </div>
-          </div>
-
-          <div className="bg-gray-800/60 backdrop-blur-md border border-gray-600/50 rounded-2xl p-8 mb-12 max-w-2xl mx-auto transform hover:scale-105 transition-all duration-300 shadow-2xl">
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <input
-                type="text"
-                value={websiteUrl}
-                onChange={(e) => setWebsiteUrl(e.target.value)}
-                onBlur={() => {
-                  if (websiteUrl && !/^https?:\/\//i.test(websiteUrl)) {
-                    setWebsiteUrl(`https://${websiteUrl}`);
-                  }
-                }}
-                placeholder="ihre-website.de"
-                className="w-full px-6 py-4 text-lg bg-gray-700/50 border border-gray-600 rounded-xl focus:ring-2 focus:ring-[#e2642a] focus:border-transparent outline-none transition-all text-white placeholder-gray-400"
-                required
-              />
-              <button
-                type="submit"
-                className="w-full bg-gradient-to-r from-[#e2642a] to-orange-600 text-white font-semibold py-4 px-8 rounded-xl text-lg hover:from-orange-600 hover:to-[#e2642a] transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2"
-              >
-                <span>Jetzt kostenlosen Demo-Agent sichern</span>
-                <ArrowRight className="w-5 h-5" />
-              </button>
-            </form>
-            <p className="text-sm text-gray-400 mt-4 flex items-center justify-center space-x-2">
-              <Shield className="w-4 h-4" />
-              <span>Unverbindlich. Keine Kreditkarte nötig.</span>
-            </p>
+          <div className="flex flex-col items-center gap-4">
+            <button
+              onClick={() => setShowContactForm(true)}
+              className="bg-[#e2642a] text-white font-semibold py-4 px-10 rounded-xl text-lg hover:bg-orange-600 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2"
+            >
+              <span>Quiz starten</span>
+              <ArrowRight className="w-5 h-5" />
+            </button>
           </div>
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="relative py-16 bg-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            {stats.map((stat, index) => (
-              <div key={index}>
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{stat.value}</div>
-                <div className="text-gray-300">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Platform Path Section */}
-      <section id="how-it-works" className="relative py-24 bg-gray-900">
+      {/* Problem Section */}
+      <section id="problem" className="relative py-24 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              Zwei Wege, ein Ziel
+            <div className="flex justify-center mb-8">
+              <div className="scroll-mouse flex justify-center">
+                <div className="scroll-mouse-line"></div>
+              </div>
+            </div>
+            <div className="flex items-center justify-center gap-3 mb-6">
+              <span className="h-px w-8 bg-[#e2642a]/50"></span>
+              <span className="text-xs font-semibold tracking-widest text-[#e2642a] uppercase">
+                Das eigentliche Problem
+              </span>
+              <span className="h-px w-8 bg-[#e2642a]/50"></span>
+            </div>
+            <h2 className="font-serif italic text-3xl md:text-4xl text-gray-900">
+              Kennen Sie das?
             </h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Wählen Sie, wie Sie KI-Automatisierung in Ihrem Unternehmen einsetzen möchten
-            </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            <div className="bg-gray-800/40 backdrop-blur-md border border-gray-600/50 rounded-2xl p-8 hover:border-[#e2642a]/50 transition-all duration-300">
-              <div className="w-14 h-14 bg-orange-900/40 rounded-xl flex items-center justify-center mb-6">
-                <Settings className="w-7 h-7 text-[#e2642a]" />
-              </div>
-              <div className="inline-block bg-[#e2642a]/20 text-[#e2642a] text-sm font-semibold px-3 py-1 rounded-full mb-4">Self-Service</div>
-              <h3 className="text-2xl font-bold text-white mb-4">Selbst erstellen</h3>
-              <p className="text-gray-300 mb-6 leading-relaxed">
-                Nutzen Sie unsere intuitive Plattform, um eigene KI-Agents zu bauen, zu trainieren und zu verwalten. Volle Kontrolle, keine technischen Vorkenntnisse nötig.
-              </p>
-              <ul className="space-y-3">
-                {["Drag-and-Drop Agent Builder", "Wissensbasis selbst befüllen", "Channels selbst konfigurieren", "Analytics einsehen & optimieren"].map((item, i) => (
-                  <li key={i} className="flex items-center space-x-3 text-gray-300">
-                    <CheckCircle className="w-5 h-5 text-[#e2642a] flex-shrink-0" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+          <div className="relative max-w-5xl mx-auto bg-gray-900 rounded-2xl overflow-hidden">
+            {/* Subtle grid overlay */}
+            <div
+              className="pointer-events-none absolute inset-0 opacity-[0.08]"
+              style={{
+                backgroundImage:
+                  "linear-gradient(rgba(255,255,255,.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.5) 1px, transparent 1px)",
+                backgroundSize: "40px 40px",
+                maskImage:
+                  "radial-gradient(ellipse at center, black 0%, transparent 70%)",
+                WebkitMaskImage:
+                  "radial-gradient(ellipse at center, black 0%, transparent 70%)",
+              }}
+            />
+            {/* Glow blob */}
+            <div
+              className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-[500px] h-[300px] rounded-full opacity-20"
+              style={{
+                background:
+                  "radial-gradient(ellipse, #e2642a 0%, transparent 70%)",
+              }}
+            />
 
-            <div className="bg-gradient-to-br from-[#e2642a]/10 to-orange-900/20 border border-[#e2642a]/40 rounded-2xl p-8 hover:border-[#e2642a] transition-all duration-300 relative">
-              <div className="absolute -top-3 right-6">
-                <span className="bg-gradient-to-r from-[#e2642a] to-orange-600 text-white px-4 py-1 rounded-full text-sm font-semibold">Beliebt</span>
-              </div>
-              <div className="w-14 h-14 bg-[#e2642a]/20 rounded-xl flex items-center justify-center mb-6">
-                <Headphones className="w-7 h-7 text-[#e2642a]" />
-              </div>
-              <div className="inline-block bg-[#e2642a]/20 text-[#e2642a] text-sm font-semibold px-3 py-1 rounded-full mb-4">Done-for-You</div>
-              <h3 className="text-2xl font-bold text-white mb-4">Wir richten ein</h3>
-              <p className="text-gray-300 mb-6 leading-relaxed">
-                Unser Team übernimmt den kompletten Setup: Von der Konfiguration über das Training bis zur laufenden Optimierung Ihrer Agents.
-              </p>
-              <ul className="space-y-3">
-                {["Persönliche Beratung & Onboarding", "Kompletter Setup durch unsere Experten", "Agent-Training mit Ihren Daten", "Laufende Optimierung & Support"].map((item, i) => (
-                  <li key={i} className="flex items-center space-x-3 text-gray-300">
-                    <CheckCircle className="w-5 h-5 text-[#e2642a] flex-shrink-0" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
+            <div className="relative grid md:grid-cols-2 gap-4 md:gap-6 p-4 md:p-8">
+              {problems.map((problem, index) => (
+                <div
+                  key={index}
+                  className="p-8 md:p-10 rounded-xl bg-white/[0.03] border border-white/5 hover:bg-white/[0.06] hover:border-white/10 transition-all duration-300"
+                >
+                  <div className="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center mb-6">
+                    {problem.icon}
+                  </div>
+                  <h3 className="text-lg font-semibold text-white mb-2">
+                    {problem.title}
+                  </h3>
+                  <p className="text-gray-400 leading-relaxed">
+                    {problem.description}
+                  </p>
+                </div>
+              ))}
             </div>
+          </div>
+
+          <div className="text-center mt-8">
+            <a
+              href="#system"
+              className="inline-flex items-center justify-center bg-[#e2642a] text-white font-semibold py-3 px-8 rounded-full hover:bg-orange-600 transition-all duration-200"
+            >
+              Kenn ich...
+            </a>
           </div>
         </div>
       </section>
 
-      {/* Core Features Section */}
-      <section id="features" className="relative py-24 bg-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* System Section */}
+      <section id="system" className="relative py-24 bg-gray-900">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div ref={featuresRef} className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              Alles, was Sie für KI-Automatisierung brauchen
+            <div className="flex items-center justify-center gap-3 mb-6">
+              <span className="h-px w-8 bg-[#e2642a]/50"></span>
+              <span className="text-xs font-semibold tracking-widest text-[#e2642a] uppercase">
+                Das System
+              </span>
+              <span className="h-px w-8 bg-[#e2642a]/50"></span>
+            </div>
+            <h2 className="font-serif italic text-3xl md:text-4xl text-white mb-6 max-w-3xl mx-auto leading-tight">
+              Ihr Team hat <span className="text-[#e2642a]">Feierabend.</span>{" "}
+              Ihr System nicht.
             </h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Unsere All-in-One-Plattform bietet alle Features für professionelle KI-Agents – auf WhatsApp, Website und Telefon.
+            <p className="text-gray-400 max-w-2xl mx-auto">
+              Ich helfe Unternehmen und Praxen dabei keine Anfragen mehr
+              unbemerkt zu verpassen.
             </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            {systemPillars.map((pillar, index) => (
+              <AnimatedCard
+                key={index}
+                delay={index * 0.1}
+                className={`relative overflow-hidden bg-gray-800/50 border border-gray-700 rounded-2xl p-8 ${index === 0 ? "md:col-span-2 md:flex md:items-center md:gap-8" : index === 3 ? "md:col-span-2 md:flex md:items-center md:gap-8" : ""}`}
+              >
+                <div className={index === 0 || index === 3 ? "flex-1" : ""}>
+                  <div className="w-11 h-11 bg-white/5 rounded-xl flex items-center justify-center mb-6">
+                    {pillar.icon}
+                  </div>
+                  <h3 className="text-lg font-semibold text-white mb-2">
+                    {pillar.title}
+                  </h3>
+                  <p className="text-gray-400 leading-relaxed text-sm">
+                    {pillar.description}
+                  </p>
+                </div>
+                {index === 0 && (
+                  <div className="mt-6 md:mt-0 w-full md:w-64 aspect-[2358/1662] rounded-xl border border-white/10 shadow-lg shrink-0 overflow-hidden">
+                    <video
+                      className="w-full h-full object-cover"
+                      src="/SofortAntwort-final.mp4"
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                    />
+                  </div>
+                )}
+                {index === 3 && (
+                  <div className="mt-6 md:mt-0 w-full md:w-64 rounded-xl border border-white/10 shadow-lg shrink-0 overflow-hidden">
+                    <img
+                      className="w-full h-full object-cover"
+                      src="/handoverNew.png"
+                      alt="Live-Übergabe & Analytics"
+                    />
+                  </div>
+                )}
+              </AnimatedCard>
+            ))}
+          </div>
+
+          <div className="text-center mt-12">
+            <button
+              onClick={() => setShowContactForm(true)}
+              className="inline-flex items-center justify-center bg-[#e2642a] text-white font-semibold py-3 px-8 rounded-full hover:bg-orange-600 transition-all duration-200"
+            >
+              Jetzt System sichern
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Arbeitsweise Section */}
+      <section id="arbeitsweise" className="relative py-24 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <div className="flex items-center justify-center gap-3 mb-6">
+              <span className="h-px w-8 bg-[#e2642a]/50"></span>
+              <span className="text-xs font-semibold tracking-widest text-[#e2642a] uppercase">
+                So arbeiten wir
+              </span>
+              <span className="h-px w-8 bg-[#e2642a]/50"></span>
+            </div>
+            <h2 className="font-serif italic text-3xl md:text-4xl text-gray-900">
+              Sie fragen sich, wie das Ganze abläuft?
+            </h2>
+          </div>
+
+          <div className="relative pl-10 md:pl-14">
+            <div className="space-y-6">
+              {workingMethods.map((method, index) => {
+                const active = activeMethod === index;
+                return (
+                  <div key={index} className="relative">
+                    {index < workingMethods.length - 1 && (
+                      <div className="absolute -left-10 md:-left-14 top-14 bottom-6 w-4 flex justify-center">
+                        <span className="w-px bg-gray-900"></span>
+                      </div>
+                    )}
+                    <span className="absolute -left-10 md:-left-14 top-10 w-4 h-4 flex items-center justify-center">
+                      {active && (
+                        <span className="absolute w-8 h-8 rounded-full bg-[#e2642a]/20"></span>
+                      )}
+                      <span
+                        className={`relative w-4 h-4 rounded-full border-2 flex items-center justify-center transition-all duration-300 ${
+                          active
+                            ? "bg-white border-[#e2642a]"
+                            : "bg-gray-900 border-gray-900"
+                        }`}
+                      >
+                        {active && (
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#e2642a]"></span>
+                        )}
+                      </span>
+                    </span>
+                    <div
+                      ref={(el) => {
+                        methodRefs.current[index] = el;
+                      }}
+                      className={`rounded-2xl p-8 md:p-10 border transition-colors duration-1000 relative ${
+                        active
+                          ? "bg-gray-900 border-gray-800"
+                          : "bg-white border-gray-200"
+                      }`}
+                    >
+                      <div
+                        className={
+                          index === 0 || index === 1 || index === 2
+                            ? "grid md:grid-cols-2 gap-8 md:gap-10 items-center"
+                            : ""
+                        }
+                      >
+                        <div>
+                          <div
+                            className={`text-xs mb-2 flex items-center gap-2 transition-colors duration-1000 ${active ? "text-gray-500" : "text-gray-400"}`}
+                          >
+                            <span>{String(index + 1).padStart(2, "0")}</span>
+                            <span
+                              className={
+                                active ? "text-[#e2642a]" : "text-[#e2642a]"
+                              }
+                            >
+                              {method.tag}
+                            </span>
+                          </div>
+                          <h3
+                            className={`text-2xl font-bold mb-3 transition-colors duration-1000 ${active ? "text-white" : "text-gray-900"}`}
+                          >
+                            {method.title}
+                          </h3>
+                          <p
+                            className={`mb-6 leading-relaxed transition-colors duration-1000 ${active ? "text-gray-400" : "text-gray-600"}`}
+                          >
+                            {method.description}
+                          </p>
+                          <div className="flex flex-wrap gap-2">
+                            {method.points.map((point, i) => (
+                              <span
+                                key={i}
+                                className={`inline-flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-full border transition-colors duration-1000 ${
+                                  active
+                                    ? "border-gray-700 text-gray-300"
+                                    : "border-gray-200 text-gray-600"
+                                }`}
+                              >
+                                <CheckCircle className="w-3.5 h-3.5 text-[#e2642a] flex-shrink-0" />
+                                {point}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+
+                        {index === 0 && (
+                          <div className="rounded-xl border border-gray-800 bg-gray-950 overflow-hidden">
+                            <div className="flex items-center justify-between px-5 py-3 border-b border-gray-800">
+                              <div className="flex items-center gap-2">
+                                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                                <span className="text-white text-xs font-medium">
+                                  Kennenlernen &amp; Demo-Call
+                                </span>
+                              </div>
+                              <span className="text-gray-500 text-xs font-mono">
+                                32:14
+                              </span>
+                            </div>
+
+                            <div className="flex items-center justify-center gap-8 py-8">
+                              <div className="flex flex-col items-center gap-2">
+                                <div className="w-12 h-12 rounded-full bg-[#e2642a] flex items-center justify-center text-white text-sm font-semibold">
+                                  M
+                                </div>
+                                <div className="text-center">
+                                  <div className="text-white text-xs font-semibold">
+                                    Maxi
+                                  </div>
+                                  <div className="text-gray-500 text-[11px]">
+                                    Gründer
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="flex flex-col items-center gap-2">
+                                <div className="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center text-white text-sm font-semibold">
+                                  Du
+                                </div>
+                                <div className="text-center">
+                                  <div className="text-white text-xs font-semibold">
+                                    Du
+                                  </div>
+                                  <div className="text-gray-500 text-[11px]">
+                                    Ansprechpartner
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="flex items-center justify-center gap-2.5 px-5 pb-5">
+                              <button
+                                type="button"
+                                aria-label="Mikrofon"
+                                className="w-9 h-9 rounded-full bg-gray-800 flex items-center justify-center text-gray-300 hover:bg-gray-700 transition-colors"
+                              >
+                                <svg
+                                  className="w-3.5 h-3.5"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                >
+                                  <rect
+                                    x="9"
+                                    y="2"
+                                    width="6"
+                                    height="12"
+                                    rx="3"
+                                  />
+                                  <path d="M5 10a7 7 0 0 0 14 0" />
+                                  <path d="M12 19v3" />
+                                </svg>
+                              </button>
+                              <button
+                                type="button"
+                                aria-label="Kamera"
+                                className="w-9 h-9 rounded-full bg-gray-800 flex items-center justify-center text-gray-300 hover:bg-gray-700 transition-colors"
+                              >
+                                <svg
+                                  className="w-3.5 h-3.5"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                >
+                                  <rect
+                                    x="2"
+                                    y="6"
+                                    width="14"
+                                    height="12"
+                                    rx="2"
+                                  />
+                                  <path d="M16 10l6-3v10l-6-3" />
+                                </svg>
+                              </button>
+                              <button
+                                type="button"
+                                aria-label="Bildschirm teilen"
+                                className="w-9 h-9 rounded-full bg-gray-800 flex items-center justify-center text-gray-300 hover:bg-gray-700 transition-colors"
+                              >
+                                <svg
+                                  className="w-3.5 h-3.5"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                >
+                                  <rect
+                                    x="2"
+                                    y="4"
+                                    width="20"
+                                    height="13"
+                                    rx="2"
+                                  />
+                                  <path d="M8 21h8M12 17v4" />
+                                </svg>
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => setShowContactForm(true)}
+                                aria-label="Gespräch buchen"
+                                className="w-9 h-9 rounded-full bg-[#e2642a] flex items-center justify-center text-white hover:bg-orange-600 transition-colors"
+                              >
+                                <svg
+                                  className="w-3.5 h-3.5"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                >
+                                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.9.33 1.79.63 2.65a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.43-1.2a2 2 0 0 1 2.11-.45c.86.3 1.75.51 2.65.63A2 2 0 0 1 22 16.92z" />
+                                </svg>
+                              </button>
+                            </div>
+                          </div>
+                        )}
+
+                        {index === 1 && (
+                          <div className="rounded-xl border border-gray-800 bg-gray-950 overflow-hidden">
+                            <div className="flex items-center justify-between px-5 py-3 border-b border-gray-800">
+                              <div className="flex items-center gap-2">
+                                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                                <span className="text-white text-xs font-medium">
+                                  Setup &amp; Einrichtung
+                                </span>
+                              </div>
+                              <span className="text-gray-500 text-xs font-mono">
+                                100%
+                              </span>
+                            </div>
+
+                            <div className="px-6 py-8 flex flex-col items-center">
+                              <div className="relative w-28 h-28 mb-6">
+                                <svg
+                                  className="w-full h-full -rotate-90"
+                                  viewBox="0 0 100 100"
+                                >
+                                  <circle
+                                    cx="50"
+                                    cy="50"
+                                    r="42"
+                                    fill="none"
+                                    stroke="#1f2937"
+                                    strokeWidth="8"
+                                  />
+                                  <circle
+                                    cx="50"
+                                    cy="50"
+                                    r="42"
+                                    fill="none"
+                                    stroke="#e2642a"
+                                    strokeWidth="8"
+                                    strokeDasharray={2 * Math.PI * 42}
+                                    strokeDashoffset={0}
+                                    strokeLinecap="round"
+                                  />
+                                </svg>
+                                <div className="absolute inset-0 flex items-center justify-center">
+                                  <span className="text-white text-2xl font-bold">
+                                    100%
+                                  </span>
+                                </div>
+                              </div>
+                              <div className="flex items-center gap-2 text-white text-sm font-semibold mb-1">
+                                <CheckCircle className="w-4 h-4 text-[#e2642a] flex-shrink-0" />
+                                <span>Einrichtung abgeschlossen</span>
+                              </div>
+                              <p className="text-gray-500 text-xs text-center leading-relaxed">
+                                Alle Zugänge, Daten &amp; Trainings sind bereit.
+                              </p>
+                            </div>
+                          </div>
+                        )}
+
+                        {index === 2 && (
+                          <div className="rounded-xl border border-gray-800 bg-gray-950 overflow-hidden">
+                            <div className="flex items-center justify-between px-5 py-3 border-b border-gray-800">
+                              <div className="flex items-center gap-2">
+                                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                                <span className="text-white text-xs font-medium">
+                                  QuickStartAI Support
+                                </span>
+                              </div>
+                              <span className="flex items-center gap-1.5 text-green-500 text-xs font-medium">
+                                <span className="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
+                                Online
+                              </span>
+                            </div>
+
+                            <div className="px-6 py-6">
+                              <div className="flex items-center justify-between pb-5 mb-5 border-b border-gray-800">
+                                <span className="text-gray-500 text-xs">
+                                  Ø Antwortzeit
+                                </span>
+                                <span className="text-white text-sm font-semibold">
+                                  4 Min.
+                                </span>
+                              </div>
+
+                              <div className="space-y-3">
+                                {[
+                                  "Optimierung",
+                                  "Neue Funktionen",
+                                  "Support",
+                                  "Monitoring",
+                                ].map((item) => (
+                                  <div
+                                    key={item}
+                                    className="flex items-center gap-2.5"
+                                  >
+                                    <CheckCircle className="w-4 h-4 text-[#e2642a] flex-shrink-0" />
+                                    <span className="text-gray-300 text-sm">
+                                      {item}
+                                    </span>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="text-center mt-12">
+            <button
+              onClick={() => setShowContactForm(true)}
+              className="inline-flex items-center justify-center bg-[#e2642a] text-white font-semibold py-3 px-8 rounded-full hover:bg-orange-600 transition-all duration-200"
+            >
+              Jetzt Zusammenarbeit anfragen
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Ergebnisse / Testimonials Section */}
+      <section id="ergebnisse" className="relative py-24 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div ref={resultsHeadingRef} className="text-center mb-16">
+            <div className="flex items-center justify-center gap-3 mb-6">
+              <span className="h-px w-8 bg-[#e2642a]/50"></span>
+              <span className="text-xs font-semibold tracking-widest text-[#e2642a] uppercase">
+                Resultate
+              </span>
+              <span className="h-px w-8 bg-[#e2642a]/50"></span>
+            </div>
+            <h2 className="font-serif italic text-4xl md:text-5xl text-gray-900 mb-6">
+              Das sagen unsere Kunden.
+            </h2>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {coreFeatures.map((feature, index) => (
+            {testimonials.map((testimonial, index) => (
               <AnimatedCard
                 key={index}
-                delay={index * 0.1}
-                className="bg-gray-900/60 backdrop-blur-md border border-gray-600/50 p-8 rounded-2xl hover:bg-gray-900/80 hover:scale-105 hover:border-[#e2642a]/50 transition-all duration-300 group shadow-xl"
+                delay={index * 0.05}
+                className="bg-white border border-gray-200 p-8 rounded-2xl hover:shadow-lg hover:border-[#e2642a]/50 transition-all duration-300 shadow-xl flex flex-col"
               >
-                <div className="w-14 h-14 bg-orange-900/30 rounded-xl flex items-center justify-center mb-6 group-hover:bg-[#e2642a]/20 transition-colors">
-                  {feature.icon}
+                <div className="text-[#e2642a] font-bold text-sm mb-3">
+                  {testimonial.stat}
                 </div>
-                <h3 className="text-xl font-semibold text-white mb-3 group-hover:text-[#e2642a] transition-colors">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-300 leading-relaxed">{feature.description}</p>
+                <p className="text-gray-600 leading-relaxed mb-6 flex-1">
+                  &ldquo;{testimonial.quote}&rdquo;
+                </p>
+                <div className="flex items-center gap-3">
+                  <img
+                    src={testimonial.image}
+                    alt={testimonial.name}
+                    className="w-12 h-12 rounded-full object-cover"
+                  />
+                  <div>
+                    <div className="font-semibold text-gray-900">
+                      {testimonial.name}
+                    </div>
+                    <div className="text-gray-500 text-sm">
+                      {testimonial.role}
+                    </div>
+                  </div>
+                </div>
               </AnimatedCard>
             ))}
+          </div>
+
+          <div className="text-center mt-12">
+            <button
+              onClick={() => setShowContactForm(true)}
+              className="inline-flex items-center justify-center bg-[#e2642a] text-white font-semibold py-3 px-8 rounded-full hover:bg-orange-600 transition-all duration-200"
+            >
+              Wünsche ich mir auch!
+            </button>
           </div>
         </div>
       </section>
 
-      {/* Use Cases Section */}
-      <section id="usecases" className="relative py-24 bg-gray-900">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              Für jede Branche der passende Agent
-            </h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Von E-Commerce bis Immobilien – KI-Automatisierung für Ihr Business
-            </p>
-          </div>
+      {/* Über Maximilian Section */}
+      <section id="ueber-uns" className="relative py-24 bg-gray-950">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div
+            className="relative rounded-2xl overflow-hidden bg-gray-900 bg-cover bg-center min-h-[420px] md:min-h-[480px] flex items-center"
+            style={{ backgroundImage: "url('/MaximilianHero.png')" }}
+          >
+            {/* Dark gradient overlay for legibility, kept off the left where the person is */}
+            <div className="absolute inset-0 bg-gradient-to-l from-gray-900/90 via-gray-900/50 to-transparent" />
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {useCases.map((useCase, index) => (
-              <AnimatedCard
-                key={index}
-                delay={index * 0.1}
-                className="bg-gray-800/40 backdrop-blur-md border border-gray-600/50 p-8 rounded-2xl hover:bg-gray-800/60 hover:scale-105 hover:border-[#e2642a]/50 transition-all duration-300 group shadow-xl"
+            <div className="relative p-8 md:p-14 max-w-lg ml-auto">
+              <div className="flex items-center gap-3 mb-6">
+                <span className="h-px w-8 bg-[#e2642a]/50"></span>
+                <span className="text-xs font-semibold tracking-widest text-[#e2642a] uppercase">
+                  Über Maximilian
+                </span>
+                <span className="h-px w-8 bg-[#e2642a]/50"></span>
+              </div>
+              <h2 className="font-serif italic text-3xl md:text-4xl text-white mb-6 leading-tight">
+                Ich helfe Unternehmen, jede Anfrage sofort zu beantworten und
+                vorzuqualifizieren.
+              </h2>
+              <p className="text-gray-300 leading-relaxed mb-4"></p>
+              <p className="text-sm text-gray-400 mb-6">
+                AI Engineer &amp; Gründer aus München
+              </p>
+              <p className="text-xs font-semibold tracking-widest text-gray-400 uppercase mb-8">
+                +50 Unternehmen beraten
+              </p>
+              <button
+                onClick={() => setShowContactForm(true)}
+                className="inline-flex items-center justify-center bg-[#e2642a] text-white font-semibold py-3 px-8 rounded-full hover:bg-orange-600 transition-all duration-200"
               >
-                <div className="mb-5">{useCase.icon}</div>
-                <div className="text-[#e2642a] font-bold text-sm mb-2">{useCase.stat}</div>
-                <h3 className="text-lg font-semibold text-white mb-3 group-hover:text-[#e2642a] transition-colors">
-                  {useCase.title}
-                </h3>
-                <p className="text-gray-300 leading-relaxed text-sm">{useCase.description}</p>
-              </AnimatedCard>
-            ))}
+                Wie sieht das aus
+              </button>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Benefits / Why Us Section */}
-      <section id="benefits" className="relative py-24 bg-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div ref={benefitsRef} className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              Warum QuickStartAI?
-            </h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Eine Plattform. Alle Kanäle. Volle Flexibilität.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {benefits.map((benefit, index) => (
-              <AnimatedCard
-                key={index}
-                delay={index * 0.1}
-                className="bg-gray-900/60 backdrop-blur-md border border-gray-600/50 p-8 rounded-2xl hover:bg-gray-900/80 hover:scale-105 hover:border-[#e2642a]/50 transition-all duration-300 group shadow-xl"
-              >
-                <div className="mb-6">{benefit.icon}</div>
-                <h3 className="text-xl font-semibold text-white mb-4 group-hover:text-[#e2642a] transition-colors">
-                  {benefit.title}
-                </h3>
-                <p className="text-gray-300 leading-relaxed">{benefit.description}</p>
-              </AnimatedCard>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Integrations Section */}
-      <section className="relative py-20 bg-gray-900">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            40+ Integrationen
-          </h2>
-          <p className="text-xl text-gray-300 mb-12 max-w-2xl mx-auto">
-            Verbinden Sie Ihren KI-Agent mit den Tools, die Sie bereits nutzen
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            {[
-              "WhatsApp Business", "Google Calendar", "Calendly", "Make.com", "n8n",
-              "HubSpot", "Salesforce", "Pipedrive", "Zapier", "Slack",
-              "Zendesk", "Notion", "Airtable", "OpenAI"
-            ].map((tool, index) => (
-              <span
-                key={index}
-                className="bg-gray-800/60 border border-gray-600/50 text-gray-300 px-4 py-2 rounded-full text-sm hover:border-[#e2642a]/50 hover:text-white transition-all duration-200"
-              >
-                {tool}
+      {/* Prozess Section */}
+      <section id="prozess" className="relative py-24 bg-gray-900">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-20">
+            <div className="flex items-center justify-center gap-3 mb-6">
+              <span className="h-px w-8 bg-[#e2642a]/50"></span>
+              <span className="text-xs font-semibold tracking-widest text-[#e2642a] uppercase">
+                Der Prozess
               </span>
+              <span className="h-px w-8 bg-[#e2642a]/50"></span>
+            </div>
+            <h2 className="font-serif italic text-3xl md:text-4xl text-white mb-4">
+              So einfach geht&apos;s!
+            </h2>
+            <p className="text-xl text-gray-400 max-w-3xl mx-auto"></p>
+          </div>
+
+          {/* Desktop: circles connected by a dashed wavy line */}
+          <div className="hidden md:flex items-start">
+            {processSteps.map((step, index) => (
+              <div
+                key={index}
+                className="flex items-start flex-1 last:flex-none"
+              >
+                <div className="flex flex-col items-center text-center w-48">
+                  <div
+                    className={`w-14 h-14 rounded-full flex items-center justify-center mb-6 text-xl font-bold shadow-lg ${
+                      index === 1
+                        ? "bg-[#e2642a] text-white"
+                        : "bg-white text-[#e2642a]"
+                    }`}
+                  >
+                    {index + 1}
+                  </div>
+                  <h3 className="text-lg font-semibold text-white mb-2">
+                    {step.title}
+                  </h3>
+                  <p className="text-gray-400 text-sm leading-relaxed">
+                    {step.description}
+                  </p>
+                </div>
+                {index < processSteps.length - 1 && (
+                  <svg
+                    className="flex-1 mt-6 w-full h-16"
+                    viewBox="0 0 300 64"
+                    preserveAspectRatio="none"
+                  >
+                    <defs>
+                      <linearGradient
+                        id={`processLineGradient-${index}`}
+                        x1="0%"
+                        y1="0%"
+                        x2="100%"
+                        y2="0%"
+                      >
+                        <stop
+                          offset="0%"
+                          stopColor="#ffffff"
+                          stopOpacity="0.22"
+                        />
+                        <stop
+                          offset="35%"
+                          stopColor="#ffffff"
+                          stopOpacity="0.55"
+                        />
+                        <stop
+                          offset="50%"
+                          stopColor="#ffffff"
+                          stopOpacity="1"
+                        />
+                        <stop
+                          offset="65%"
+                          stopColor="#ffffff"
+                          stopOpacity="0.55"
+                        />
+                        <stop
+                          offset="100%"
+                          stopColor="#ffffff"
+                          stopOpacity="0.22"
+                        />
+                      </linearGradient>
+                    </defs>
+                    <path
+                      d="M22,28 C90,28 110,58 170,56 C210,54 250,30 278,26"
+                      fill="none"
+                      stroke={`url(#processLineGradient-${index})`}
+                      strokeWidth="3"
+                      strokeDasharray="10 10"
+                      strokeLinecap="butt"
+                      vectorEffect="non-scaling-stroke"
+                    />
+                  </svg>
+                )}
+              </div>
             ))}
-            <span className="bg-gray-800/60 border border-gray-600/50 text-gray-300 pl-2 pr-4 py-1.5 rounded-full text-sm hover:border-[#e2642a]/50 hover:text-white transition-all duration-200 flex items-center gap-2">
-              <div className="w-5 h-5 overflow-hidden rounded"><img src="/shopifyLogo.png" alt="Shopify" className="w-full h-full object-cover" /></div>
-              Shopify
-            </span>
-            <span className="bg-[#e2642a]/20 border border-[#e2642a]/40 text-[#e2642a] px-4 py-2 rounded-full text-sm font-medium">
-              + viele mehr
-            </span>
+          </div>
+
+          {/* Mobile: stacked list */}
+          <div className="md:hidden space-y-10">
+            {processSteps.map((step, index) => (
+              <div key={index} className="text-center">
+                <div className="w-14 h-14 mx-auto rounded-full bg-white flex items-center justify-center mb-4 text-xl font-bold text-[#e2642a] shadow-lg">
+                  {index + 1}
+                </div>
+                <h3 className="text-lg font-semibold text-white mb-2">
+                  {step.title}
+                </h3>
+                <p className="text-gray-400 text-sm leading-relaxed">
+                  {step.description}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center mt-16">
+            <button
+              onClick={() => setShowContactForm(true)}
+              className="inline-flex items-center justify-center bg-[#e2642a] text-white font-semibold py-3 px-8 rounded-full hover:bg-orange-600 transition-all duration-200"
+            >
+              Quiz starten
+            </button>
           </div>
         </div>
       </section>
 
       {/* FAQ Section */}
-      <section id="faq" className="relative py-24 bg-gray-800">
+      <section id="faq" className="relative py-24 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+            <h2 className="font-serif italic text-3xl md:text-4xl text-gray-900 mb-4">
               Häufig gestellte Fragen
             </h2>
-            <p className="text-xl text-gray-300">
-              Alles, was Sie über unsere KI-Agent-Plattform wissen müssen
+            <p className="text-xl text-gray-600">
+              Alles, was Sie über unseren KI-Assistenten wissen müssen
             </p>
           </div>
 
@@ -684,24 +1176,209 @@ function HomePage() {
             {faqs.map((faq, index) => (
               <div
                 key={index}
-                className="bg-gray-900/40 backdrop-blur-md border border-gray-600/50 rounded-xl shadow-lg"
+                className="bg-white border border-gray-200 rounded-xl shadow-lg"
               >
                 <button
                   onClick={() => toggleFaq(index)}
-                  className="w-full px-8 py-6 text-left flex justify-between items-center hover:bg-gray-900/60 transition-colors rounded-xl"
+                  className="w-full px-8 py-6 text-left flex justify-between items-center hover:shadow-lg transition-colors rounded-xl"
                 >
-                  <span className="font-semibold text-white">{faq.question}</span>
+                  <span className="font-semibold text-gray-900">
+                    {faq.question}
+                  </span>
                   <ChevronDown
                     className={`w-5 h-5 text-gray-400 transition-transform flex-shrink-0 ml-4 ${openFaq === index ? "rotate-180" : ""}`}
                   />
                 </button>
                 {openFaq === index && (
                   <div className="px-8 pb-6">
-                    <p className="text-gray-300 leading-relaxed">{faq.answer}</p>
+                    <p className="text-gray-600 leading-relaxed">
+                      {faq.answer}
+                    </p>
                   </div>
                 )}
               </div>
             ))}
+          </div>
+
+          <div className="text-center mt-12">
+            <button
+              onClick={() => setShowContactForm(true)}
+              className="inline-flex items-center justify-center bg-[#e2642a] text-white font-semibold py-3 px-8 rounded-full hover:bg-orange-600 transition-all duration-200"
+            >
+              Noch Fragen? Jetzt anfragen
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Termin Section */}
+      <section id="termin" className="relative py-24 bg-gray-50">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="relative bg-gray-900 rounded-2xl overflow-hidden grid md:grid-cols-2">
+            {/* Subtle grid overlay */}
+            <div
+              className="pointer-events-none absolute inset-0 opacity-[0.04]"
+              style={{
+                backgroundImage:
+                  "linear-gradient(rgba(255,255,255,.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.5) 1px, transparent 1px)",
+                backgroundSize: "40px 40px",
+              }}
+            />
+            {/* Glow blob */}
+            <div
+              className="pointer-events-none absolute -top-24 -left-24 w-[400px] h-[300px] rounded-full opacity-20"
+              style={{
+                background:
+                  "radial-gradient(ellipse, #e2642a 0%, transparent 70%)",
+              }}
+            />
+
+            <div className="relative p-8 md:p-14 flex flex-col justify-center">
+              <div className="flex items-center gap-3 mb-6">
+                <span className="h-px w-8 bg-[#e2642a]/50"></span>
+                <span className="text-xs font-semibold tracking-widest text-[#e2642a] uppercase">
+                  Zusammenarbeit
+                </span>
+                <span className="h-px w-8 bg-[#e2642a]/50"></span>
+              </div>
+              <h2 className="font-serif italic text-3xl md:text-4xl text-white mb-6 leading-tight">
+                Finden wir gemeinsam heraus, ob es sich für Sie lohnt.
+              </h2>
+              <p className="text-gray-400 leading-relaxed mb-4">
+                Im kostenlosen Gespräch erhalten Sie eine persönliche Demo und
+                eine ehrliche Einschätzung.
+              </p>
+              <p className="text-gray-400 leading-relaxed mb-8">
+                Im besten Fall gewinnen Sie ein System, das Ihr Team täglich
+                entlastet. Im schlechtesten Fall gehen Sie mit neuen Ideen nach
+                Hause.
+              </p>
+              <p className="text-sm text-gray-500">+50 Unternehmen beraten</p>
+            </div>
+
+            <div className="relative m-4 md:m-8 md:ml-0 bg-white rounded-xl p-8 md:p-10 shadow-2xl">
+              {isScheduleSubmitted ? (
+                <div className="text-center py-10">
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <CheckCircle className="w-8 h-8 text-green-600" />
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">
+                    Anfrage gesendet!
+                  </h3>
+                  <p className="text-gray-600">
+                    Wir melden uns innerhalb von 24 Stunden bei Ihnen.
+                  </p>
+                </div>
+              ) : (
+                <form onSubmit={handleScheduleSubmit} className="space-y-5">
+                  <div>
+                    <label
+                      htmlFor="schedule-name"
+                      className="block text-sm font-medium text-gray-700 mb-2"
+                    >
+                      Name *
+                    </label>
+                    <input
+                      type="text"
+                      id="schedule-name"
+                      name="name"
+                      value={scheduleData.name}
+                      onChange={handleScheduleChange}
+                      placeholder="Max Mustermann"
+                      className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#e2642a] focus:border-transparent outline-none transition-all text-gray-900 placeholder-gray-400"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="schedule-email"
+                      className="block text-sm font-medium text-gray-700 mb-2"
+                    >
+                      Deine E-Mail-Adresse *
+                    </label>
+                    <input
+                      type="email"
+                      id="schedule-email"
+                      name="email"
+                      value={scheduleData.email}
+                      onChange={handleScheduleChange}
+                      placeholder="max@mustermann.de"
+                      className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#e2642a] focus:border-transparent outline-none transition-all text-gray-900 placeholder-gray-400"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="schedule-phone"
+                      className="block text-sm font-medium text-gray-700 mb-2"
+                    >
+                      Deine Telefonnummer *
+                    </label>
+                    <input
+                      type="tel"
+                      id="schedule-phone"
+                      name="phone"
+                      value={scheduleData.phone}
+                      onChange={handleScheduleChange}
+                      placeholder="+49 123 3456"
+                      className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#e2642a] focus:border-transparent outline-none transition-all text-gray-900 placeholder-gray-400"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="schedule-reachability"
+                      className="block text-sm font-medium text-gray-700 mb-2"
+                    >
+                      Wann bist du erreichbar?
+                    </label>
+                    <select
+                      id="schedule-reachability"
+                      name="reachability"
+                      value={scheduleData.reachability}
+                      onChange={handleScheduleChange}
+                      className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#e2642a] focus:border-transparent outline-none transition-all text-gray-900"
+                    >
+                      <option value="">Uhrzeit auswählen</option>
+                      <option value="Vormittags (9-12 Uhr)">
+                        Vormittags (9-12 Uhr)
+                      </option>
+                      <option value="Mittags (12-15 Uhr)">
+                        Mittags (12-15 Uhr)
+                      </option>
+                      <option value="Nachmittags (15-18 Uhr)">
+                        Nachmittags (15-18 Uhr)
+                      </option>
+                      <option value="Abends (18-20 Uhr)">
+                        Abends (18-20 Uhr)
+                      </option>
+                    </select>
+                  </div>
+                  <button
+                    type="submit"
+                    disabled={isScheduleSubmitting}
+                    className="w-full bg-[#e2642a] text-white font-semibold py-3.5 px-6 rounded-lg hover:bg-orange-600 transition-all duration-200 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isScheduleSubmitting ? (
+                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    ) : (
+                      "Termin vereinbaren!"
+                    )}
+                  </button>
+                  <p className="text-xs text-gray-400 text-center">
+                    Informationen zur Verarbeitung deiner Daten findest du in
+                    unserer{" "}
+                    <Link
+                      to="/datenschutz"
+                      className="underline hover:text-gray-600"
+                    >
+                      Datenschutzerklärung
+                    </Link>
+                    .
+                  </p>
+                </form>
+              )}
+            </div>
           </div>
         </div>
       </section>
@@ -711,109 +1388,85 @@ function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-r from-[#e2642a] to-orange-600"></div>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="relative z-10">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-              Bereit für Ihren ersten KI-Agent?
+            <h2 className="font-serif italic text-3xl md:text-4xl text-gray-900 mb-6">
+              Bereit, keine Anfrage mehr zu verlieren?
             </h2>
-            <p className="text-xl text-white/90 mb-12">
-              Starten Sie jetzt kostenlos. Ihre Demo ist in unter 24 Stunden bereit – unverbindlich.
+            <p className="text-xl text-white/90 mb-10">
+              Unverbindlich. Antwort innerhalb von 24 Stunden.
             </p>
 
-            <div className="bg-gray-900/80 backdrop-blur-md border border-gray-600/50 rounded-2xl p-8 max-w-2xl mx-auto shadow-2xl">
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <input
-                  type="url"
-                  value={websiteUrl}
-                  onChange={(e) => setWebsiteUrl(e.target.value)}
-                  placeholder="https://ihre-website.de"
-                  className="w-full px-6 py-4 text-lg bg-white/10 border border-white/20 rounded-xl focus:ring-2 focus:ring-white focus:border-transparent outline-none text-white placeholder-white/60"
-                  required
-                />
-                <button
-                  type="submit"
-                  className="w-full bg-white text-[#e2642a] font-semibold py-4 px-8 rounded-xl text-lg hover:bg-gray-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 flex items-center justify-center space-x-2"
-                >
-                  <span>Jetzt Demo-Agent anfordern</span>
-                  <ArrowRight className="w-5 h-5" />
-                </button>
-              </form>
-              <p className="text-sm text-white/80 mt-4 flex items-center justify-center space-x-2">
-                <CheckCircle className="w-4 h-4" />
-                <span>Kostenlos • Unverbindlich • Keine Kreditkarte</span>
-              </p>
-            </div>
+            <button
+              onClick={() => setShowContactForm(true)}
+              className="bg-white text-[#e2642a] font-semibold py-4 px-10 rounded-xl text-lg hover:bg-gray-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 inline-flex items-center justify-center space-x-2"
+            >
+              <span>Zusammenarbeit anfragen</span>
+              <ArrowRight className="w-5 h-5" />
+            </button>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="relative text-white py-16 bg-gray-800">
+      <footer className="relative text-gray-900 py-10 bg-gray-50 border-t border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div>
-              <div className="flex items-center mb-4">
-                <img src="/Firmenlogo-removebg-preview.png" alt="QuickStartAI Logo" className="h-8 w-auto mr-2" />
-                <span className="text-xl font-bold">QuickStartAI</span>
-              </div>
-              <p className="text-gray-300">
-                Ihre KI-Agentur für All-in-One KI-Agent-Lösungen – auf WhatsApp, Website und Telefon.
-              </p>
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+            <div className="flex items-center">
+              <img
+                src="/Firmenlogo-removebg-preview.png"
+                alt="QuickStartAI Logo"
+                className="h-8 w-auto mr-2"
+              />
+              <span className="text-lg font-bold">QuickStartAI</span>
             </div>
 
-            <div>
-              <h4 className="font-semibold mb-4">Plattform</h4>
-              <ul className="space-y-2 text-gray-300">
-                <li><a href="#features" className="hover:text-white transition-colors">Features</a></li>
-                <li><a href="#usecases" className="hover:text-white transition-colors">Anwendungsfälle</a></li>
-                <li><Link to="/sales#pricing" className="hover:text-white transition-colors">Preise</Link></li>
-                <li><Link to="/blog" className="hover:text-white transition-colors">Blog</Link></li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-semibold mb-4">Support</h4>
-              <ul className="space-y-2 text-gray-300">
-                <li><a href="#faq" className="hover:text-white transition-colors">FAQ</a></li>
-                <li>
-                  <button onClick={() => setShowContactForm(true)} className="hover:text-white transition-colors">
-                    Kontakt
-                  </button>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-semibold mb-4">Unternehmen</h4>
-              <ul className="space-y-2 text-gray-300">
-                <li><Link to="/sales" className="hover:text-white transition-colors">Sales</Link></li>
-                <li><Link to="/agb" className="hover:text-white transition-colors">AGB</Link></li>
-                <li><Link to="/impressum" className="hover:text-white transition-colors">Impressum</Link></li>
-                <li><Link to="/datenschutz" className="hover:text-white transition-colors">Datenschutz</Link></li>
-              </ul>
-            </div>
+            <nav className="flex flex-wrap items-center gap-x-8 gap-y-2 text-gray-600 text-sm">
+              <a
+                href="#system"
+                className="hover:text-gray-900 transition-colors"
+              >
+                Das System
+              </a>
+              <a
+                href="#ergebnisse"
+                className="hover:text-gray-900 transition-colors"
+              >
+                Ergebnisse
+              </a>
+              <a href="#faq" className="hover:text-gray-900 transition-colors">
+                FAQ
+              </a>
+              <button
+                onClick={() => setShowContactForm(true)}
+                className="hover:text-gray-900 transition-colors"
+              >
+                Kontakt
+              </button>
+            </nav>
           </div>
 
-          <div className="border-t border-gray-700 mt-12 pt-8">
-            <div className="flex flex-col md:flex-row items-center justify-between">
-              <div className="flex items-center space-x-4 mb-4 md:mb-0">
-                <div className="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center">
-                  <img src="/ProfilBild.jpg" alt="Profilbild Maximilian Theele" className="w-16 h-16 rounded-full object-cover" />
-                </div>
-                <div>
-                  <div className="font-semibold text-white">Maximilian Theele</div>
-                  <div className="text-gray-300">Geschäftsführer</div>
-                </div>
-              </div>
-              <div className="text-center text-gray-300">
-                <p>&copy; 2025 QuickStartAI. Alle Rechte vorbehalten.</p>
-              </div>
+          <div className="border-t border-gray-200 mt-8 pt-6 flex flex-col-reverse md:flex-row items-center justify-between gap-4 text-sm text-gray-500">
+            <p>&copy; 2025 QuickStartAI. Alle Rechte vorbehalten.</p>
+            <div className="flex items-center gap-6">
+              <Link
+                to="/datenschutz"
+                className="hover:text-gray-900 transition-colors"
+              >
+                Datenschutz
+              </Link>
+              <Link
+                to="/impressum"
+                className="hover:text-gray-900 transition-colors"
+              >
+                Impressum
+              </Link>
+              <Link to="/agb" className="hover:text-gray-900 transition-colors">
+                AGB
+              </Link>
             </div>
           </div>
         </div>
       </footer>
 
-      {showDemoModal && (
-        <DemoModal websiteUrl={websiteUrl} onClose={() => setShowDemoModal(false)} />
-      )}
       {showContactForm && (
         <ContactForm onClose={() => setShowContactForm(false)} />
       )}
@@ -831,7 +1484,10 @@ function App() {
         <Route path="/impressum" element={<ImpressumPage />} />
         <Route path="/datenschutz" element={<PrivacyPage />} />
         <Route path="/blog" element={<BlogIndex />} />
-        <Route path="/blog/ki-agenten-erstellen" element={<BlogKIAgentenErstellen />} />
+        <Route
+          path="/blog/ki-agenten-erstellen"
+          element={<BlogKIAgentenErstellen />}
+        />
         <Route path="/ki-demo" element={<KiDemoPage />} />
       </Routes>
     </Router>

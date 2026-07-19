@@ -10,8 +10,13 @@ export interface DemoRequest {
 
 export interface ContactRequest {
   name: string
-  email: string
-  message: string
+  email?: string
+  phone?: string
+  website?: string
+  reachability?: string
+  weeklyRequests?: string
+  channels?: string[]
+  improvementGoal?: string
 }
 
 export interface SalesRequest {
