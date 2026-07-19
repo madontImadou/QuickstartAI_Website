@@ -56,6 +56,32 @@ function HomePage() {
     return () => clearTimeout(timer);
   }, []);
 
+  // Scrollposition merken, damit man beim Neuladen dort weitermacht
+  useEffect(() => {
+    const key = `scrollPos:${window.location.pathname}`;
+    let ticking = false;
+    const handleScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        sessionStorage.setItem(key, String(window.scrollY));
+        ticking = false;
+      });
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    if (isLoading) return;
+    const key = `scrollPos:${window.location.pathname}`;
+    const saved = sessionStorage.getItem(key);
+    if (saved) {
+      const y = parseInt(saved, 10);
+      requestAnimationFrame(() => window.scrollTo(0, y));
+    }
+  }, [isLoading]);
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -166,7 +192,7 @@ function HomePage() {
       icon: <Clock className="w-7 h-7 text-[#e2642a]" />,
       title: "Anfragen verschwinden...",
       description:
-        "weil Interessenten bei Rückrufen nicht mehr erreichbar sind.",
+        "da Interessenten bei Rückrufen nicht erreichbar sind.",
     },
     {
       icon: <RefreshCw className="w-7 h-7 text-[#e2642a]" />,
@@ -177,13 +203,13 @@ function HomePage() {
       icon: <Filter className="w-7 h-7 text-[#e2642a]" />,
       title: "Hoher Personalaufwand...",
       description:
-        "weil jede Anfrage manuell beantwortet, nachverfolgt und dokumentiert werden muss.",
+        "jede Anfrage manuell beantwortet, nachverfolgt und dokumentiert werden muss.",
     },
     {
       icon: <TrendingDown className="w-7 h-7 text-[#e2642a]" />,
-      title: "Anfragen bleiben ungenutzt......",
+      title: "Anfragen bleiben ungenutzt...",
       description:
-        "weil langsame Antworten die Wahrscheinlichkeit für einen echten Termin oder Kauf drastisch senken.",
+        "langsame Antworten die Wahrscheinlichkeit für einen echten Termin oder Kauf drastisch senken.",
     },
   ];
 
@@ -444,9 +470,9 @@ function HomePage() {
             className="font-serif italic text-4xl md:text-6xl text-gray-900 mb-6 leading-tight opacity-0 animate-fade-in-up"
             style={{ animationDelay: "400ms" }}
           >
-            Ihre Anfragen verdienen{" "}
+            Damit Sie auch außerhalb der{" "}
             <span className="bg-gradient-to-r from-[#e2642a] via-orange-400 to-[#e2642a] bg-clip-text text-transparent">
-              sofortige Antworten.
+              Öffnungszeiten erreichbar sind.
             </span>
           </h1>
 
@@ -454,8 +480,8 @@ function HomePage() {
             className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed opacity-0 animate-fade-in-up"
             style={{ animationDelay: "800ms" }}
           >
-            Während der Pause oder nach Feierabend, wird jede
-            neue Anfrage durch unser Fangnetz innerhalb von 5 Sekunden bearbeitet.
+            Beantworten und qualifizieren Sie jede neue Anfrage innerhalb von 5
+            Sekunden.{" "}
           </p>
 
           <div
@@ -1108,7 +1134,7 @@ function HomePage() {
                 onClick={() => setShowContactForm(true)}
                 className="inline-flex items-center justify-center bg-[#e2642a] text-white font-semibold py-3 px-8 rounded-full hover:bg-orange-600 transition-all duration-200"
               >
-                Wie sieht das aus
+                Wie funktioniert das
               </button>
             </div>
           </div>
@@ -1266,9 +1292,7 @@ function HomePage() {
             >
               Häufig gestellte Fragen
             </h2>
-            <p ref={faqTextRef} className="text-xl text-gray-600">
-              
-            </p>
+            <p ref={faqTextRef} className="text-xl text-gray-600"></p>
           </div>
 
           <div className="space-y-6">
@@ -1583,6 +1607,12 @@ function HomePage() {
 }
 
 function App() {
+  useEffect(() => {
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+  }, []);
+
   return (
     <Router>
       <SmoothScroll />
