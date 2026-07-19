@@ -5,3 +5,7 @@
     frame-src https://general-runtime.voiceflow.com;
     style-src 'self' 'unsafe-inline';
     font-src 'self' data:;
+  Cache-Control: public, max-age=0, must-revalidate
+
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
