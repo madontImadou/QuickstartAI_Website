@@ -7,7 +7,11 @@ export default {
         'brand-orange': '#e2642a',
         'brand-orange-dark': '#d55a26',
         'brand-orange-light': '#f97316',
-      }
+      },
+      fontFamily: {
+        sans: ['"DM Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        serif: ['"Instrument Serif"', 'Georgia', 'serif'],
+      },
     },
   },
   plugins: [],

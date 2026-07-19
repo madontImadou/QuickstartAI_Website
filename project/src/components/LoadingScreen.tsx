@@ -2,9 +2,9 @@ import React from 'react';
 
 const LoadingScreen: React.FC = () => {
   return (
-    <div className="fixed inset-0 bg-gray-950 flex items-center justify-center z-50 text-white">
+    <div className="fixed inset-0 bg-white flex items-center justify-center z-50 text-gray-900">
       {/* Subtiler Hintergrund-Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-orange-900/5 to-gray-900"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-white via-orange-50 to-white"></div>
 
       {/* Hauptinhalt */}
       <div className="relative text-center z-10 px-4">
@@ -18,7 +18,7 @@ const LoadingScreen: React.FC = () => {
         </div>
 
         {/* Spruch */}
-        <p className="text-lg text-gray-300 mb-8">
+        <p className="text-lg text-gray-600 mb-8">
           Effizienz beginnt mit der richtigen Conversation
         </p>
 
@@ -38,7 +38,7 @@ const LoadingScreen: React.FC = () => {
             alt="Mini Logo" 
             className="w-5 h-5 object-contain" 
           />
-          <span className="text-sm text-gray-400">QuickStartAI</span>
+          <span className="text-sm text-gray-500">QuickStartAI</span>
         </div>
       </div>
     </div>
