@@ -43,10 +43,6 @@ export interface KiDemoRequest {
 
 const WEBHOOK_URL = import.meta.env.VITE_WEBHOOK_URL
 
-if (!WEBHOOK_URL) {
-  throw new Error('Webhook URL missing')
-}
-
 // =====================
 // Zentrale Funktion
 // =====================
@@ -55,6 +51,11 @@ const sendInquiry = async (
   type: 'demo' | 'contact' | 'sales' | 'ki-demo',
   data: DemoRequest | ContactRequest | SalesRequest | KiDemoRequest
 ): Promise<boolean> => {
+  if (!WEBHOOK_URL) {
+    console.error('Webhook error: VITE_WEBHOOK_URL ist nicht gesetzt')
+    return false
+  }
+
   try {
     const response = await fetch(WEBHOOK_URL, {
       method: 'POST',
