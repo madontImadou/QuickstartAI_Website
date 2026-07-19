@@ -1,104 +1,123 @@
-import { useEffect, useRef } from 'react';
+import { useCallback, useRef } from 'react';
+import gsap from 'gsap';
+
+const observe = (
+  element: HTMLElement,
+  onIntersect: () => void,
+  rootMargin: string
+) => {
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          onIntersect();
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0, rootMargin }
+  );
+  observer.observe(element);
+  return () => observer.disconnect();
+};
 
 export const useScrollAnimation = () => {
-  const elementRef = useRef<HTMLElement>(null);
+  const cleanupRef = useRef<() => void>();
 
-  useEffect(() => {
-    const element = elementRef.current;
+  const setRef = useCallback((element: HTMLElement | null) => {
+    cleanupRef.current?.();
+    cleanupRef.current = undefined;
     if (!element) return;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('animate-in');
-          }
-        });
-      },
-      {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-      }
+    cleanupRef.current = observe(
+      element,
+      () => element.classList.add('animate-in'),
+      '0px 0px -50px 0px'
     );
-
-    observer.observe(element);
-
-    return () => observer.disconnect();
   }, []);
 
-  return elementRef;
+  return setRef;
 };
 
 export const useFadeInUp = () => {
-  const elementRef = useRef<HTMLElement>(null);
+  const cleanupRef = useRef<() => void>();
 
-  useEffect(() => {
-    const element = elementRef.current;
+  const setRef = useCallback((element: HTMLElement | null) => {
+    cleanupRef.current?.();
+    cleanupRef.current = undefined;
     if (!element) return;
 
-    // Initial state
-    element.style.opacity = '0';
-    element.style.transform = 'translateY(30px)';
-    element.style.transition = 'opacity 0.8s ease-out, transform 0.8s ease-out';
+    gsap.set(element, { opacity: 0, y: 30 });
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const target = entry.target as HTMLElement;
-            target.style.opacity = '1';
-            target.style.transform = 'translateY(0)';
-          }
-        });
+    cleanupRef.current = observe(
+      element,
+      () => {
+        gsap.to(element, { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' });
       },
-      { 
-        threshold: 0.1,
-        rootMargin: '0px 0px -100px 0px'
-      }
+      '0px 0px -100px 0px'
     );
-
-    observer.observe(element);
-
-    return () => observer.disconnect();
   }, []);
 
-  return elementRef;
+  return setRef;
+};
+
+export const useSlideReveal = (
+  delay: number = 0,
+  distance: number = 60,
+  duration: number = 0.9
+) => {
+  const cleanupRef = useRef<() => void>();
+
+  const setRef = useCallback((element: HTMLElement | null) => {
+    cleanupRef.current?.();
+    cleanupRef.current = undefined;
+    if (!element) return;
+
+    gsap.set(element, { opacity: 0, y: distance });
+
+    cleanupRef.current = observe(
+      element,
+      () => {
+        gsap.to(element, {
+          opacity: 1,
+          y: 0,
+          duration,
+          delay: delay * 0.25,
+          ease: 'expo.out',
+        });
+      },
+      '0px 0px -20% 0px'
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [delay, distance, duration]);
+
+  return setRef;
 };
 
 export const useStaggerAnimation = (delay: number = 0) => {
-  const elementRef = useRef<HTMLElement>(null);
+  const cleanupRef = useRef<() => void>();
 
-  useEffect(() => {
-    const element = elementRef.current;
+  const setRef = useCallback((element: HTMLElement | null) => {
+    cleanupRef.current?.();
+    cleanupRef.current = undefined;
     if (!element) return;
 
-    // Initial state
-    element.style.opacity = '0';
-    element.style.transform = 'translateY(40px)';
-    element.style.transition = `opacity 0.6s ease-out, transform 0.6s ease-out`;
+    gsap.set(element, { opacity: 0, y: 40 });
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const target = entry.target as HTMLElement;
-            setTimeout(() => {
-              target.style.opacity = '1';
-              target.style.transform = 'translateY(0)';
-            }, delay * 200); // 200ms zwischen jeder Animation
-          }
+    cleanupRef.current = observe(
+      element,
+      () => {
+        gsap.to(element, {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          delay: delay * 0.2,
+          ease: 'power2.out',
         });
       },
-      { 
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-      }
+      '0px 0px -50px 0px'
     );
-
-    observer.observe(element);
-
-    return () => observer.disconnect();
   }, [delay]);
 
-  return elementRef;
+  return setRef;
 };
