@@ -16,6 +16,10 @@ import {
   RefreshCw,
   Filter,
   TrendingDown,
+  Shield,
+  Phone,
+  MessageCircle,
+  Mail,
 } from "lucide-react";
 
 import { useFadeInUp, useSlideReveal } from "./hooks/useScrollAnimation";
@@ -32,6 +36,30 @@ import AGBPage from "./pages/AGBPage";
 import BlogIndex from "./pages/BlogIndex";
 import BlogKIAgentenErstellen from "./pages/BlogKIAgentenErstellen";
 import KiDemoPage from "./pages/KiDemoPage";
+
+function WhatsAppIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="currentColor">
+      <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21 5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2zm5.83 14.1c-.24.68-1.4 1.3-1.93 1.35-.5.05-1.03.24-3.44-.72-2.9-1.16-4.77-4.12-4.92-4.31-.14-.19-1.18-1.57-1.18-3 0-1.42.75-2.12 1.01-2.41.27-.29.58-.36.78-.36h.55c.18 0 .42-.03.65.5.24.55.83 1.9.9 2.04.07.14.12.31.02.5-.1.19-.15.31-.29.48-.14.17-.3.37-.43.5-.14.14-.29.29-.13.58.17.29.75 1.24 1.61 2 1.11.99 2.04 1.3 2.33 1.44.29.14.46.12.63-.07.17-.19.72-.83.91-1.12.19-.29.38-.24.63-.14.26.1 1.63.77 1.91.91.29.14.48.21.55.33.07.12.07.7-.17 1.38z" />
+    </svg>
+  );
+}
+
+function InstagramIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="currentColor">
+      <path d="M12 2.16c3.2 0 3.58.01 4.85.07 3.25.15 4.77 1.69 4.92 4.92.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.15 3.23-1.66 4.77-4.92 4.92-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-3.26-.15-4.77-1.7-4.92-4.92-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85C2.38 3.9 3.9 2.38 7.15 2.23 8.42 2.17 8.8 2.16 12 2.16zM12 0C8.74 0 8.33.01 7.05.07c-4.35.2-6.78 2.62-6.98 6.98C.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.2 4.36 2.62 6.78 6.98 6.98C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c4.35-.2 6.78-2.62 6.98-6.98.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.2-4.35-2.62-6.78-6.98-6.98C15.67.01 15.26 0 12 0zm0 5.84A6.16 6.16 0 1 0 18.16 12 6.16 6.16 0 0 0 12 5.84zM12 16a4 4 0 1 1 4-4 4 4 0 0 1-4 4zm6.41-10.85a1.44 1.44 0 1 0 1.44 1.44 1.44 1.44 0 0 0-1.44-1.44z" />
+    </svg>
+  );
+}
+
+function MessengerIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="currentColor">
+      <path d="M12 2C6.48 2 2 6.15 2 11.29c0 2.93 1.44 5.55 3.7 7.26V22l3.38-1.86c.9.25 1.87.38 2.92.38 5.52 0 10-4.15 10-9.29C22 6.15 17.52 2 12 2zm1.02 12.5-2.55-2.72-4.98 2.72 5.48-5.82 2.61 2.72 4.9-2.72-5.46 5.82z" />
+    </svg>
+  );
+}
 
 function HomePage() {
   const [isLoading, setIsLoading] = useState(true);
@@ -235,6 +263,12 @@ function HomePage() {
       icon: <BarChart2 className="w-7 h-7 text-[#e2642a]" />,
       title: "Live-Übergabe & Analytics",
       description: "Übergabe an Ihr Team bei Bedarf, plus laufende Auswertung.",
+    },
+    {
+      icon: <Shield className="w-7 h-7 text-[#e2642a]" />,
+      title: "DSGVO-konform",
+      description:
+        "Anfragen werden sicher und DSGVO-konform zwischengespeichert – Ihre Daten bleiben geschützt.",
     },
   ];
 
@@ -656,6 +690,74 @@ function HomePage() {
             >
               Jetzt System sichern
             </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Omnichannel Section */}
+      <section className="relative py-24 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-14">
+            <div className="flex items-center justify-center gap-3 mb-6">
+              <span className="h-px w-8 bg-[#e2642a]/50"></span>
+              <span className="text-xs font-semibold tracking-widest text-[#e2642a] uppercase">
+                Omnichannel
+              </span>
+              <span className="h-px w-8 bg-[#e2642a]/50"></span>
+            </div>
+            <h2 className="font-serif italic text-3xl md:text-4xl text-gray-900 max-w-3xl mx-auto leading-tight">
+              Ein System. <span className="text-[#e2642a]">Jeder Kanal,</span>{" "}
+              den Ihre Kunden nutzen.
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
+            {[
+              {
+                label: "WhatsApp",
+                icon: <WhatsAppIcon className="w-6 h-6" />,
+                iconBg: "bg-emerald-50 text-emerald-600",
+              },
+              {
+                label: "Instagram",
+                icon: <InstagramIcon className="w-6 h-6" />,
+                iconBg: "bg-pink-50 text-pink-600",
+              },
+              {
+                label: "Messenger",
+                icon: <MessengerIcon className="w-6 h-6" />,
+                iconBg: "bg-blue-50 text-blue-600",
+              },
+              {
+                label: "Telefon",
+                icon: <Phone className="w-6 h-6" />,
+                iconBg: "bg-orange-50 text-[#e2642a]",
+              },
+              {
+                label: "Web-Chat",
+                icon: <MessageCircle className="w-6 h-6" />,
+                iconBg: "bg-orange-50 text-[#e2642a]",
+              },
+              {
+                label: "SMS & E-Mail",
+                icon: <Mail className="w-6 h-6" />,
+                iconBg: "bg-orange-50 text-[#e2642a]",
+              },
+            ].map((channel) => (
+              <div
+                key={channel.label}
+                className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col items-center justify-center gap-3 text-center hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
+              >
+                <div
+                  className={`w-12 h-12 rounded-xl flex items-center justify-center ${channel.iconBg}`}
+                >
+                  {channel.icon}
+                </div>
+                <span className="text-sm font-semibold text-gray-900">
+                  {channel.label}
+                </span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
