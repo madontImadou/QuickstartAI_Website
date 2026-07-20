@@ -190,26 +190,25 @@ function HomePage() {
   const problems = [
     {
       icon: <Clock className="w-7 h-7 text-[#e2642a]" />,
-      title: "Anfragen verschwinden...",
-      description:
-        "da Interessenten bei Rückrufen nicht erreichbar sind.",
+      title: "Investieren Zeit...",
+      description: "in Rückrufe ohne Erfolg.",
     },
     {
       icon: <RefreshCw className="w-7 h-7 text-[#e2642a]" />,
-      title: "Tägliche neue Rückruflisten",
-      description: "kosten wertvolle Zeit, die für Patienten und Kunden fehlt.",
+      title: "Ihre Kontaktliste",
+      description:
+        "verstaubt.",
     },
     {
       icon: <Filter className="w-7 h-7 text-[#e2642a]" />,
-      title: "Hoher Personalaufwand...",
+      title: "Qualifizierte Mitarbeiter...",
       description:
-        "jede Anfrage manuell beantwortet, nachverfolgt und dokumentiert werden muss.",
+        "bearbeiten täglich die selben Anfragen.",
     },
     {
       icon: <TrendingDown className="w-7 h-7 text-[#e2642a]" />,
-      title: "Anfragen bleiben ungenutzt...",
-      description:
-        "langsame Antworten die Wahrscheinlichkeit für einen echten Termin oder Kauf drastisch senken.",
+      title: "Termine fallen...",
+      description: "ohne Absage aus.",
     },
   ];
 
@@ -246,7 +245,7 @@ function HomePage() {
       icon: <UserCheck className="w-7 h-7 text-[#e2642a]" />,
       description:
         "Wir bereiten Ihr System mit Ihren Website-Daten vor – Sie testen es anschließend live.",
-      points: ["Kennenlerngespräch", "Experteneinschätzung", "10 min"],
+      points: ["Experteneinschätzung", "10 min"],
       highlight: false,
     },
     {
@@ -254,7 +253,7 @@ function HomePage() {
       title: "Einführung & Abnahme",
       icon: <Headphones className="w-7 h-7 text-[#e2642a]" />,
       description:
-        "Wir richten Ihre System gemeinsam ein, verbinden alle Kanäle und sorgen dafür, dass Sie und Ihr Team sofort produktiv starten können.",
+        "Wir richten Ihr System ein, verbinden alle Kanäle und sorgen für einen reibungslosen Start.",
       points: ["Setup durch Experten", "20 min"],
       highlight: true,
     },
@@ -456,23 +455,13 @@ function HomePage() {
           ref={heroRef}
           className="relative z-20 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
         >
-          <div
-            className="inline-flex items-center space-x-2 bg-white border border-gray-200 rounded-full px-4 py-2 mb-8 opacity-0 animate-fade-in-up"
-            style={{ animationDelay: "0ms" }}
-          >
-            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-            <span className="text-sm text-gray-600">
-              Für Aesthetik Praxen und Kliniken
-            </span>
-          </div>
-
           <h1
             className="font-serif italic text-4xl md:text-6xl text-gray-900 mb-6 leading-tight opacity-0 animate-fade-in-up"
             style={{ animationDelay: "400ms" }}
           >
-            Damit Sie auch außerhalb der{" "}
+            Verpasse keine{" "}
             <span className="bg-gradient-to-r from-[#e2642a] via-orange-400 to-[#e2642a] bg-clip-text text-transparent">
-              Öffnungszeiten erreichbar sind.
+              Anfragen mehr.
             </span>
           </h1>
 
@@ -480,8 +469,8 @@ function HomePage() {
             className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed opacity-0 animate-fade-in-up"
             style={{ animationDelay: "800ms" }}
           >
-            Beantworten und qualifizieren Sie jede neue Anfrage innerhalb von 5
-            Sekunden.{" "}
+            Jede Anfrage in 5 Sekunden beantwortet und qualifiziert - rund um
+            die Uhr{" "}
           </p>
 
           <div
@@ -689,7 +678,7 @@ function HomePage() {
               ref={arbeitsweiseTitleRef}
               className="font-serif italic text-3xl md:text-4xl text-gray-900"
             >
-              Sie fragen sich, wie das Ganze abläuft?
+              Klingt gut – aber wie läuft das ab?
             </h2>
           </div>
 
