@@ -146,9 +146,6 @@ function HomePage() {
   const prozessEyebrowRef = useSlideReveal(0);
   const prozessTitleRef = useSlideReveal(2);
 
-  const resultsEyebrowRef = useSlideReveal(0);
-  const resultsTitleRef = useSlideReveal(2);
-
   const faqEyebrowRef = useSlideReveal(0);
   const faqTitleRef = useSlideReveal(2);
   const faqTextRef = useSlideReveal(4);
@@ -301,33 +298,6 @@ function HomePage() {
     },
   ];
 
-  const testimonials = [
-    {
-      name: "Christina",
-      role: "Heilpraktikerin",
-      image: "/Reviews/Kunde1_Picture_Aesthetik.jpg",
-      stat: "64 Beratungstermine in einer Woche",
-      quote:
-        "Wir haben in den letzten Woche 64 Beratungstermine generiert. Ich freue mich wirklich sehr darüber. Unser Team kann sich endlich auf die Termine konzentrieren 🔥",
-    },
-    {
-      name: "Julia",
-      role: "Ästhetik-Praxis",
-      image: "/Reviews/Kunde2_Picture.jpg",
-      stat: "100% Antwortquote",
-      quote:
-        "Vorher sind uns immer wieder Anfragen durchgerutscht. Durch euch wird jetzt jeder Interessent sofort kontaktiert wir verlieren keine Anfragen mehr. Danke",
-    },
-    {
-      name: "Martin",
-      role: "Schönheitschirurgie",
-      image: "/Reviews/Kunde3_Picture_Aesthetik.jpg",
-      stat: "17 → 29 Termine pro Woche",
-      quote:
-        "Wir haben auf jeden Fall einen Anstieg bei den Terminen festgestellt 👍 Letzte Woche waren es 17 und diese Woche 29.",
-    },
-  ];
-
   const processSteps = [
     {
       title: "Quiz ausfüllen",
@@ -395,12 +365,6 @@ function HomePage() {
                 Unser System
               </a>
               <a
-                href="#ergebnisse"
-                className="text-gray-600 hover:text-gray-900 transition-colors"
-              >
-                Ergebnisse
-              </a>
-              <a
                 href="#faq"
                 className="text-gray-600 hover:text-gray-900 transition-colors"
               >
@@ -438,13 +402,6 @@ function HomePage() {
                   className="text-gray-600 hover:text-gray-900 transition-colors py-2"
                 >
                   Unser System
-                </a>
-                <a
-                  href="#ergebnisse"
-                  onClick={() => setIsMenuOpen(false)}
-                  className="text-gray-600 hover:text-gray-900 transition-colors py-2"
-                >
-                  Ergebnisse
                 </a>
                 <a
                   href="#faq"
@@ -519,10 +476,10 @@ function HomePage() {
               <ArrowRight className="w-5 h-5" />
             </button>
             <a
-              href="#ergebnisse"
+              href="#system"
               className="bg-white text-gray-900 font-semibold py-4 px-10 rounded-xl text-lg border border-gray-200 hover:border-gray-300 hover:bg-gray-50 transform hover:scale-105 transition-all duration-200 shadow-sm hover:shadow-md flex items-center justify-center space-x-2"
             >
-              <span>Kundenergebnisse</span>
+              <span>Unser System</span>
             </a>
           </div>
         </div>
@@ -1121,71 +1078,6 @@ function HomePage() {
         </div>
       </section>
 
-      {/* Ergebnisse / Testimonials Section */}
-      <section id="ergebnisse" className="relative py-24 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <div
-              ref={resultsEyebrowRef}
-              className="flex items-center justify-center gap-3 mb-6"
-            >
-              <span className="h-px w-8 bg-[#e2642a]/50"></span>
-              <span className="text-xs font-semibold tracking-widest text-[#e2642a] uppercase">
-                Resultate
-              </span>
-              <span className="h-px w-8 bg-[#e2642a]/50"></span>
-            </div>
-            <h2
-              ref={resultsTitleRef}
-              className="font-serif italic text-4xl md:text-5xl text-gray-900 mb-6"
-            >
-              Das sagen unsere Kunden.
-            </h2>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <AnimatedCard
-                key={index}
-                delay={index * 0.05}
-                className="bg-white border border-gray-200 p-8 rounded-2xl hover:shadow-lg hover:border-[#e2642a]/50 transition-all duration-300 shadow-xl flex flex-col"
-              >
-                <div className="text-[#e2642a] font-bold text-sm mb-3">
-                  {testimonial.stat}
-                </div>
-                <p className="text-gray-600 leading-relaxed mb-6 flex-1">
-                  &ldquo;{testimonial.quote}&rdquo;
-                </p>
-                <div className="flex items-center gap-3">
-                  <img
-                    src={testimonial.image}
-                    alt={testimonial.name}
-                    className="w-12 h-12 rounded-full object-cover"
-                  />
-                  <div>
-                    <div className="font-semibold text-gray-900">
-                      {testimonial.name}
-                    </div>
-                    <div className="text-gray-500 text-sm">
-                      {testimonial.role}
-                    </div>
-                  </div>
-                </div>
-              </AnimatedCard>
-            ))}
-          </div>
-
-          <div className="text-center mt-12">
-            <button
-              onClick={() => setShowContactForm(true)}
-              className="inline-flex items-center justify-center bg-[#e2642a] text-white font-semibold py-3 px-8 rounded-full hover:bg-orange-600 transition-all duration-200"
-            >
-              Wünsche ich mir auch!
-            </button>
-          </div>
-        </div>
-      </section>
-
       {/* Über Maximilian Section */}
       <section id="ueber-uns" className="relative py-24 bg-gray-950">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1648,12 +1540,6 @@ function HomePage() {
                 className="hover:text-gray-900 transition-colors"
               >
                 Das System
-              </a>
-              <a
-                href="#ergebnisse"
-                className="hover:text-gray-900 transition-colors"
-              >
-                Ergebnisse
               </a>
               <a href="#faq" className="hover:text-gray-900 transition-colors">
                 FAQ
