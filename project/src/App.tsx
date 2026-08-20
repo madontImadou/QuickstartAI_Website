@@ -300,7 +300,7 @@ function HomePage() {
 
   const processSteps = [
     {
-      title: "Quiz ausfüllen",
+      title: "ROI-Rechner ausfüllen",
       description:
         " um zu prüfen, ob ein Termin für beideseiten Sinn ergibt.",
     },
@@ -472,7 +472,7 @@ function HomePage() {
               onClick={() => setShowContactForm(true)}
               className="bg-[#e2642a] text-white font-semibold py-4 px-10 rounded-xl text-lg hover:bg-orange-600 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2"
             >
-              <span>Quiz starten</span>
+              <span>Rechner starten</span>
               <ArrowRight className="w-5 h-5" />
             </button>
             <a
@@ -1249,7 +1249,7 @@ function HomePage() {
               onClick={() => setShowContactForm(true)}
               className="inline-flex items-center justify-center bg-[#e2642a] text-white font-semibold py-3 px-8 rounded-full hover:bg-orange-600 transition-all duration-200"
             >
-              Quiz starten
+              Rechner starten
             </button>
           </div>
         </div>

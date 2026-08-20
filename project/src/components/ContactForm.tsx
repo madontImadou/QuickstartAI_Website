@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   X,
   Send,
@@ -7,17 +7,13 @@ import {
   User,
   ArrowRight,
   ArrowLeft,
-  Inbox,
-  TrendingUp,
-  BarChart2,
-  Flame,
   Globe,
-  Phone,
+  Users,
+  Euro,
+  Percent,
   Clock,
-  UserCheck,
-  Calendar,
-  MessageSquare,
-  Share2,
+  ShoppingCart,
+  TrendingUp,
 } from 'lucide-react';
 import { saveContactRequest } from '../services/databaseService';
 
@@ -28,104 +24,45 @@ interface ContactFormProps {
   onClose: () => void;
 }
 
-type Accent = {
-  iconBg: string;
-  iconText: string;
-  border: string;
-  bg: string;
-  ring: string;
-  badge: string;
-};
+// Feste Größen der ROI-Formel
+const HOURS_PER_MONTH_FULLTIME = 160;
+const WEEKS_PER_MONTH = 4.3;
 
-const ACCENTS = {
-  sky: {
-    iconBg: 'bg-sky-100',
-    iconText: 'text-sky-600',
-    border: 'border-sky-400',
-    bg: 'bg-sky-50',
-    ring: 'ring-sky-200',
-    badge: 'bg-sky-500',
-  },
-  emerald: {
-    iconBg: 'bg-emerald-100',
-    iconText: 'text-emerald-600',
-    border: 'border-emerald-400',
-    bg: 'bg-emerald-50',
-    ring: 'ring-emerald-200',
-    badge: 'bg-emerald-500',
-  },
-  amber: {
-    iconBg: 'bg-amber-100',
-    iconText: 'text-amber-600',
-    border: 'border-amber-400',
-    bg: 'bg-amber-50',
-    ring: 'ring-amber-200',
-    badge: 'bg-amber-500',
-  },
-  rose: {
-    iconBg: 'bg-rose-100',
-    iconText: 'text-rose-600',
-    border: 'border-rose-400',
-    bg: 'bg-rose-50',
-    ring: 'ring-rose-200',
-    badge: 'bg-rose-500',
-  },
-  violet: {
-    iconBg: 'bg-violet-100',
-    iconText: 'text-violet-600',
-    border: 'border-violet-400',
-    bg: 'bg-violet-50',
-    ring: 'ring-violet-200',
-    badge: 'bg-violet-500',
-  },
-  fuchsia: {
-    iconBg: 'bg-fuchsia-100',
-    iconText: 'text-fuchsia-600',
-    border: 'border-fuchsia-400',
-    bg: 'bg-fuchsia-50',
-    ring: 'ring-fuchsia-200',
-    badge: 'bg-fuchsia-500',
-  },
-  indigo: {
-    iconBg: 'bg-indigo-100',
-    iconText: 'text-indigo-600',
-    border: 'border-indigo-400',
-    bg: 'bg-indigo-50',
-    ring: 'ring-indigo-200',
-    badge: 'bg-indigo-500',
-  },
-} satisfies Record<string, Accent>;
+const formatEUR = (value: number) =>
+  Math.round(value).toLocaleString('de-DE') + ' €';
 
-const WEEKLY_REQUEST_OPTIONS = [
-  { label: '0–10', icon: Inbox, accent: ACCENTS.sky },
-  { label: '10–30', icon: TrendingUp, accent: ACCENTS.emerald },
-  { label: '30–100', icon: BarChart2, accent: ACCENTS.amber },
-  { label: 'Über 100', icon: Flame, accent: ACCENTS.rose },
-];
-
-const CHANNEL_OPTIONS = [
-  { label: 'Website', icon: Globe, accent: ACCENTS.sky },
-  { label: 'Telefon', icon: Phone, accent: ACCENTS.violet },
-  { label: 'WhatsApp', icon: MessageSquare, accent: ACCENTS.emerald },
-  { label: 'Social Media', icon: Share2, accent: ACCENTS.fuchsia },
-];
-
-const IMPROVEMENT_OPTIONS = [
-  { label: 'Rund um die Uhr erreichbar sein', icon: Clock, accent: ACCENTS.indigo },
-  { label: 'Mehr Anfragen in Kunden umwandeln', icon: TrendingUp, accent: ACCENTS.emerald },
-  { label: 'Team entlasten', icon: UserCheck, accent: ACCENTS.amber },
-  { label: 'Termine automatisch vereinbaren', icon: Calendar, accent: ACCENTS.rose },
-];
-
-const STEP_LABELS = ['Bedarf', 'Kanäle', 'Ziel', 'Kontakt'];
+const STEP_LABELS = ['Zeitersparnis', 'Umsatzsteigerung', 'Ergebnis', 'Kontakt'];
 
 const TOTAL_STEPS = 4;
 
 const ContactForm: React.FC<ContactFormProps> = ({ onClose }) => {
   const [step, setStep] = useState(1);
-  const [weeklyRequests, setWeeklyRequests] = useState('');
-  const [channels, setChannels] = useState<string[]>([]);
-  const [improvementGoal, setImprovementGoal] = useState('');
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  // Hintergrund-Scroll sperren, solange das Fenster geöffnet ist
+  useEffect(() => {
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, []);
+
+  // Bei jedem Schrittwechsel nach oben scrollen, statt manuell hochscrollen zu müssen
+  useEffect(() => {
+    scrollContainerRef.current?.scrollTo({ top: 0, behavior: 'auto' });
+  }, [step]);
+
+  // Baustein 1: Zeitersparnis
+  const [employees, setEmployees] = useState(1);
+  const [hourlyWage, setHourlyWage] = useState(20);
+  const [reliefPercent, setReliefPercent] = useState(60);
+
+  // Baustein 2: Umsatzsteigerung
+  const [ordersPerWeek, setOrdersPerWeek] = useState(10);
+  const [orderValue, setOrderValue] = useState(800);
+  const [marginPercent, setMarginPercent] = useState(40);
+  const [upliftPercent, setUpliftPercent] = useState(10);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -135,16 +72,31 @@ const ContactForm: React.FC<ContactFormProps> = ({ onClose }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const toggleChannel = (channel: string) => {
-    setChannels((prev) =>
-      prev.includes(channel) ? prev.filter((c) => c !== channel) : [...prev, channel]
-    );
-  };
+  const roi = useMemo(() => {
+    const timeSavingsPerYear =
+      employees * HOURS_PER_MONTH_FULLTIME * (reliefPercent / 100) * hourlyWage * 12;
+
+    const contributionMargin = orderValue * (marginPercent / 100);
+    const revenueIncreasePerYear =
+      ordersPerWeek * WEEKS_PER_MONTH * (upliftPercent / 100) * contributionMargin * 12;
+
+    const totalValuePerYear = timeSavingsPerYear + revenueIncreasePerYear;
+
+    return {
+      timeSavingsPerYear,
+      contributionMargin,
+      revenueIncreasePerYear,
+      totalValuePerYear,
+      setupFee10: totalValuePerYear * 0.1,
+      setupFee15: totalValuePerYear * 0.15,
+      setupFee20: totalValuePerYear * 0.2,
+    };
+  }, [employees, hourlyWage, reliefPercent, ordersPerWeek, orderValue, marginPercent, upliftPercent]);
 
   const canProceed =
-    (step === 1 && weeklyRequests !== '') ||
-    (step === 2 && channels.length > 0) ||
-    (step === 3 && improvementGoal !== '');
+    (step === 1 && employees > 0 && hourlyWage > 0) ||
+    (step === 2 && ordersPerWeek > 0 && orderValue > 0) ||
+    step === 3;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -173,9 +125,22 @@ const ContactForm: React.FC<ContactFormProps> = ({ onClose }) => {
         website: formData.website,
         email: isEmail ? contact : undefined,
         phone: isEmail ? undefined : contact,
-        weeklyRequests,
-        channels,
-        improvementGoal
+        roi: {
+          employees,
+          hourlyWage,
+          reliefPercent,
+          timeSavingsPerYear: roi.timeSavingsPerYear,
+          ordersPerWeek,
+          orderValue,
+          marginPercent,
+          contributionMargin: roi.contributionMargin,
+          upliftPercent,
+          revenueIncreasePerYear: roi.revenueIncreasePerYear,
+          totalValuePerYear: roi.totalValuePerYear,
+          setupFee10: roi.setupFee10,
+          setupFee15: roi.setupFee15,
+          setupFee20: roi.setupFee20,
+        },
       });
 
       if (success) {
@@ -225,7 +190,11 @@ const ContactForm: React.FC<ContactFormProps> = ({ onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="bg-white border border-gray-200 rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto shadow-2xl">
+      <div
+        ref={scrollContainerRef}
+        data-lenis-prevent
+        className="bg-white border border-gray-200 rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto shadow-2xl"
+      >
         {step < TOTAL_STEPS ? (
           <div className="relative bg-gray-900 px-8 pt-8 pb-6 overflow-hidden">
             <div
@@ -235,9 +204,9 @@ const ContactForm: React.FC<ContactFormProps> = ({ onClose }) => {
             <div className="relative flex justify-between items-start mb-6">
               <div>
                 <span className="inline-block text-xs font-semibold tracking-widest text-[#e2642a] uppercase mb-2">
-                  Frage {step} von 3
+                  Schritt {step} von 3
                 </span>
-                <h3 className="text-xl font-bold text-white">Kurzes Quiz</h3>
+                <h3 className="text-xl font-bold text-white">ROI-Rechner</h3>
               </div>
               <button
                 onClick={onClose}
@@ -282,35 +251,70 @@ const ContactForm: React.FC<ContactFormProps> = ({ onClose }) => {
         <div className="p-8 pt-6">
         {step === 1 && (
           <div className="space-y-6">
-            <p className="text-lg font-bold text-gray-900">
-              Wie viele Anfragen erhalten Sie pro Woche?
-            </p>
-            <div className="grid grid-cols-2 gap-3">
-              {WEEKLY_REQUEST_OPTIONS.map(({ label, icon: Icon, accent }) => {
-                const isSelected = weeklyRequests === label;
-                return (
-                  <button
-                    key={label}
-                    type="button"
-                    onClick={() => setWeeklyRequests(label)}
-                    className={`relative flex flex-col items-center justify-center gap-2.5 text-center px-4 py-5 rounded-xl border-2 transition-all duration-200 ${
-                      isSelected
-                        ? `${accent.border} ${accent.bg} shadow-lg ring-4 ${accent.ring} -translate-y-0.5`
-                        : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-md'
-                    }`}
-                  >
-                    {isSelected && (
-                      <div className={`absolute top-2 right-2 w-5 h-5 rounded-full ${accent.badge} flex items-center justify-center`}>
-                        <CheckCircle className="w-3.5 h-3.5 text-white" strokeWidth={3} />
-                      </div>
-                    )}
-                    <div className={`w-11 h-11 rounded-full ${accent.iconBg} flex items-center justify-center`}>
-                      <Icon className={`w-5 h-5 ${accent.iconText}`} />
-                    </div>
-                    <span className="font-semibold text-gray-900">{label}</span>
-                  </button>
-                );
-              })}
+            <div>
+              <p className="text-lg font-bold text-gray-900">
+                Wie viel Zeit sparen Sie sich?
+              </p>
+              <p className="text-sm text-gray-500 mt-1">
+                Basis: Empfangs-/Support-Team, das heute Anfragen manuell bearbeitet.
+              </p>
+            </div>
+
+            <div>
+              <label htmlFor="roi-employees" className="block text-sm font-medium text-gray-700 mb-2">
+                <div className="flex items-center gap-2">
+                  <Users className="w-4 h-4" />
+                  <span>Empfangsmitarbeiter (Vollzeitäquivalent)</span>
+                </div>
+              </label>
+              <input
+                type="number"
+                id="roi-employees"
+                min={0}
+                step={0.5}
+                value={employees}
+                onChange={(e) => setEmployees(Math.max(0, Number(e.target.value)))}
+                className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#e2642a] focus:border-transparent outline-none transition-all text-gray-900"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="roi-wage" className="block text-sm font-medium text-gray-700 mb-2">
+                <div className="flex items-center gap-2">
+                  <Euro className="w-4 h-4" />
+                  <span>Stundenlohn (€)</span>
+                </div>
+              </label>
+              <input
+                type="number"
+                id="roi-wage"
+                min={0}
+                step={1}
+                value={hourlyWage}
+                onChange={(e) => setHourlyWage(Math.max(0, Number(e.target.value)))}
+                className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#e2642a] focus:border-transparent outline-none transition-all text-gray-900"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="roi-relief" className="flex items-center justify-between text-sm font-medium text-gray-700 mb-2">
+                <span className="flex items-center gap-2">
+                  <Clock className="w-4 h-4" />
+                  Entlastungsgrad durch KI
+                </span>
+                <span className="font-semibold text-[#e2642a]">{reliefPercent}%</span>
+              </label>
+              <input
+                type="range"
+                id="roi-relief"
+                min={0}
+                max={100}
+                step={5}
+                value={reliefPercent}
+                onChange={(e) => setReliefPercent(Number(e.target.value))}
+                className="w-full accent-[#e2642a]"
+              />
+              <p className="text-xs text-gray-400 mt-1">Richtwert: 60% der Empfangs-Arbeitszeit</p>
             </div>
           </div>
         )}
@@ -319,71 +323,138 @@ const ContactForm: React.FC<ContactFormProps> = ({ onClose }) => {
           <div className="space-y-6">
             <div>
               <p className="text-lg font-bold text-gray-900">
-                Über welche Kanäle erreichen Sie Kunden aktuell?
+                Wie viel Umsatz gewinnen Sie durch 24/7-Erreichbarkeit?
               </p>
-              <p className="text-sm text-gray-500 mt-1">Mehrfachauswahl möglich</p>
+              <p className="text-sm text-gray-500 mt-1">
+                Wir rechnen mit Ihrem Deckungsbeitrag, nicht mit dem vollen Auftragswert.
+              </p>
             </div>
-            <div className="grid grid-cols-2 gap-3">
-              {CHANNEL_OPTIONS.map(({ label, icon: Icon, accent }) => {
-                const isSelected = channels.includes(label);
-                return (
-                  <button
-                    key={label}
-                    type="button"
-                    onClick={() => toggleChannel(label)}
-                    className={`relative flex flex-col items-center justify-center gap-2.5 text-center px-4 py-5 rounded-xl border-2 transition-all duration-200 ${
-                      isSelected
-                        ? `${accent.border} ${accent.bg} shadow-lg ring-4 ${accent.ring} -translate-y-0.5`
-                        : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-md'
-                    }`}
-                  >
-                    {isSelected && (
-                      <div className={`absolute top-2 right-2 w-5 h-5 rounded-full ${accent.badge} flex items-center justify-center`}>
-                        <CheckCircle className="w-3.5 h-3.5 text-white" strokeWidth={3} />
-                      </div>
-                    )}
-                    <div className={`w-11 h-11 rounded-full ${accent.iconBg} flex items-center justify-center`}>
-                      <Icon className={`w-5 h-5 ${accent.iconText}`} />
-                    </div>
-                    <span className="font-semibold text-gray-900">{label}</span>
-                  </button>
-                );
-              })}
+
+            <div>
+              <label htmlFor="roi-orders" className="block text-sm font-medium text-gray-700 mb-2">
+                <div className="flex items-center gap-2">
+                  <ShoppingCart className="w-4 h-4" />
+                  <span>Aufträge / Woche</span>
+                </div>
+              </label>
+              <input
+                type="number"
+                id="roi-orders"
+                min={0}
+                step={1}
+                value={ordersPerWeek}
+                onChange={(e) => setOrdersPerWeek(Math.max(0, Number(e.target.value)))}
+                className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#e2642a] focus:border-transparent outline-none transition-all text-gray-900"
+              />
+              <p className="text-xs text-gray-400 mt-1">
+                Die aktuelle Anzahl an Auftragseingängen, die Ihr Unternehmen bereits pro Woche erhält.
+              </p>
+            </div>
+
+            <div>
+              <label htmlFor="roi-order-value" className="block text-sm font-medium text-gray-700 mb-2">
+                <div className="flex items-center gap-2">
+                  <Euro className="w-4 h-4" />
+                  <span>Ø Auftragswert (€)</span>
+                </div>
+              </label>
+              <input
+                type="number"
+                id="roi-order-value"
+                min={0}
+                step={10}
+                value={orderValue}
+                onChange={(e) => setOrderValue(Math.max(0, Number(e.target.value)))}
+                className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#e2642a] focus:border-transparent outline-none transition-all text-gray-900"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="roi-margin" className="flex items-center justify-between text-sm font-medium text-gray-700 mb-2">
+                <span className="flex items-center gap-2">
+                  <Percent className="w-4 h-4" />
+                  Ø Deckungsbeitrag (Marge vom Auftragswert)
+                </span>
+                <span className="font-semibold text-[#e2642a]">{marginPercent}%</span>
+              </label>
+              <input
+                type="range"
+                id="roi-margin"
+                min={0}
+                max={100}
+                step={5}
+                value={marginPercent}
+                onChange={(e) => setMarginPercent(Number(e.target.value))}
+                className="w-full accent-[#e2642a]"
+              />
+              <p className="text-xs text-gray-400 mt-1">
+                Auftragswert minus variable Kosten. Branchenüblich ca. 30–50%.
+              </p>
+            </div>
+
+            <div>
+              <label htmlFor="roi-uplift" className="flex items-center justify-between text-sm font-medium text-gray-700 mb-2">
+                <span className="flex items-center gap-2">
+                  <TrendingUp className="w-4 h-4" />
+                  Uplift durch 24/7-Erreichbarkeit
+                </span>
+                <span className="font-semibold text-[#e2642a]">{upliftPercent}%</span>
+              </label>
+              <input
+                type="range"
+                id="roi-uplift"
+                min={0}
+                max={50}
+                step={1}
+                value={upliftPercent}
+                onChange={(e) => setUpliftPercent(Number(e.target.value))}
+                className="w-full accent-[#e2642a]"
+              />
+              <p className="text-xs text-gray-400 mt-1">Richtwert: 10% zusätzliche Aufträge</p>
             </div>
           </div>
         )}
 
         {step === 3 && (
           <div className="space-y-6">
-            <p className="text-lg font-bold text-gray-900">
-              Was möchten Sie verbessern?
-            </p>
-            <div className="grid grid-cols-2 gap-3">
-              {IMPROVEMENT_OPTIONS.map(({ label, icon: Icon, accent }) => {
-                const isSelected = improvementGoal === label;
-                return (
-                  <button
-                    key={label}
-                    type="button"
-                    onClick={() => setImprovementGoal(label)}
-                    className={`relative flex flex-col items-center justify-center gap-2.5 text-center px-4 py-5 rounded-xl border-2 transition-all duration-200 ${
-                      isSelected
-                        ? `${accent.border} ${accent.bg} shadow-lg ring-4 ${accent.ring} -translate-y-0.5`
-                        : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-md'
-                    }`}
-                  >
-                    {isSelected && (
-                      <div className={`absolute top-2 right-2 w-5 h-5 rounded-full ${accent.badge} flex items-center justify-center`}>
-                        <CheckCircle className="w-3.5 h-3.5 text-white" strokeWidth={3} />
-                      </div>
-                    )}
-                    <div className={`w-11 h-11 rounded-full ${accent.iconBg} flex items-center justify-center`}>
-                      <Icon className={`w-5 h-5 ${accent.iconText}`} />
-                    </div>
-                    <span className="font-semibold text-gray-900 text-sm leading-snug">{label}</span>
-                  </button>
-                );
-              })}
+            <p className="text-lg font-bold text-gray-900">Ihr persönliches Ergebnis</p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="rounded-xl border border-gray-200 bg-gray-50 p-5">
+                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">
+                  Zeitersparnis / Jahr
+                </p>
+                <p className="text-2xl font-bold text-gray-900">{formatEUR(roi.timeSavingsPerYear)}</p>
+              </div>
+              <div className="rounded-xl border border-gray-200 bg-gray-50 p-5">
+                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">
+                  Umsatzsteigerung / Jahr
+                </p>
+                <p className="text-2xl font-bold text-gray-900">{formatEUR(roi.revenueIncreasePerYear)}</p>
+              </div>
+            </div>
+
+            <div className="rounded-xl bg-gray-900 p-6 text-center">
+              <p className="text-xs font-semibold text-[#e2642a] uppercase tracking-widest mb-2">
+                Gesamter Jahreswert
+              </p>
+              <p className="text-3xl font-bold text-white">{formatEUR(roi.totalValuePerYear)}</p>
+            </div>
+
+            <div>
+              <p className="text-sm font-semibold text-gray-700 mb-3">Mögliche Einrichtungsgebühr</p>
+              <div className="grid grid-cols-3 gap-3">
+                {[
+                  { pct: 10, value: roi.setupFee10 },
+                  { pct: 15, value: roi.setupFee15 },
+                  { pct: 20, value: roi.setupFee20 },
+                ].map(({ pct, value }) => (
+                  <div key={pct} className="rounded-lg border border-gray-200 p-3 text-center">
+                    <p className="text-xs text-gray-500">{pct}%</p>
+                    <p className="font-semibold text-gray-900">{formatEUR(value)}</p>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         )}
