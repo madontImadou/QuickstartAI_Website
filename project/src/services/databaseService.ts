@@ -14,9 +14,23 @@ export interface ContactRequest {
   phone?: string
   website?: string
   reachability?: string
-  weeklyRequests?: string
-  channels?: string[]
-  improvementGoal?: string
+  message?: string
+  roi?: {
+    employees: number
+    hourlyWage: number
+    reliefPercent: number
+    timeSavingsPerYear: number
+    ordersPerWeek: number
+    orderValue: number
+    marginPercent: number
+    contributionMargin: number
+    upliftPercent: number
+    revenueIncreasePerYear: number
+    totalValuePerYear: number
+    setupFee10: number
+    setupFee15: number
+    setupFee20: number
+  }
 }
 
 export interface SalesRequest {
