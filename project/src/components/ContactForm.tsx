@@ -10,11 +10,14 @@ import {
   Globe,
   Users,
   MessageSquare,
+  CalendarClock,
 } from 'lucide-react';
 import { saveContactRequest } from '../services/databaseService';
 
 declare global { interface Window { fbq?: (...args: unknown[]) => void } }
 const fbq = (...args: unknown[]) => { if (typeof window !== 'undefined' && window.fbq) window.fbq(...args); };
+
+const CALENDLY_URL = 'https://calendly.com/m-quickstartai/erreichbarkeits-analyse-demo';
 
 interface ContactFormProps {
   onClose: () => void;
@@ -90,9 +93,6 @@ const ContactForm: React.FC<ContactFormProps> = ({ onClose }) => {
       contributionMargin,
       revenueIncreasePerYear,
       totalValuePerYear,
-      setupFee10: totalValuePerYear * 0.1,
-      setupFee15: totalValuePerYear * 0.15,
-      setupFee20: totalValuePerYear * 0.2,
     };
   }, [employees, hourlyWage, reliefPercent, requestsPerWeek, orderValue, marginPercent, upliftPercent]);
 
@@ -138,9 +138,6 @@ const ContactForm: React.FC<ContactFormProps> = ({ onClose }) => {
           upliftPercent,
           revenueIncreasePerYear: roi.revenueIncreasePerYear,
           totalValuePerYear: roi.totalValuePerYear,
-          setupFee10: roi.setupFee10,
-          setupFee15: roi.setupFee15,
-          setupFee20: roi.setupFee20,
         },
       });
 
@@ -325,20 +322,19 @@ const ContactForm: React.FC<ContactFormProps> = ({ onClose }) => {
               <p className="text-3xl font-bold text-white">{formatEUR(roi.totalValuePerYear)}</p>
             </div>
 
-            <div>
-              <p className="text-sm font-semibold text-gray-700 mb-3">Mögliche Einrichtungsgebühr</p>
-              <div className="grid grid-cols-3 gap-3">
-                {[
-                  { pct: 10, value: roi.setupFee10 },
-                  { pct: 15, value: roi.setupFee15 },
-                  { pct: 20, value: roi.setupFee20 },
-                ].map(({ pct, value }) => (
-                  <div key={pct} className="rounded-lg border border-gray-200 p-3 text-center">
-                    <p className="text-xs text-gray-500">{pct}%</p>
-                    <p className="font-semibold text-gray-900">{formatEUR(value)}</p>
-                  </div>
-                ))}
-              </div>
+            <div className="rounded-xl border border-gray-200 bg-orange-50 p-5 text-center">
+              <p className="text-sm text-gray-700 mb-4">
+                Finden Sie in einem kurzen Gespräch heraus, wie diese Zahlen bei Ihnen konkret zustande kommen.
+              </p>
+              <a
+                href={CALENDLY_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 bg-[#e2642a] text-white font-semibold py-3 px-6 rounded-lg hover:bg-orange-600 transition-all duration-200"
+              >
+                <CalendarClock className="w-4 h-4" />
+                Termin buchen
+              </a>
             </div>
           </div>
         )}
@@ -361,9 +357,13 @@ const ContactForm: React.FC<ContactFormProps> = ({ onClose }) => {
               type="button"
               disabled={!canProceed}
               onClick={() => setStep(step + 1)}
-              className="inline-flex items-center gap-2 bg-[#e2642a] text-white font-semibold py-3 px-6 rounded-lg hover:bg-orange-600 transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
+              className={
+                step === 2
+                  ? 'inline-flex items-center gap-2 text-gray-500 hover:text-gray-800 font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed'
+                  : 'inline-flex items-center gap-2 bg-[#e2642a] text-white font-semibold py-3 px-6 rounded-lg hover:bg-orange-600 transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed'
+              }
             >
-              Weiter
+              {step === 2 ? 'Lieber Formular ausfüllen' : 'Weiter'}
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
