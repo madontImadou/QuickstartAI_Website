@@ -220,9 +220,9 @@ function HomePage() {
     },
     {
       icon: <RefreshCw className="w-7 h-7 text-[#e2642a]" />,
-      title: "Ihre Kontaktliste",
+      title: "Mehrere Telefonnummern...",
       description:
-        "verstaubt.",
+        "kein Überblick über verpasste Anfragen.",
     },
     {
       icon: <Filter className="w-7 h-7 text-[#e2642a]" />,
@@ -272,10 +272,10 @@ function HomePage() {
   const workingMethods = [
     {
       tag: "Austausch",
-      title: "Live-Demo Ihres Systems",
+      title: "Live-Demo Ihrer Empfangssoftware",
       icon: <UserCheck className="w-7 h-7 text-[#e2642a]" />,
       description:
-        "Wir bereiten Ihr System mit Ihren Website-Daten vor – Sie testen es anschließend live.",
+        "Wir bereiten Ihre Empfangssoftware mit Ihren Website-Daten vor – Sie testen es anschließend live.",
       points: ["Experteneinschätzung", "10 min"],
       highlight: false,
     },
@@ -284,7 +284,7 @@ function HomePage() {
       title: "Einführung & Abnahme",
       icon: <Headphones className="w-7 h-7 text-[#e2642a]" />,
       description:
-        "Wir richten Ihr System ein, verbinden alle Kanäle und sorgen für einen reibungslosen Start.",
+        "Wir richten Ihre Empfangssoftware ein, verbinden alle Kanäle und sorgen für einen reibungslosen Start.",
       points: ["Setup durch Experten", "20 min"],
       highlight: true,
     },
@@ -307,12 +307,12 @@ function HomePage() {
     {
       title: "Kurzgespräch",
       description:
-        "Wir zeigen Ihnen, wie unser System Ihre Erreichbarkeit neu definiert.",
+        "Wir zeigen Ihnen, wie unsere KI-gestützte Empfangssoftware Ihre Erreichbarkeit neu definiert.",
     },
     {
       title: "Setup & Testphase",
       description:
-        "Wir richten Ihr System ein und starten gemeinsam Ihre kostenlose 2-wöchige Testphase.",
+        "Wir richten Ihre Empfangssoftware ein und starten gemeinsam Ihre kostenlose 2-wöchige Testphase.",
     },
   ];
 
@@ -320,20 +320,20 @@ function HomePage() {
     {
       question: "Funktioniert das bei uns überhaupt?",
       answer:
-        "Das System eignet sich für Unternehmen/Praxen, die regelmäßig Anfragen erhalten die sie nicht direkt bearbeiten können.",
+        "Unsere KI-gestützte Empfangssoftware eignet sich für Unternehmen/Praxen, die regelmäßig Anfragen erhalten die sie nicht direkt bearbeiten können.",
     },
     {
-      question: "Wie aufwändig ist die Einrichtung des Systems?",
+      question: "Wie aufwändig ist die Einrichtung der Empfangssoftware?",
       answer:
-        "Nach der Einrichtung ist Ihr System in der Regel innerhalb von 24 Stunden startklar. Das Setup übernehmen wir gemeinsam mit Ihnen.",
+        "Nach der Einrichtung ist Ihre Empfangssoftware in der Regel innerhalb von 24 Stunden startklar. Das Setup übernehmen wir gemeinsam mit Ihnen.",
     },
     {
-      question: "Ersetzt das System mein Team?",
+      question: "Ersetzt die Empfangssoftware mein Team?",
       answer:
         "Nein. QuickStartAI unterstützt Ihr Team, beantwortet wiederkehrende Anfragen, qualifiziert Interessenten und ist erreichbar, wenn niemand verfügbar ist."
     },
     {
-      question: "Kann ich das System erst testen?",
+      question: "Kann ich die Empfangssoftware erst testen?",
       answer:
         "Ja, wir bieten eine kostenlose 2-wöchige Testphase an, in der Sie unsere Lösung kostenlos ausprobieren können.",
     }
@@ -362,13 +362,19 @@ function HomePage() {
                 href="#system"
                 className="text-gray-600 hover:text-gray-900 transition-colors"
               >
-                Unser System
+                Unsere Empfangssoftware
               </a>
               <a
                 href="#faq"
                 className="text-gray-600 hover:text-gray-900 transition-colors"
               >
                 FAQ
+              </a>
+              <a
+                href="https://app.quickstartai.de"
+                className="text-gray-600 hover:text-gray-900 transition-colors"
+              >
+                Plattform Login
               </a>
             </div>
 
@@ -401,7 +407,7 @@ function HomePage() {
                   onClick={() => setIsMenuOpen(false)}
                   className="text-gray-600 hover:text-gray-900 transition-colors py-2"
                 >
-                  Unser System
+                  Unsere Empfangssoftware
                 </a>
                 <a
                   href="#faq"
@@ -409,6 +415,13 @@ function HomePage() {
                   className="text-gray-600 hover:text-gray-900 transition-colors py-2"
                 >
                   FAQ
+                </a>
+                <a
+                  href="https://app.quickstartai.de"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="text-gray-600 hover:text-gray-900 transition-colors py-2"
+                >
+                  Plattform Login
                 </a>
                 <button
                   onClick={() => {
@@ -479,7 +492,7 @@ function HomePage() {
               href="#system"
               className="bg-white text-gray-900 font-semibold py-4 px-10 rounded-xl text-lg border border-gray-200 hover:border-gray-300 hover:bg-gray-50 transform hover:scale-105 transition-all duration-200 shadow-sm hover:shadow-md flex items-center justify-center space-x-2"
             >
-              <span>Unser System</span>
+              <span>Unsere Empfangssoftware</span>
             </a>
           </div>
         </div>
@@ -577,7 +590,7 @@ function HomePage() {
             >
               <span className="h-px w-8 bg-[#e2642a]/50"></span>
               <span className="text-xs font-semibold tracking-widest text-[#e2642a] uppercase">
-                Das System
+                Die Empfangssoftware
               </span>
               <span className="h-px w-8 bg-[#e2642a]/50"></span>
             </div>
@@ -586,7 +599,7 @@ function HomePage() {
               className="font-serif italic text-3xl md:text-4xl text-white mb-6 max-w-3xl mx-auto leading-tight"
             >
               Ihr Team hat <span className="text-[#e2642a]">Feierabend.</span>{" "}
-              Ihr System nicht.
+              Ihre Empfangssoftware nicht.
             </h2>
             <p
               ref={featuresTextRef}
@@ -645,7 +658,7 @@ function HomePage() {
               onClick={() => setShowContactForm(true)}
               className="inline-flex items-center justify-center bg-[#e2642a] text-white font-semibold py-3 px-8 rounded-full hover:bg-orange-600 transition-all duration-200"
             >
-              Jetzt System sichern
+              Jetzt Empfangssoftware sichern
             </button>
           </div>
         </div>
@@ -663,7 +676,8 @@ function HomePage() {
               <span className="h-px w-8 bg-[#e2642a]/50"></span>
             </div>
             <h2 className="font-serif italic text-3xl md:text-4xl text-gray-900 max-w-3xl mx-auto leading-tight">
-              Ein System. <span className="text-[#e2642a]">Jeder Kanal,</span>{" "}
+              Eine KI-gestützte Empfangssoftware.{" "}
+              <span className="text-[#e2642a]">Jeder Kanal,</span>{" "}
               den Ihre Kunden nutzen.
             </h2>
           </div>
@@ -1361,9 +1375,9 @@ function HomePage() {
                 eine ehrliche Einschätzung.
               </p>
               <p className="text-gray-400 leading-relaxed mb-8">
-                Im besten Fall gewinnen Sie ein System, das Ihr Team täglich
-                entlastet. Im schlechtesten Fall gehen Sie mit neuen Ideen nach
-                Hause.
+                Im besten Fall gewinnen Sie eine Empfangssoftware, die Ihr
+                Team täglich entlastet. Im schlechtesten Fall gehen Sie mit
+                neuen Ideen nach Hause.
               </p>
               <p className="text-sm text-gray-500">+50 Unternehmen beraten</p>
             </div>
@@ -1539,7 +1553,7 @@ function HomePage() {
                 href="#system"
                 className="hover:text-gray-900 transition-colors"
               >
-                Das System
+                Empfangssoftware
               </a>
               <a href="#faq" className="hover:text-gray-900 transition-colors">
                 FAQ
