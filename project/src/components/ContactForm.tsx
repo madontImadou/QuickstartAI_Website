@@ -9,11 +9,7 @@ import {
   ArrowLeft,
   Globe,
   Users,
-  Euro,
-  Percent,
-  Clock,
-  ShoppingCart,
-  TrendingUp,
+  MessageSquare,
 } from 'lucide-react';
 import { saveContactRequest } from '../services/databaseService';
 
@@ -28,12 +24,20 @@ interface ContactFormProps {
 const HOURS_PER_MONTH_FULLTIME = 160;
 const WEEKS_PER_MONTH = 4.3;
 
+// Branchenübliche Durchschnittswerte, damit Nutzer keine sensiblen
+// Geschäftszahlen (Stundenlohn, Auftragswert, Marge) eingeben müssen.
+const DEFAULT_HOURLY_WAGE = 20;
+const DEFAULT_RELIEF_PERCENT = 60;
+const DEFAULT_ORDER_VALUE = 800;
+const DEFAULT_MARGIN_PERCENT = 40;
+const DEFAULT_UPLIFT_PERCENT = 10;
+
 const formatEUR = (value: number) =>
   Math.round(value).toLocaleString('de-DE') + ' €';
 
-const STEP_LABELS = ['Zeitersparnis', 'Umsatzsteigerung', 'Ergebnis', 'Kontakt'];
+const STEP_LABELS = ['Ihre Situation', 'Ergebnis', 'Kontakt'];
 
-const TOTAL_STEPS = 4;
+const TOTAL_STEPS = 3;
 
 const ContactForm: React.FC<ContactFormProps> = ({ onClose }) => {
   const [step, setStep] = useState(1);
@@ -53,16 +57,15 @@ const ContactForm: React.FC<ContactFormProps> = ({ onClose }) => {
     scrollContainerRef.current?.scrollTo({ top: 0, behavior: 'auto' });
   }, [step]);
 
-  // Baustein 1: Zeitersparnis
+  // Einfache Eingaben – der Rest der Formel läuft mit branchenüblichen Durchschnittswerten
   const [employees, setEmployees] = useState(1);
-  const [hourlyWage, setHourlyWage] = useState(20);
-  const [reliefPercent, setReliefPercent] = useState(60);
+  const [requestsPerWeek, setRequestsPerWeek] = useState(20);
 
-  // Baustein 2: Umsatzsteigerung
-  const [ordersPerWeek, setOrdersPerWeek] = useState(10);
-  const [orderValue, setOrderValue] = useState(800);
-  const [marginPercent, setMarginPercent] = useState(40);
-  const [upliftPercent, setUpliftPercent] = useState(10);
+  const hourlyWage = DEFAULT_HOURLY_WAGE;
+  const reliefPercent = DEFAULT_RELIEF_PERCENT;
+  const orderValue = DEFAULT_ORDER_VALUE;
+  const marginPercent = DEFAULT_MARGIN_PERCENT;
+  const upliftPercent = DEFAULT_UPLIFT_PERCENT;
 
   const [formData, setFormData] = useState({
     name: '',
@@ -78,7 +81,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ onClose }) => {
 
     const contributionMargin = orderValue * (marginPercent / 100);
     const revenueIncreasePerYear =
-      ordersPerWeek * WEEKS_PER_MONTH * (upliftPercent / 100) * contributionMargin * 12;
+      requestsPerWeek * WEEKS_PER_MONTH * (upliftPercent / 100) * contributionMargin * 12;
 
     const totalValuePerYear = timeSavingsPerYear + revenueIncreasePerYear;
 
@@ -91,12 +94,10 @@ const ContactForm: React.FC<ContactFormProps> = ({ onClose }) => {
       setupFee15: totalValuePerYear * 0.15,
       setupFee20: totalValuePerYear * 0.2,
     };
-  }, [employees, hourlyWage, reliefPercent, ordersPerWeek, orderValue, marginPercent, upliftPercent]);
+  }, [employees, hourlyWage, reliefPercent, requestsPerWeek, orderValue, marginPercent, upliftPercent]);
 
   const canProceed =
-    (step === 1 && employees > 0 && hourlyWage > 0) ||
-    (step === 2 && ordersPerWeek > 0 && orderValue > 0) ||
-    step === 3;
+    (step === 1 && employees > 0 && requestsPerWeek > 0) || step === 2;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -130,7 +131,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ onClose }) => {
           hourlyWage,
           reliefPercent,
           timeSavingsPerYear: roi.timeSavingsPerYear,
-          ordersPerWeek,
+          ordersPerWeek: requestsPerWeek,
           orderValue,
           marginPercent,
           contributionMargin: roi.contributionMargin,
@@ -204,7 +205,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ onClose }) => {
             <div className="relative flex justify-between items-start mb-6">
               <div>
                 <span className="inline-block text-xs font-semibold tracking-widest text-[#e2642a] uppercase mb-2">
-                  Schritt {step} von 3
+                  Schritt {step} von {TOTAL_STEPS - 1}
                 </span>
                 <h3 className="text-xl font-bold text-white">ROI-Rechner</h3>
               </div>
@@ -253,10 +254,10 @@ const ContactForm: React.FC<ContactFormProps> = ({ onClose }) => {
           <div className="space-y-6">
             <div>
               <p className="text-lg font-bold text-gray-900">
-                Wie viel Zeit sparen Sie sich?
+                Wie viel Potenzial steckt in Ihrem Unternehmen?
               </p>
               <p className="text-sm text-gray-500 mt-1">
-                Basis: Empfangs-/Support-Team, das heute Anfragen manuell bearbeitet.
+                Zwei kurze Angaben genügen – den Rest rechnen wir mit branchenüblichen Durchschnittswerten.
               </p>
             </div>
 
@@ -264,7 +265,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ onClose }) => {
               <label htmlFor="roi-employees" className="block text-sm font-medium text-gray-700 mb-2">
                 <div className="flex items-center gap-2">
                   <Users className="w-4 h-4" />
-                  <span>Empfangsmitarbeiter (Vollzeitäquivalent)</span>
+                  <span>Mitarbeiter im Empfang/Support (Vollzeitäquivalent)</span>
                 </div>
               </label>
               <input
@@ -279,143 +280,26 @@ const ContactForm: React.FC<ContactFormProps> = ({ onClose }) => {
             </div>
 
             <div>
-              <label htmlFor="roi-wage" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="roi-requests" className="block text-sm font-medium text-gray-700 mb-2">
                 <div className="flex items-center gap-2">
-                  <Euro className="w-4 h-4" />
-                  <span>Stundenlohn (€)</span>
+                  <MessageSquare className="w-4 h-4" />
+                  <span>Anfragen pro Woche (Telefon, WhatsApp, Website, ...)</span>
                 </div>
               </label>
               <input
                 type="number"
-                id="roi-wage"
+                id="roi-requests"
                 min={0}
                 step={1}
-                value={hourlyWage}
-                onChange={(e) => setHourlyWage(Math.max(0, Number(e.target.value)))}
+                value={requestsPerWeek}
+                onChange={(e) => setRequestsPerWeek(Math.max(0, Number(e.target.value)))}
                 className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#e2642a] focus:border-transparent outline-none transition-all text-gray-900"
               />
-            </div>
-
-            <div>
-              <label htmlFor="roi-relief" className="flex items-center justify-between text-sm font-medium text-gray-700 mb-2">
-                <span className="flex items-center gap-2">
-                  <Clock className="w-4 h-4" />
-                  Entlastungsgrad durch KI
-                </span>
-                <span className="font-semibold text-[#e2642a]">{reliefPercent}%</span>
-              </label>
-              <input
-                type="range"
-                id="roi-relief"
-                min={0}
-                max={100}
-                step={5}
-                value={reliefPercent}
-                onChange={(e) => setReliefPercent(Number(e.target.value))}
-                className="w-full accent-[#e2642a]"
-              />
-              <p className="text-xs text-gray-400 mt-1">Richtwert: 60% der Empfangs-Arbeitszeit</p>
             </div>
           </div>
         )}
 
         {step === 2 && (
-          <div className="space-y-6">
-            <div>
-              <p className="text-lg font-bold text-gray-900">
-                Wie viel Umsatz gewinnen Sie durch 24/7-Erreichbarkeit?
-              </p>
-              <p className="text-sm text-gray-500 mt-1">
-                Wir rechnen mit Ihrem Deckungsbeitrag, nicht mit dem vollen Auftragswert.
-              </p>
-            </div>
-
-            <div>
-              <label htmlFor="roi-orders" className="block text-sm font-medium text-gray-700 mb-2">
-                <div className="flex items-center gap-2">
-                  <ShoppingCart className="w-4 h-4" />
-                  <span>Aufträge / Woche</span>
-                </div>
-              </label>
-              <input
-                type="number"
-                id="roi-orders"
-                min={0}
-                step={1}
-                value={ordersPerWeek}
-                onChange={(e) => setOrdersPerWeek(Math.max(0, Number(e.target.value)))}
-                className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#e2642a] focus:border-transparent outline-none transition-all text-gray-900"
-              />
-              <p className="text-xs text-gray-400 mt-1">
-                Die aktuelle Anzahl an Auftragseingängen, die Ihr Unternehmen bereits pro Woche erhält.
-              </p>
-            </div>
-
-            <div>
-              <label htmlFor="roi-order-value" className="block text-sm font-medium text-gray-700 mb-2">
-                <div className="flex items-center gap-2">
-                  <Euro className="w-4 h-4" />
-                  <span>Ø Auftragswert (€)</span>
-                </div>
-              </label>
-              <input
-                type="number"
-                id="roi-order-value"
-                min={0}
-                step={10}
-                value={orderValue}
-                onChange={(e) => setOrderValue(Math.max(0, Number(e.target.value)))}
-                className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#e2642a] focus:border-transparent outline-none transition-all text-gray-900"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="roi-margin" className="flex items-center justify-between text-sm font-medium text-gray-700 mb-2">
-                <span className="flex items-center gap-2">
-                  <Percent className="w-4 h-4" />
-                  Ø Deckungsbeitrag (Marge vom Auftragswert)
-                </span>
-                <span className="font-semibold text-[#e2642a]">{marginPercent}%</span>
-              </label>
-              <input
-                type="range"
-                id="roi-margin"
-                min={0}
-                max={100}
-                step={5}
-                value={marginPercent}
-                onChange={(e) => setMarginPercent(Number(e.target.value))}
-                className="w-full accent-[#e2642a]"
-              />
-              <p className="text-xs text-gray-400 mt-1">
-                Auftragswert minus variable Kosten. Branchenüblich ca. 30–50%.
-              </p>
-            </div>
-
-            <div>
-              <label htmlFor="roi-uplift" className="flex items-center justify-between text-sm font-medium text-gray-700 mb-2">
-                <span className="flex items-center gap-2">
-                  <TrendingUp className="w-4 h-4" />
-                  Uplift durch 24/7-Erreichbarkeit
-                </span>
-                <span className="font-semibold text-[#e2642a]">{upliftPercent}%</span>
-              </label>
-              <input
-                type="range"
-                id="roi-uplift"
-                min={0}
-                max={50}
-                step={1}
-                value={upliftPercent}
-                onChange={(e) => setUpliftPercent(Number(e.target.value))}
-                className="w-full accent-[#e2642a]"
-              />
-              <p className="text-xs text-gray-400 mt-1">Richtwert: 10% zusätzliche Aufträge</p>
-            </div>
-          </div>
-        )}
-
-        {step === 3 && (
           <div className="space-y-6">
             <p className="text-lg font-bold text-gray-900">Ihr persönliches Ergebnis</p>
 
@@ -459,7 +343,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ onClose }) => {
           </div>
         )}
 
-        {(step === 1 || step === 2 || step === 3) && (
+        {step < TOTAL_STEPS && (
           <div className="flex items-center justify-between mt-8">
             {step > 1 ? (
               <button
