@@ -27,9 +27,6 @@ export interface ContactRequest {
     upliftPercent: number
     revenueIncreasePerYear: number
     totalValuePerYear: number
-    setupFee10: number
-    setupFee15: number
-    setupFee20: number
   }
 }
 
