@@ -20,6 +20,12 @@ import {
   Phone,
   MessageCircle,
   Mail,
+  Sparkles,
+  Car,
+  Truck,
+  Wrench,
+  House,
+  Building2,
 } from "lucide-react";
 
 import { useFadeInUp, useSlideReveal } from "./hooks/useScrollAnimation";
@@ -61,8 +67,160 @@ function MessengerIcon({ className }: { className?: string }) {
   );
 }
 
+const heroIndustries = [
+  "Ästhetikpraxen",
+  "Fahrschulen",
+  "Umzugsunternehmen",
+  "Handwerksbetriebe",
+  "Immobilienmakler",
+  "Dienstleister",
+];
+
+const industries = [
+  {
+    key: "aesthetik",
+    label: "Ästhetikpraxis",
+    icon: Sparkles,
+    requests: [
+      "Was kostet eine Faltenbehandlung?",
+      "Haben Sie diese Woche noch einen Termin frei?",
+      "Wie lange hält das Ergebnis?",
+    ],
+    captures: ["Gewünschte Behandlung", "Vorerfahrung", "Wunschtermin"],
+    chat: [
+      { from: "kunde", text: "Hallo, was kostet bei Ihnen eine Lippenbehandlung?" },
+      {
+        from: "ki",
+        text: "Hallo! Die Preise starten je nach Menge ab 250 €. Hatten Sie schon einmal eine Behandlung oder wäre es Ihre erste?",
+      },
+      { from: "kunde", text: "Wäre das erste Mal." },
+      {
+        from: "ki",
+        text: "Dann empfehlen wir ein kurzes Beratungsgespräch vorab. Passt Ihnen Donnerstag um 16 Uhr?",
+      },
+    ],
+  },
+  {
+    key: "fahrschule",
+    label: "Fahrschule",
+    icon: Car,
+    requests: [
+      "Was kostet der Führerschein Klasse B?",
+      "Wann startet der nächste Theoriekurs?",
+      "Kann ich auch einen Intensivkurs machen?",
+    ],
+    captures: ["Führerscheinklasse", "Alter & Vorkenntnisse", "Wunschstart"],
+    chat: [
+      { from: "kunde", text: "Hi, ich will den Autoführerschein machen. Wann geht's los?" },
+      {
+        from: "ki",
+        text: "Super! Der nächste Theoriekurs für Klasse B startet am Montag. Hast du schon einen Sehtest und Erste-Hilfe-Kurs?",
+      },
+      { from: "kunde", text: "Nein, noch nicht." },
+      {
+        from: "ki",
+        text: "Kein Problem, ich schicke dir die Infos dazu. Soll ich dich direkt für die Anmeldung vormerken?",
+      },
+    ],
+  },
+  {
+    key: "umzug",
+    label: "Umzugsunternehmen",
+    icon: Truck,
+    requests: [
+      "Was kostet ein Umzug von München nach Berlin?",
+      "Haben Sie Ende des Monats noch Kapazität?",
+      "Bieten Sie auch Möbelmontage an?",
+    ],
+    captures: ["Start- & Zieladresse", "Wohnungsgröße & Etage", "Umzugsdatum"],
+    chat: [
+      { from: "kunde", text: "Guten Tag, wir ziehen am 28. um. Haben Sie noch Zeit?" },
+      {
+        from: "ki",
+        text: "Guten Tag! Am 28. haben wir noch Kapazität. Wie groß ist die Wohnung und in welcher Etage liegt sie?",
+      },
+      { from: "kunde", text: "3 Zimmer, 2. Stock ohne Aufzug." },
+      {
+        from: "ki",
+        text: "Danke! Ich erstelle Ihnen eine Ersteinschätzung und ein Kollege meldet sich heute noch mit dem Angebot.",
+      },
+    ],
+  },
+  {
+    key: "handwerk",
+    label: "Handwerk",
+    icon: Wrench,
+    requests: [
+      "Können Sie sich meine Heizung anschauen?",
+      "Was kostet ein neues Bad ungefähr?",
+      "Wann hätten Sie Zeit für eine Besichtigung?",
+    ],
+    captures: ["Art des Auftrags", "Ort & Dringlichkeit", "Fotos vom Schaden"],
+    chat: [
+      { from: "kunde", text: "Meine Heizung macht seit gestern komische Geräusche." },
+      {
+        from: "ki",
+        text: "Das schauen wir uns gerne an. Ist die Heizung noch warm, oder ist sie komplett ausgefallen?",
+      },
+      { from: "kunde", text: "Noch warm, aber es klopft laut." },
+      {
+        from: "ki",
+        text: "Verstanden, kein Notfall. Ich kann Ihnen Mittwochvormittag für eine Besichtigung anbieten. Passt das?",
+      },
+    ],
+  },
+  {
+    key: "immobilien",
+    label: "Immobilien",
+    icon: House,
+    requests: [
+      "Ist die Wohnung noch verfügbar?",
+      "Wann kann ich sie besichtigen?",
+      "Was kostet meine Immobilie, wenn ich verkaufe?",
+    ],
+    captures: ["Kauf, Miete oder Verkauf", "Budget & Finanzierung", "Besichtigungstermin"],
+    chat: [
+      { from: "kunde", text: "Ist die 3-Zimmer-Wohnung in Schwabing noch frei?" },
+      {
+        from: "ki",
+        text: "Ja, die Wohnung ist noch verfügbar. Suchen Sie zur Miete für sich selbst, und ab wann würden Sie einziehen wollen?",
+      },
+      { from: "kunde", text: "Für mich und meine Partnerin, ab 1. des Monats." },
+      {
+        from: "ki",
+        text: "Passt perfekt. Die nächste Besichtigung ist Samstag um 11 Uhr. Soll ich Sie eintragen?",
+      },
+    ],
+  },
+  {
+    key: "andere",
+    label: "Ihre Branche",
+    icon: Building2,
+    requests: [
+      "Was kostet Ihre Leistung?",
+      "Haben Sie kurzfristig Zeit?",
+      "Wie läuft die Zusammenarbeit ab?",
+    ],
+    captures: ["Anliegen", "Kontaktdaten", "Wunschtermin"],
+    chat: [
+      { from: "kunde", text: "Hallo, ich hätte Interesse an Ihrem Angebot." },
+      {
+        from: "ki",
+        text: "Sehr gerne! Worum genau geht es bei Ihnen, damit ich Sie richtig beraten kann?",
+      },
+      { from: "kunde", text: "Ich brauche erst mal ein paar Infos zu den Preisen." },
+      {
+        from: "ki",
+        text: "Klar, hier die wichtigsten Infos. Wenn Sie möchten, vereinbare ich direkt ein kurzes Gespräch mit unserem Team.",
+      },
+    ],
+  },
+];
+
 function HomePage() {
   const [isLoading, setIsLoading] = useState(true);
+  const [heroIndustryIndex, setHeroIndustryIndex] = useState(0);
+  const [activeIndustry, setActiveIndustry] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [showContactForm, setShowContactForm] = useState(false);
@@ -82,6 +240,14 @@ function HomePage() {
       setIsLoading(false);
     }, 800);
     return () => clearTimeout(timer);
+  }, []);
+
+  // Branche im Hero wechseln, um zu zeigen, dass es für jede Branche passt
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setHeroIndustryIndex((i) => (i + 1) % heroIndustries.length);
+    }, 2200);
+    return () => clearInterval(interval);
   }, []);
 
   // Scrollposition merken, damit man beim Neuladen dort weitermacht
@@ -136,6 +302,10 @@ function HomePage() {
   const featuresEyebrowRef = useSlideReveal(0);
   const featuresTitleRef = useSlideReveal(2);
   const featuresTextRef = useSlideReveal(4);
+
+  const branchenEyebrowRef = useSlideReveal(0);
+  const branchenTitleRef = useSlideReveal(2);
+  const branchenTextRef = useSlideReveal(4);
 
   const arbeitsweiseEyebrowRef = useSlideReveal(0);
   const arbeitsweiseTitleRef = useSlideReveal(2);
@@ -320,7 +490,12 @@ function HomePage() {
     {
       question: "Funktioniert das bei uns überhaupt?",
       answer:
-        "Unsere KI-gestützte Empfangssoftware eignet sich für Unternehmen/Praxen, die regelmäßig Anfragen erhalten die sie nicht direkt bearbeiten können.",
+        "Ja – die Empfangssoftware ist branchenunabhängig. Ob Ästhetikpraxis, Fahrschule, Umzugsunternehmen, Handwerksbetrieb oder Immobilienbüro: Sie eignet sich für jedes Unternehmen, das regelmäßig Anfragen erhält, die es nicht sofort bearbeiten kann.",
+    },
+    {
+      question: "Wie lernt die Empfangssoftware meine Branche kennen?",
+      answer:
+        "Wir trainieren sie mit Ihren eigenen Inhalten – Website, Leistungen, Preise, Abläufe und häufige Fragen. Außerdem legen wir gemeinsam fest, welche Angaben sie bei Interessenten abfragt, z. B. Führerscheinklasse, Umzugsdatum oder gewünschte Behandlung.",
     },
     {
       question: "Wie aufwändig ist die Einrichtung der Empfangssoftware?",
@@ -330,13 +505,13 @@ function HomePage() {
     {
       question: "Ersetzt die Empfangssoftware mein Team?",
       answer:
-        "Nein. QuickStartAI unterstützt Ihr Team, beantwortet wiederkehrende Anfragen, qualifiziert Interessenten und ist erreichbar, wenn niemand verfügbar ist."
+        "Nein. QuickStartAI unterstützt Ihr Team, beantwortet wiederkehrende Anfragen, qualifiziert Interessenten und ist erreichbar, wenn niemand verfügbar ist.",
     },
     {
       question: "Kann ich die Empfangssoftware erst testen?",
       answer:
         "Ja, wir bieten eine kostenlose 2-wöchige Testphase an, in der Sie unsere Lösung kostenlos ausprobieren können.",
-    }
+    },
   ];
 
   if (isLoading) {
@@ -363,6 +538,12 @@ function HomePage() {
                 className="text-gray-600 hover:text-gray-900 transition-colors"
               >
                 Unsere Empfangssoftware
+              </a>
+              <a
+                href="#branchen"
+                className="text-gray-600 hover:text-gray-900 transition-colors"
+              >
+                Branchen
               </a>
               <a
                 href="#faq"
@@ -408,6 +589,13 @@ function HomePage() {
                   className="text-gray-600 hover:text-gray-900 transition-colors py-2"
                 >
                   Unsere Empfangssoftware
+                </a>
+                <a
+                  href="#branchen"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="text-gray-600 hover:text-gray-900 transition-colors py-2"
+                >
+                  Branchen
                 </a>
                 <a
                   href="#faq"
@@ -459,6 +647,20 @@ function HomePage() {
           ref={heroRef}
           className="relative z-20 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
         >
+          <div
+            className="inline-flex items-center gap-2 px-4 py-1.5 mb-8 rounded-full border border-[#e2642a]/25 bg-white/70 backdrop-blur-sm text-sm text-gray-600 opacity-0 animate-fade-in-up"
+            style={{ animationDelay: "200ms" }}
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-[#e2642a] animate-pulse"></span>
+            <span>Empfangssoftware für</span>
+            <span
+              key={heroIndustryIndex}
+              className="font-semibold text-[#e2642a] animate-word-swap"
+            >
+              {heroIndustries[heroIndustryIndex]}
+            </span>
+          </div>
+
           <h1
             className="font-serif italic text-4xl md:text-6xl text-gray-900 mb-6 leading-tight opacity-0 animate-fade-in-up"
             style={{ animationDelay: "400ms" }}
@@ -473,8 +675,8 @@ function HomePage() {
             className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed opacity-0 animate-fade-in-up"
             style={{ animationDelay: "800ms" }}
           >
-            Jede Anfrage in 5 Sekunden beantwortet und qualifiziert - rund um
-            die Uhr{" "}
+            Jede Anfrage in 5 Sekunden beantwortet und qualifiziert – rund um
+            die Uhr, egal in welcher Branche Sie arbeiten.
           </p>
 
           <div
@@ -605,7 +807,7 @@ function HomePage() {
               ref={featuresTextRef}
               className="text-gray-400 max-w-2xl mx-auto"
             >
-              Ich helfe Unternehmen und Praxen dabei keine Anfragen mehr
+              Ich helfe Unternehmen jeder Branche dabei, keine Anfrage mehr
               unbemerkt zu verpassen.
             </p>
           </div>
@@ -659,6 +861,145 @@ function HomePage() {
               className="inline-flex items-center justify-center bg-[#e2642a] text-white font-semibold py-3 px-8 rounded-full hover:bg-orange-600 transition-all duration-200"
             >
               Jetzt Empfangssoftware sichern
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Branchen Section */}
+      <section id="branchen" className="relative py-24 bg-gray-50">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <div
+              ref={branchenEyebrowRef}
+              className="flex items-center justify-center gap-3 mb-6"
+            >
+              <span className="h-px w-8 bg-[#e2642a]/50"></span>
+              <span className="text-xs font-semibold tracking-widest text-[#e2642a] uppercase">
+                Branchenunabhängig
+              </span>
+              <span className="h-px w-8 bg-[#e2642a]/50"></span>
+            </div>
+            <h2
+              ref={branchenTitleRef}
+              className="font-serif italic text-3xl md:text-4xl text-gray-900 mb-6 max-w-3xl mx-auto leading-tight"
+            >
+              Ihre Branche ist anders.{" "}
+              <span className="text-[#e2642a]">Das Problem nicht.</span>
+            </h2>
+            <p
+              ref={branchenTextRef}
+              className="text-gray-600 max-w-2xl mx-auto"
+            >
+              Ob Behandlungsanfrage, Führerschein oder Umzugsangebot – die
+              Empfangssoftware lernt Ihr Geschäft und stellt die Fragen, die
+              in Ihrer Branche zählen.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap justify-center gap-2 mb-10">
+            {industries.map((industry, index) => {
+              const Icon = industry.icon;
+              const active = activeIndustry === index;
+              return (
+                <button
+                  key={industry.key}
+                  type="button"
+                  onClick={() => setActiveIndustry(index)}
+                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium border transition-all duration-200 ${
+                    active
+                      ? "bg-gray-900 text-white border-gray-900 shadow-md"
+                      : "bg-white text-gray-600 border-gray-200 hover:border-gray-300 hover:text-gray-900"
+                  }`}
+                >
+                  <Icon
+                    className={`w-4 h-4 ${active ? "text-[#e2642a]" : "text-gray-400"}`}
+                  />
+                  {industry.label}
+                </button>
+              );
+            })}
+          </div>
+
+          {(() => {
+            const industry = industries[activeIndustry];
+            return (
+              <div
+                key={industry.key}
+                className="grid md:grid-cols-2 gap-6 animate-fade-in-up"
+              >
+                <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-8">
+                  <h3 className="text-xs font-semibold tracking-widest text-gray-400 uppercase mb-4">
+                    Typische Anfragen
+                  </h3>
+                  <ul className="space-y-3 mb-8">
+                    {industry.requests.map((request) => (
+                      <li
+                        key={request}
+                        className="flex items-start gap-3 text-gray-800"
+                      >
+                        <MessageCircle className="w-4 h-4 text-[#e2642a] flex-shrink-0 mt-1" />
+                        <span>„{request}“</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <h3 className="text-xs font-semibold tracking-widest text-gray-400 uppercase mb-4">
+                    Das fragt die Empfangssoftware automatisch ab
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {industry.captures.map((capture) => (
+                      <span
+                        key={capture}
+                        className="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-full border border-gray-200 text-gray-700 bg-gray-50"
+                      >
+                        <CheckCircle className="w-3.5 h-3.5 text-[#e2642a] flex-shrink-0" />
+                        {capture}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="rounded-2xl border border-gray-800 bg-gray-900 overflow-hidden shadow-lg">
+                  <div className="flex items-center justify-between px-5 py-3 border-b border-gray-800">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                      <span className="text-white text-xs font-medium">
+                        Beispiel-Gespräch · {industry.label}
+                      </span>
+                    </div>
+                    <span className="text-gray-500 text-xs whitespace-nowrap ml-3">
+                      Antwort in &lt; 5 Sek.
+                    </span>
+                  </div>
+                  <div className="p-5 space-y-3">
+                    {industry.chat.map((message, i) => (
+                      <div
+                        key={i}
+                        className={`flex ${message.from === "ki" ? "justify-start" : "justify-end"}`}
+                      >
+                        <div
+                          className={`max-w-[85%] px-4 py-2.5 rounded-2xl text-sm leading-relaxed ${
+                            message.from === "ki"
+                              ? "bg-gray-800 text-gray-100 rounded-bl-sm"
+                              : "bg-[#e2642a] text-white rounded-br-sm"
+                          }`}
+                        >
+                          {message.text}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            );
+          })()}
+
+          <div className="text-center mt-12">
+            <button
+              onClick={() => setShowContactForm(true)}
+              className="inline-flex items-center justify-center bg-[#e2642a] text-white font-semibold py-3 px-8 rounded-full hover:bg-orange-600 transition-all duration-200"
+            >
+              Potenzial für meine Branche berechnen
             </button>
           </div>
         </div>
@@ -1554,6 +1895,12 @@ function HomePage() {
                 className="hover:text-gray-900 transition-colors"
               >
                 Empfangssoftware
+              </a>
+              <a
+                href="#branchen"
+                className="hover:text-gray-900 transition-colors"
+              >
+                Branchen
               </a>
               <a href="#faq" className="hover:text-gray-900 transition-colors">
                 FAQ
