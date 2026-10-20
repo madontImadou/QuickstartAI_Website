@@ -11,6 +11,7 @@ import {
   Users,
   MessageSquare,
   CalendarClock,
+  Briefcase,
 } from 'lucide-react';
 import { saveContactRequest } from '../services/databaseService';
 
@@ -40,6 +41,19 @@ const formatEUR = (value: number) =>
 
 const STEP_LABELS = ['Ihre Situation', 'Ergebnis', 'Kontakt'];
 
+const INDUSTRY_OPTIONS = [
+  'Ästhetik- / Beautypraxis',
+  'Arzt- / Therapiepraxis',
+  'Fahrschule',
+  'Umzugsunternehmen',
+  'Handwerk',
+  'Immobilien',
+  'Gastronomie / Hotellerie',
+  'Fitness / Sport',
+  'Beratung / Agentur',
+  'Sonstige Branche',
+];
+
 const TOTAL_STEPS = 3;
 
 const ContactForm: React.FC<ContactFormProps> = ({ onClose }) => {
@@ -61,6 +75,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ onClose }) => {
   }, [step]);
 
   // Einfache Eingaben – der Rest der Formel läuft mit branchenüblichen Durchschnittswerten
+  const [industry, setIndustry] = useState('');
   const [employees, setEmployees] = useState(1);
   const [requestsPerWeek, setRequestsPerWeek] = useState(20);
 
@@ -124,6 +139,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ onClose }) => {
       const success = await saveContactRequest({
         name: formData.name,
         website: formData.website,
+        industry: industry || undefined,
         email: isEmail ? contact : undefined,
         phone: isEmail ? undefined : contact,
         roi: {
@@ -254,8 +270,30 @@ const ContactForm: React.FC<ContactFormProps> = ({ onClose }) => {
                 Wie viel Potenzial steckt in Ihrem Unternehmen?
               </p>
               <p className="text-sm text-gray-500 mt-1">
-                Zwei kurze Angaben genügen – den Rest rechnen wir mit branchenüblichen Durchschnittswerten.
+                Wenige Angaben genügen – den Rest rechnen wir mit branchenüblichen Durchschnittswerten.
               </p>
+            </div>
+
+            <div>
+              <label htmlFor="roi-industry" className="block text-sm font-medium text-gray-700 mb-2">
+                <div className="flex items-center gap-2">
+                  <Briefcase className="w-4 h-4" />
+                  <span>Ihre Branche</span>
+                </div>
+              </label>
+              <select
+                id="roi-industry"
+                value={industry}
+                onChange={(e) => setIndustry(e.target.value)}
+                className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#e2642a] focus:border-transparent outline-none transition-all text-gray-900"
+              >
+                <option value="">Branche auswählen (optional)</option>
+                {INDUSTRY_OPTIONS.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div>

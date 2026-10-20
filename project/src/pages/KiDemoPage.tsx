@@ -67,7 +67,7 @@ const benefits = [
   },
   {
     icon: Users,
-    title: 'Qualifizierte Patienten',
+    title: 'Qualifizierte Kunden',
     desc: 'Automatische Lead-Qualifizierung filtert ernsthafte Anfragen heraus.',
   },
   {
@@ -78,7 +78,7 @@ const benefits = [
   {
     icon: TrendingUp,
     title: 'Weniger Aufwand',
-    desc: 'Routine-Aufgaben übernimmt die KI, Ihr Team fokussiert sich auf Behandlungen.',
+    desc: 'Routine-Aufgaben übernimmt die KI, Ihr Team fokussiert sich auf das Kerngeschäft.',
   },
 ];
 
@@ -277,7 +277,7 @@ const KiDemoPage: React.FC = () => {
           style={{ opacity: 1 }}
         >
           <span className="w-1.5 h-1.5 rounded-full bg-brand-orange animate-pulse" />
-          Für Ästhetikpraxen
+          Für jede Branche
         </div>
 
         {/* Main headline */}
@@ -300,7 +300,7 @@ const KiDemoPage: React.FC = () => {
 
         {/* Sub-headline */}
         <p className="text-xs sm:text-sm font-semibold tracking-[0.25em] text-gray-400 uppercase mb-6">
-          Mit dem ersten KI-Mitarbeiter speziell für Ästhetikpraxen
+          Mit dem KI-Mitarbeiter, der sich an Ihre Branche anpasst
         </p>
 
         {/* Separator */}
@@ -365,8 +365,8 @@ const KiDemoPage: React.FC = () => {
                 <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5">
                   {field('name', 'Name', 'text', 'Max Mustermann', true, User)}
                   {field('phone', 'Telefonnummer', 'tel', '+49 151 000 0000', true, Phone)}
-                  {field('email', 'E-Mail-Adresse', 'email', 'max@praxis.de', true, Mail)}
-                  {field('website', 'Website', 'url', 'https://ihre-praxis.de', false, Globe)}
+                  {field('email', 'E-Mail-Adresse', 'email', 'max@ihr-unternehmen.de', true, Mail)}
+                  {field('website', 'Website', 'url', 'https://ihr-unternehmen.de', false, Globe)}
 
                   {/* Privacy note */}
                   <p className="text-xs text-gray-600 leading-relaxed">
@@ -427,10 +427,10 @@ const KiDemoPage: React.FC = () => {
               Bereits im Einsatz
             </p>
             <h2 className="text-3xl md:text-4xl font-black text-white mb-4">
-              100+ automatisierte Patientenanfragen verarbeitet
+              100+ automatisierte Kundenanfragen verarbeitet
             </h2>
             <p className="text-gray-400 max-w-xl mx-auto text-sm leading-relaxed">
-              Ästhetikpraxen nutzen unsere KI bereits täglich zur automatisierten Terminbuchung —
+              Unternehmen nutzen unsere KI bereits täglich zur automatisierten Terminbuchung —
               ohne zusätzlichen manuellen Aufwand.
             </p>
           </div>
@@ -479,7 +479,7 @@ const KiDemoPage: React.FC = () => {
             </h2>
             <p className="text-gray-400 text-sm leading-relaxed">
               Keine Präsentationen, keine Verkaufsgespräche. Wir zeigen Ihnen das System direkt in Aktion —
-              angepasst auf Ihre Praxis.
+              angepasst auf Ihr Unternehmen und Ihre Branche.
             </p>
           </FadeIn>
 

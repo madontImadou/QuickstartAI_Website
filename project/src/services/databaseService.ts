@@ -13,6 +13,7 @@ export interface ContactRequest {
   email?: string
   phone?: string
   website?: string
+  industry?: string
   reachability?: string
   message?: string
   roi?: {
