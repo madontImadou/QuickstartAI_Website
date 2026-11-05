@@ -584,19 +584,11 @@ const SalesPage: React.FC = () => {
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="flex items-center justify-center mb-4">
-            <img 
-              src="/Firmenlogo-removebg-preview.png" 
-              alt="QuickStartAI Logo" 
-              className="h-16 w-auto mr-2"
-            />
-            <span className="text-xl font-bold">QuickStartAI</span>
-          </div>
           <p className="text-white/80 mb-4">
             Enterprise KI-Lösungen für moderne Unternehmen
           </p>
           <p className="text-white/60">
-            &copy; 2024 QuickStartAI. Alle Rechte vorbehalten.
+            &copy; {new Date().getFullYear()} QuickStartAI. Alle Rechte vorbehalten.
           </p>
         </div>
       </footer>

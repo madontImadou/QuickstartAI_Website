@@ -155,7 +155,7 @@ export default function BlogIndex() {
       {/* Simple footer */}
       <footer className="border-t border-gray-800 py-8 text-center text-gray-500 text-sm">
         <div className="max-w-4xl mx-auto px-4">
-          <p>&copy; 2025 QuickStartAI · <Link to="/" className="hover:text-[#e2642a] transition-colors">Startseite</Link> · <Link to="/datenschutz" className="hover:text-[#e2642a] transition-colors">Datenschutz</Link> · <Link to="/impressum" className="hover:text-[#e2642a] transition-colors">Impressum</Link></p>
+          <p>&copy; {new Date().getFullYear()} QuickStartAI · <Link to="/" className="hover:text-[#e2642a] transition-colors">Startseite</Link> · <Link to="/datenschutz" className="hover:text-[#e2642a] transition-colors">Datenschutz</Link> · <Link to="/impressum" className="hover:text-[#e2642a] transition-colors">Impressum</Link></p>
         </div>
       </footer>
     </div>

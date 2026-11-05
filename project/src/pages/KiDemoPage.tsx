@@ -592,7 +592,7 @@ const KiDemoPage: React.FC = () => {
       ══════════════════════════════════════ */}
       <footer className="relative z-10 border-t border-white/5 px-6 md:px-12 py-6">
         <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-xs text-gray-600">© 2025 QuickstartAI. Alle Rechte vorbehalten.</p>
+          <p className="text-xs text-gray-600">© {new Date().getFullYear()} QuickstartAI. Alle Rechte vorbehalten.</p>
           <div className="flex items-center gap-5 text-xs text-gray-600">
             <Link to="/datenschutz" className="hover:text-gray-400 transition-colors">Datenschutz</Link>
             <Link to="/impressum" className="hover:text-gray-400 transition-colors">Impressum</Link>
