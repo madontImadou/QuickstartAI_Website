@@ -6,8 +6,6 @@ import {
   ArrowRight,
   Clock,
   ChevronDown,
-  Menu,
-  X,
   Calendar,
   BarChart2,
   BookOpen,
@@ -32,6 +30,9 @@ import { useFadeInUp, useSlideReveal } from "./hooks/useScrollAnimation";
 import { saveContactRequest } from "./services/databaseService";
 import LoadingScreen from "./components/LoadingScreen";
 import SmoothScroll from "./components/SmoothScroll";
+import SiteNav from "./components/SiteNav";
+import CookieBanner from "./components/CookieBanner";
+import { openCookieSettings } from "./lib/consent";
 import ContactForm from "./components/ContactForm";
 import AnimatedCard from "./components/AnimatedCard";
 import SlideRevealCard from "./components/SlideRevealCard";
@@ -42,6 +43,8 @@ import AGBPage from "./pages/AGBPage";
 import BlogIndex from "./pages/BlogIndex";
 import BlogKIAgentenErstellen from "./pages/BlogKIAgentenErstellen";
 import KiDemoPage from "./pages/KiDemoPage";
+import BranchePage from "./pages/BranchePage";
+import { branchenPages } from "./data/branchen";
 
 function WhatsAppIcon({ className }: { className?: string }) {
   return (
@@ -104,6 +107,7 @@ const industries = [
     key: "fahrschule",
     label: "Fahrschule",
     icon: Car,
+    detailPath: "/branchen/fahrschulen",
     requests: [
       "Was kostet der Führerschein Klasse B?",
       "Wann startet der nächste Theoriekurs?",
@@ -127,6 +131,7 @@ const industries = [
     key: "umzug",
     label: "Umzugsunternehmen",
     icon: Truck,
+    detailPath: "/branchen/umzugsunternehmen",
     requests: [
       "Was kostet ein Umzug von München nach Berlin?",
       "Haben Sie Ende des Monats noch Kapazität?",
@@ -221,7 +226,6 @@ function HomePage() {
   const [isLoading, setIsLoading] = useState(true);
   const [heroIndustryIndex, setHeroIndustryIndex] = useState(0);
   const [activeIndustry, setActiveIndustry] = useState(0);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [showContactForm, setShowContactForm] = useState(false);
   const [activeMethod, setActiveMethod] = useState(0);
@@ -268,6 +272,13 @@ function HomePage() {
 
   useEffect(() => {
     if (isLoading) return;
+    const anchor = window.location.hash
+      ? document.querySelector(window.location.hash)
+      : null;
+    if (anchor) {
+      requestAnimationFrame(() => anchor.scrollIntoView());
+      return;
+    }
     const key = `scrollPos:${window.location.pathname}`;
     const saved = sessionStorage.getItem(key);
     if (saved) {
@@ -385,8 +396,8 @@ function HomePage() {
   const problems = [
     {
       icon: <Clock className="w-7 h-7 text-[#e2642a]" />,
-      title: "Investieren Zeit...",
-      description: "in Rückrufe ohne Erfolg.",
+      title: "Viel Zeit für Rückrufe...",
+      description: "und am Ende geht niemand ran.",
     },
     {
       icon: <RefreshCw className="w-7 h-7 text-[#e2642a]" />,
@@ -521,110 +532,7 @@ function HomePage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Navigation */}
-      <nav className="bg-white/80 backdrop-blur-md border-b border-gray-200 sticky top-0 z-50 relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <img
-                src="/Firmenlogo-removebg-preview.png"
-                alt="QuickStartAI Logo"
-                className="h-20 w-auto mr-3"
-              />
-            </div>
-
-            <div className="hidden md:flex items-center space-x-8">
-              <a
-                href="#system"
-                className="text-gray-600 hover:text-gray-900 transition-colors"
-              >
-                Unsere Empfangssoftware
-              </a>
-              <a
-                href="#branchen"
-                className="text-gray-600 hover:text-gray-900 transition-colors"
-              >
-                Branchen
-              </a>
-              <a
-                href="#faq"
-                className="text-gray-600 hover:text-gray-900 transition-colors"
-              >
-                FAQ
-              </a>
-              <a
-                href="https://app.quickstartai.de"
-                className="text-gray-600 hover:text-gray-900 transition-colors"
-              >
-                Plattform Login
-              </a>
-            </div>
-
-            <button
-              onClick={() => setShowContactForm(true)}
-              className="hidden md:inline-flex bg-[#e2642a] text-white px-6 py-2.5 rounded-full hover:bg-orange-600 transition-all duration-200 font-medium"
-            >
-              Zusammenarbeit anfragen
-            </button>
-
-            <div className="md:hidden">
-              <button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="text-gray-600 hover:text-gray-900"
-              >
-                {isMenuOpen ? (
-                  <X className="w-6 h-6" />
-                ) : (
-                  <Menu className="w-6 h-6" />
-                )}
-              </button>
-            </div>
-          </div>
-
-          {isMenuOpen && (
-            <div className="md:hidden pb-4">
-              <div className="flex flex-col space-y-2">
-                <a
-                  href="#system"
-                  onClick={() => setIsMenuOpen(false)}
-                  className="text-gray-600 hover:text-gray-900 transition-colors py-2"
-                >
-                  Unsere Empfangssoftware
-                </a>
-                <a
-                  href="#branchen"
-                  onClick={() => setIsMenuOpen(false)}
-                  className="text-gray-600 hover:text-gray-900 transition-colors py-2"
-                >
-                  Branchen
-                </a>
-                <a
-                  href="#faq"
-                  onClick={() => setIsMenuOpen(false)}
-                  className="text-gray-600 hover:text-gray-900 transition-colors py-2"
-                >
-                  FAQ
-                </a>
-                <a
-                  href="https://app.quickstartai.de"
-                  onClick={() => setIsMenuOpen(false)}
-                  className="text-gray-600 hover:text-gray-900 transition-colors py-2"
-                >
-                  Plattform Login
-                </a>
-                <button
-                  onClick={() => {
-                    setShowContactForm(true);
-                    setIsMenuOpen(false);
-                  }}
-                  className="bg-[#e2642a] text-white px-6 py-2.5 rounded-full hover:bg-orange-600 transition-colors w-fit mt-2"
-                >
-                  Zusammenarbeit anfragen
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
-      </nav>
+      <SiteNav onContact={() => setShowContactForm(true)} />
 
       {/* Hero Section */}
       <section className="relative pt-20 pb-32 overflow-hidden dynamic-bg">
@@ -1001,6 +909,17 @@ function HomePage() {
             >
               Potenzial für meine Branche berechnen
             </button>
+            {industries[activeIndustry].detailPath && (
+              <div className="mt-4">
+                <Link
+                  to={industries[activeIndustry].detailPath}
+                  className="inline-flex items-center gap-1 text-[#e2642a] font-medium hover:text-[#d55a26] transition-colors"
+                >
+                  Mehr für {industries[activeIndustry].label} und Testanruf
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -1932,6 +1851,13 @@ function HomePage() {
               <Link to="/agb" className="hover:text-gray-900 transition-colors">
                 AGB
               </Link>
+              <button
+                type="button"
+                onClick={openCookieSettings}
+                className="hover:text-gray-900 transition-colors"
+              >
+                Cookie-Einstellungen
+              </button>
             </div>
           </div>
         </div>
@@ -1954,6 +1880,7 @@ function App() {
   return (
     <Router>
       <SmoothScroll />
+      <CookieBanner />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/sales" element={<SalesPage />} />
@@ -1966,6 +1893,13 @@ function App() {
           element={<BlogKIAgentenErstellen />}
         />
         <Route path="/ki-demo" element={<KiDemoPage />} />
+        {branchenPages.map((content) => (
+          <Route
+            key={content.path}
+            path={content.path}
+            element={<BranchePage content={content} />}
+          />
+        ))}
       </Routes>
     </Router>
   );
