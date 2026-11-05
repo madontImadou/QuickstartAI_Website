@@ -18,6 +18,7 @@ import {
   User,
 } from 'lucide-react';
 import { saveKiDemoRequest } from '../services/databaseService';
+import { openCookieSettings } from '../lib/consent';
 
 // ─── Minimal animation hook ──────────────────────────────────────────────────
 function useFadeIn() {
@@ -596,6 +597,7 @@ const KiDemoPage: React.FC = () => {
             <Link to="/datenschutz" className="hover:text-gray-400 transition-colors">Datenschutz</Link>
             <Link to="/impressum" className="hover:text-gray-400 transition-colors">Impressum</Link>
             <Link to="/agb" className="hover:text-gray-400 transition-colors">AGB</Link>
+            <button type="button" onClick={openCookieSettings} className="hover:text-gray-400 transition-colors">Cookie-Einstellungen</button>
           </div>
         </div>
       </footer>
