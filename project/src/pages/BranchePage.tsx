@@ -259,7 +259,7 @@ const BranchePage: React.FC<{ content: BrancheContent }> = ({ content }) => {
 
       <footer className="text-gray-500 py-8 bg-gray-50 border-t border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col-reverse md:flex-row items-center justify-between gap-4 text-sm">
-          <p>&copy; 2025 QuickStartAI. Alle Rechte vorbehalten.</p>
+          <p>&copy; {new Date().getFullYear()} QuickStartAI. Alle Rechte vorbehalten.</p>
           <div className="flex items-center gap-6">
             <Link to="/datenschutz" className="hover:text-gray-900 transition-colors">
               Datenschutz

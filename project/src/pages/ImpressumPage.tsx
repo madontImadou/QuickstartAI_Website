@@ -77,16 +77,8 @@ const ImpressumPage: React.FC = () => {
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-8">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="flex items-center justify-center mb-4">
-            <img 
-              src="/Firmenlogo-removebg-preview.png" 
-              alt="QuickStartAI Logo" 
-              className="h-8 w-auto mr-2"
-            />
-            <span className="text-lg font-bold">QuickStartAI</span>
-          </div>
           <p className="text-gray-400">
-            &copy; 2024 QuickStartAI. Alle Rechte vorbehalten.
+            &copy; {new Date().getFullYear()} QuickStartAI. Alle Rechte vorbehalten.
           </p>
         </div>
       </footer>

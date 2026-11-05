@@ -95,7 +95,7 @@ export default function BlogTemplate({
         '@type': 'Person',
         name: 'Maximilian Theele',
         url: BASE_URL,
-        jobTitle: 'Geschäftsführer',
+        jobTitle: 'Inhaber',
         worksFor: { '@type': 'Organization', name: 'QuickStartAI', url: BASE_URL },
       },
       publisher: {
@@ -135,7 +135,7 @@ export default function BlogTemplate({
       '@context': 'https://schema.org',
       '@type': 'Person',
       name: 'Maximilian Theele',
-      jobTitle: 'Geschäftsführer',
+      jobTitle: 'Inhaber',
       description: 'Web- und Backend-Entwickler, KI-Experte. Baut und deployed KI-Agenten-Systeme für Unternehmen seit 2022.',
       worksFor: { '@type': 'Organization', name: 'QuickStartAI', url: BASE_URL },
       url: BASE_URL,
@@ -333,7 +333,7 @@ export default function BlogTemplate({
               <div className="flex items-center space-x-3">
                 <img
                   src="/ProfilBild.jpg"
-                  alt="Maximilian Theele, Geschäftsführer QuickStartAI"
+                  alt="Maximilian Theele, Inhaber QuickStartAI"
                   width="48"
                   height="48"
                   className="w-12 h-12 rounded-full object-cover"
@@ -341,7 +341,7 @@ export default function BlogTemplate({
                 />
                 <div>
                   <div className="text-white font-semibold text-sm">Maximilian Theele</div>
-                  <div className="text-gray-400 text-xs">Geschäftsführer · QuickStartAI</div>
+                  <div className="text-gray-400 text-xs">Inhaber · QuickStartAI</div>
                 </div>
               </div>
               <div className="flex items-center gap-3 text-xs text-gray-500 flex-wrap">
@@ -542,7 +542,7 @@ export default function BlogTemplate({
               <div className="flex items-start space-x-4">
                 <img
                   src="/ProfilBild.jpg"
-                  alt="Maximilian Theele, Web- und Backend-Entwickler, Geschäftsführer von QuickStartAI"
+                  alt="Maximilian Theele, Web- und Backend-Entwickler, Inhaber von QuickStartAI"
                   width="64"
                   height="64"
                   className="w-16 h-16 rounded-full object-cover flex-shrink-0"
@@ -552,7 +552,7 @@ export default function BlogTemplate({
                 <div>
                   <h3 className="text-white font-bold text-lg mb-1" itemProp="name">Maximilian Theele</h3>
                   <p className="text-[#e2642a] text-sm font-medium mb-3" itemProp="jobTitle">
-                    Geschäftsführer, QuickStartAI · Web & Backend Developer
+                    Inhaber, QuickStartAI · Web & Backend Developer
                   </p>
                   <p className="text-gray-300 text-sm leading-relaxed mb-4" itemProp="description">
                     {authorBio ?? 'Maximilian kommt aus der Web- und Backend-Entwicklung — kein Informatikstudium, dafür jahrelange Praxis im Bauen von Systemen, die tatsächlich funktionieren. Vor drei Jahren wurde er von KI so begeistert, dass daraus QuickStartAI entstand. Er gründete es, weil die meisten KI-Agenturen einen Fehler machen: Sie verkaufen Demos, die nie wirklich live gehen. Sein Team hat seitdem über 50 KI-Agenten für Unternehmen aus dem deutschsprachigen Raum gebaut und deployed.'}

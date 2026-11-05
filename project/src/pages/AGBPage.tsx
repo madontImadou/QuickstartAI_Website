@@ -38,7 +38,7 @@ const AGBPage: React.FC = () => {
           <div className="prose prose-lg max-w-none">
             <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">1. Geltungsbereich</h2>
             <p className="mb-4">
-              Diese Allgemeinen Geschäftsbedingungen (AGB) gelten für alle Verträge zwischen QuickstartAi, Maximilian Theele, Zeppelinstr.73, 81669 München, und seinen Kunden über die Bereitstellung von KI-gestützten Lösungen, insbesondere:
+              Diese Allgemeinen Geschäftsbedingungen (AGB) gelten für alle Verträge zwischen QuickstartAI, Maximilian Madou Theele, Zeppelinstr. 73, 81669 München, und seinen Kunden über die Bereitstellung von KI-gestützten Lösungen, insbesondere:
             </p>
             <ul className="list-disc pl-6 mb-6 space-y-1">
               <li>Chatbots für Webseiten,</li>
@@ -113,16 +113,8 @@ const AGBPage: React.FC = () => {
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-8">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="flex items-center justify-center mb-4">
-            <img 
-              src="/Firmenlogo-removebg-preview.png" 
-              alt="QuickStartAI Logo" 
-              className="h-8 w-auto mr-2"
-            />
-            <span className="text-lg font-bold">QuickStartAI</span>
-          </div>
           <p className="text-gray-400">
-            &copy; 2024 QuickStartAI. Alle Rechte vorbehalten.
+            &copy; {new Date().getFullYear()} QuickStartAI. Alle Rechte vorbehalten.
           </p>
         </div>
       </footer>

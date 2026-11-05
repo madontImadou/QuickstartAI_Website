@@ -1798,16 +1798,7 @@ function HomePage() {
       {/* Footer */}
       <footer className="relative text-gray-900 py-10 bg-gray-50 border-t border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-            <div className="flex items-center">
-              <img
-                src="/Firmenlogo-removebg-preview.png"
-                alt="QuickStartAI Logo"
-                className="h-8 w-auto mr-2"
-              />
-              <span className="text-lg font-bold">QuickStartAI</span>
-            </div>
-
+          <div className="flex md:justify-end">
             <nav className="flex flex-wrap items-center gap-x-8 gap-y-2 text-gray-600 text-sm">
               <a
                 href="#system"
@@ -1834,8 +1825,8 @@ function HomePage() {
           </div>
 
           <div className="border-t border-gray-200 mt-8 pt-6 flex flex-col-reverse md:flex-row items-center justify-between gap-4 text-sm text-gray-500">
-            <p>&copy; 2025 QuickStartAI. Alle Rechte vorbehalten.</p>
-            <div className="flex items-center gap-6">
+            <p>&copy; {new Date().getFullYear()} QuickStartAI. Alle Rechte vorbehalten.</p>
+            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 whitespace-nowrap">
               <Link
                 to="/datenschutz"
                 className="hover:text-gray-900 transition-colors"
