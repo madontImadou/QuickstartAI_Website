@@ -38,8 +38,9 @@ const ImpressumPage: React.FC = () => {
           <div className="prose prose-lg max-w-none">
             <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">Diensteanbieter</h2>
             <p className="mb-6">
+              Maximilian Madou Theele<br />
               QuickstartAI<br />
-              Zeppelinstr.73<br />
+              Zeppelinstr. 73<br />
               81669 München<br />
               Deutschland
             </p>
@@ -47,7 +48,19 @@ const ImpressumPage: React.FC = () => {
             <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">Kontaktmöglichkeiten</h2>
             <p className="mb-6">
               <strong>E-Mail-Adresse:</strong> <a href="mailto:info@quickstartai.de" className="text-[#e2642a] hover:text-[#d55a26] underline">info@quickstartai.de</a><br />
-              <strong>Telefon:</strong> <a href="tel:017642078992" className="text-[#e2642a] hover:text-[#d55a26] underline">017642078992</a>
+              <strong>Telefon:</strong> <a href="tel:+4915888620257" className="text-[#e2642a] hover:text-[#d55a26] underline">+49 15888 620257</a>
+            </p>
+
+            <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>
+            <p className="mb-6">
+              Maximilian Madou Theele<br />
+              Zeppelinstr. 73<br />
+              81669 München
+            </p>
+
+            <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">Verbraucherstreitbeilegung</h2>
+            <p className="mb-6">
+              Wir sind nicht bereit und nicht verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.
             </p>
 
             <div className="mt-12 pt-8 border-t border-gray-200">
